@@ -41,7 +41,7 @@ async function compileFile({ filename, code, compiled }) {
         descriptor.styles.some((s) => s.lang) ||
         (descriptor.template && descriptor.template.lang)) {
         store.errors = [
-            'lang="x" pre-processors are not supported in the in-browser playground.'
+            'lang="x" pre-processors are not supported in the in-browser sandbox.'
         ];
         return;
     }
@@ -98,7 +98,7 @@ async function compileFile({ filename, code, compiled }) {
     let css = '';
     for (const style of descriptor.styles) {
         if (style.module) {
-            store.errors = [`<style module> is not supported in the playground.`];
+            store.errors = [`<style module> is not supported in the sandbox.`];
             return;
         }
         const styleResult = await SFCCompiler.compileStyleAsync({
@@ -189,6 +189,7 @@ const welcomeCode = `
 <template>
   <h1>{{ msg }}</h1>
 </template>
+
 <script setup>
 const msg = 'Hello World!'
 </script>

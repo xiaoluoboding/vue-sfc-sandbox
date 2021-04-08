@@ -21,6 +21,7 @@
 import { ref, reactive, defineComponent, toRefs } from 'vue'
 
 export default defineComponent({
+  name: 'SplitPane',
   setup () {
     const container = ref()
 

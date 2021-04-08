@@ -1,6 +1,6 @@
-# sfc-playground
+# sfc-sandbox
 
-> Vue SFC Playground built on top of @vue/compiler-sfc
+> Vue SFC Sandbox built on top of @vue/compiler-sfc
 
 ## Project setup
 ```

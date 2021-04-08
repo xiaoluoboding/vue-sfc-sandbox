@@ -1,5 +1,5 @@
 <template>
-  <SplitPane class="sandbox">
+  <SplitPane class="sandbox" :style="sandboxStyles">
     <template #left>
       <sandbox-editor />
     </template>
@@ -9,30 +9,26 @@
   </SplitPane>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, defineProps, provide, InjectionKey } from 'vue'
 import SplitPane from '../splte-pane/index.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
 
+import { IMPORTS_MAP_KEY } from './types'
 import { DEMO_1, OPTIONS_1 } from './examples'
 
-export default defineComponent({
-  name: 'Sandbox',
-  props: {
-    dynamicComponent: String
-  },
-  components: {
-    SplitPane,
-    SandboxEditor,
-    SandboxPreview
-  },
-  setup () {
-    return {
-      code: DEMO_1,
-      previewOptions: OPTIONS_1,
-      renderComponent: val => console.log(val)
-    }
+const props = defineProps({
+  // sandbox height unit (px)
+  height: { type: Number, default: 400 },
+  importsMap: { type: Object, default: () => ({}) }
+})
+
+provide(IMPORTS_MAP_KEY, props.importsMap)
+
+const sandboxStyles = computed(() => {
+  return {
+    height: `${props.height}px`
   }
 })
 </script>

@@ -1,11 +1,16 @@
 <template>
   <div class="wrapper">
-    <sandbox />
+    <sandbox :height="600" :imports-map="importsMap" />
   </div>
 </template>
 
 <script setup lang="ts">
 import Sandbox from './components/sandbox/index.vue'
+
+const importsMap = {
+  // 've-charts': 'https://unpkg.com/browse/ve-charts@1.0.0-alpha.2/packages/lib/index.umd.js'
+  echarts: 'https://cdn.jsdelivr.net/npm/echarts/+esm'
+}
 </script>
 
 <style>

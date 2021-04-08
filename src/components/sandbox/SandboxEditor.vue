@@ -33,7 +33,7 @@ watch(
 
 <style scoped>
 .editor-container {
-  height: calc(100% - 35px);
+  height: 100%;
   overflow: hidden;
   position: relative;
 }

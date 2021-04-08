@@ -1,9 +1,10 @@
 module.exports = {
   publicPath: './',
   chainWebpack: config => {
+    // load srcdoc.html only
     config.module
       .rule('raw')
-      .test(/\.html$/)
+      .test(/srcdoc\.html$/)
       .use('raw-loader')
       .loader('raw-loader')
       .end()
