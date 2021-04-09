@@ -1,4 +1,6 @@
 import { InjectionKey } from 'vue'
 
-export const IMPORTS_MAP_KEY: InjectionKey<Record<string, unknown>> = Symbol()
+
+export type ImportsMap = Record<string, any>
+export const IMPORTS_MAP_KEY: InjectionKey<ImportsMap> = Symbol()
 export const CDN_LIST_KEY: InjectionKey<Array<string>> = Symbol()

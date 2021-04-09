@@ -23,11 +23,11 @@
 
 <script setup lang="ts">
 import Sandbox from './components/sandbox/index.vue'
-import { SFC_CODE as echartsCode } from './constants/echarts-demo.js'
+import { SFC_CODE_CDN as echartsCode } from './constants/echarts-demo.js'
 
 const importsMap = {
-  // 've-charts': 'https://unpkg.com/browse/ve-charts@1.0.0-alpha.2/packages/lib/index.umd.js'
-  echarts: 'https://cdn.jsdelivr.net/npm/echarts/+esm'
+  // echarts: 'https://cdn.jsdelivr.net/npm/echarts/+esm',
+  // 'echarts/': 'https://cdn.jsdelivr.net/npm/echarts/+esm/'
 }
 
 const cdnList = [

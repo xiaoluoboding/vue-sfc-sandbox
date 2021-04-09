@@ -13,7 +13,7 @@ import type { WatchStopHandle } from 'vue'
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
 import { compileModules, store } from '../../plugins/index.esm'
-import { IMPORTS_MAP_KEY, CDN_LIST_KEY } from './types'
+import { IMPORTS_MAP_KEY, CDN_LIST_KEY, ImportsMap } from './types'
 
 const container = ref()
 const runtimeError = ref()
@@ -27,33 +27,33 @@ const importsMap = inject(IMPORTS_MAP_KEY)
 const cdnList = inject(CDN_LIST_KEY)
 
 // reset sandbox when import map changes
-watch(() => store.importMap, (importMap, prev) => {
-  if (!importMap) {
-    if (prev) {
-      // import-map.json deleted
-      createSandbox()
-    }
-    return
-  }
-  try {
-    const map = JSON.parse(importMap)
-    if (!map.imports) {
-      store.errors = [
-        'import-map.json is missing "imports" field.'
-      ]
-      return
-    }
-    if (map.imports.vue) {
-      store.errors = [
-        'Select Vue versions using the top-right dropdown.\n' +
-        'Specifying it in the import map has no effect.'
-      ]
-    }
-    createSandbox()
-  } catch (e) {
-    store.errors = [e]
-  }
-})
+// watch(() => store.importMap, (importMap, prev) => {
+//   if (!importMap) {
+//     if (prev) {
+//       // import-map.json deleted
+//       createSandbox()
+//     }
+//     return
+//   }
+//   try {
+//     const map = JSON.parse(importMap)
+//     if (!map.imports) {
+//       store.errors = [
+//         'import-map.json is missing "imports" field.'
+//       ]
+//       return
+//     }
+//     if (map.imports.vue) {
+//       store.errors = [
+//         'Select Vue versions using the top-right dropdown.\n' +
+//         'Specifying it in the import map has no effect.'
+//       ]
+//     }
+//     createSandbox()
+//   } catch (e) {
+//     store.errors = [e]
+//   }
+// })
 
 // reset sandbox when version changes
 // watch(vueRuntimeUrl, createSandbox)
@@ -67,7 +67,7 @@ onUnmounted(() => {
 })
 
 const loadImportMap = () => {
-  let importMap: Record<string, any>
+  let importMap: ImportsMap
   try {
     importMap = JSON.parse(store.importMap || '{}')
   } catch (e) {
@@ -79,13 +79,15 @@ const loadImportMap = () => {
     importMap.imports = {}
   }
   // const defaultVueUrl = process.env.NODE_ENV === 'production'
-  //   ? 'https://unpkg.com/vue@next/dist/vue.runtime.esm-browser.js' // to be copied on build
+  //   ? 'https://cdn.jsdelivr.net/npm/vue@next/dist/vue.runtime.esm-browser.js' // to be copied on build
   //   : `${location.origin}/src/components/sandbox/vue-dev-proxy.js`
-  importMap.imports.vue = 'https://unpkg.com/vue@next/dist/vue.runtime.esm-browser.js'
+  importMap.imports.vue = 'https://cdn.jsdelivr.net/npm/vue@next/dist/vue.runtime.esm-browser.js'
 
   if (importsMap) {
     Object.keys(importsMap).forEach(key => {
-      importMap.imports[key] = importsMap[key]
+      if (!importMap.imports[key]) {
+        importMap.imports[key] = importsMap[key]
+      }
     })
   }
 
@@ -113,8 +115,7 @@ function createSandbox () {
 
   const importMap = loadImportMap()
 
-  const sandboxSrc = srcdoc
-    .replace(/<!--IMPORT_MAP-->/, JSON.stringify(importMap))
+  const sandboxSrc = srcdoc.replace(/<!--IMPORT_MAP-->/, JSON.stringify(importMap))
   sandbox.srcdoc = sandboxSrc
   container.value.appendChild(sandbox)
   // sandbox.removeAttribute('srcdoc')
@@ -130,7 +131,8 @@ function createSandbox () {
         msg.includes('Error resolving module specifier')
       ) {
         runtimeError.value = msg.replace(/\. Relative references must.*$/, '') +
-        '.\nTip: add an "import-map.json" file to specify import paths for dependencies.'
+        // '.\nTip: add an "import-map.json" file to specify import paths for dependencies.'
+        '.\nTip: specify import paths for dependencies in [imports-map] props on sandbox components'
       } else {
         runtimeError.value = event.value
       }
@@ -183,7 +185,7 @@ async function updatePreview () {
     const modules = await compileModules()
 
     if (cdnList && cdnList?.length > 0) {
-      proxy.evalCDN(cdnList)
+      await proxy.evalCDN(cdnList)
     }
     await proxy.evalESM(modules)
   } catch (e) {
