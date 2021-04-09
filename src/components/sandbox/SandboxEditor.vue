@@ -7,12 +7,17 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, defineProps, onMounted } from 'vue'
+
 // import FileSelector from './FileSelector.vue'
 import CodeMirror from './codemirror/index.vue'
 import Message from './Message.vue'
 import { store } from '../../plugins/index.esm'
 import { debounce } from './utils'
-import { ref, watch, computed } from 'vue'
+
+const props = defineProps({
+  sfcCode: { type: String, default: '' }
+})
 
 const onChange = debounce((code: string) => {
   store.activeFile.code = code
@@ -23,12 +28,12 @@ const activeMode = computed(
   () => (store.activeFilename.endsWith('.vue') ? 'htmlmixed' : 'javascript')
 )
 
-watch(
-  () => store.activeFilename,
-  () => {
-    activeCode.value = store.activeFile.code
+onMounted(() => {
+  if (props.sfcCode !== '') {
+    onChange(props.sfcCode)
+    activeCode.value = props.sfcCode
   }
-)
+})
 </script>
 
 <style scoped>

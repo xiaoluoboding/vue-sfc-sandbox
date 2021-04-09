@@ -4,13 +4,15 @@
 		<style>
 			body {
 				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-				Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+					Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+				margin: 0;
 			}
 		</style>
 		<style id="__sfc-styles"></style>
 		<script>
 			(() => {
 				let scriptEls = []
+				let cdnEls = []
 
 				window.__modules__ = {}
 
@@ -33,7 +35,7 @@
 					const send_ok = () => send_reply({ action: 'cmd_ok' });
 					const send_error = (message, stack) => send_reply({ action: 'cmd_error', message, stack });
 
-					if (action === 'eval') {
+					if (action === 'evalESM') {
 						try {
 							if (scriptEls.length) {
 								scriptEls.forEach(el => {
@@ -46,6 +48,7 @@
 							if (typeof scripts === 'string') scripts = [scripts]
 
 							for (const script of scripts) {
+								// console.log(script)
 								const scriptEl = document.createElement('script')
 								scriptEl.setAttribute('type', 'module')
 								// send ok in the module script to ensure sequential evaluation
@@ -64,6 +67,30 @@
 							send_ok()
 						} catch (e) {
 							send_error(e.message, e.stack);
+						}
+					}
+
+					if (action === 'evalCDN') {
+						try {
+							if (cdnEls.length) {
+								cdnEls.forEach(el => {
+									document.head.removeChild(el)
+								})
+								cdnEls.length = 0
+							}
+
+							let { srcs } = ev.data.args
+							
+							for (const src of srcs) {
+								const cdnEl = document.createElement('script')
+								cdnEl.setAttribute('src', src)
+								document.head.appendChild(cdnEl)
+								cdnEls.onrror = err => send_error(err.message, err.stack)
+								cdnEls.push(cdnEl)
+							}
+							send_ok()
+						} catch (e) {
+							send_error(e.message, e.stack)
 						}
 					}
 
@@ -251,7 +278,7 @@
 		</script>
 
 		<!-- ES Module Shims: Import maps polyfill for modules browsers without import maps support (all except Chrome 89+) -->
-		<script async src="https://unpkg.com/es-module-shims@0.10.1/dist/es-module-shims.js"></script>
+		<script async src="//unpkg.com/es-module-shims@0.10.1/dist/es-module-shims.js"></script>
 		<script type="importmap"><!--IMPORT_MAP--></script>
 	</head>
 	<body>

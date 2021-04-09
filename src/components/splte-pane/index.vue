@@ -91,7 +91,7 @@ export default defineComponent({
   height: 100%;
 }
 .left {
-  border-right: 1px solid #ccc;
+  border-right: 1px solid #ebebeb;
 }
 .dragger {
   position: absolute;

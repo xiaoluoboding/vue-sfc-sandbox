@@ -10,10 +10,10 @@ import Message from './Message.vue'
 import { ref, onMounted, onUnmounted, watchEffect, watch, inject } from 'vue'
 import type { WatchStopHandle } from 'vue'
 
-import { IMPORTS_MAP_KEY } from './types'
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
 import { compileModules, store } from '../../plugins/index.esm'
+import { IMPORTS_MAP_KEY, CDN_LIST_KEY } from './types'
 
 const container = ref()
 const runtimeError = ref()
@@ -23,7 +23,8 @@ let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
 let stopUpdateWatcher: WatchStopHandle
 
-const injectImportsMap = inject(IMPORTS_MAP_KEY)
+const importsMap = inject(IMPORTS_MAP_KEY)
+const cdnList = inject(CDN_LIST_KEY)
 
 // reset sandbox when import map changes
 watch(() => store.importMap, (importMap, prev) => {
@@ -78,14 +79,13 @@ const loadImportMap = () => {
     importMap.imports = {}
   }
   // const defaultVueUrl = process.env.NODE_ENV === 'production'
-  //   ? 'https://sfc.vuejs.org/vue.runtime.esm-browser.js' // to be copied on build
+  //   ? 'https://unpkg.com/vue@next/dist/vue.runtime.esm-browser.js' // to be copied on build
   //   : `${location.origin}/src/components/sandbox/vue-dev-proxy.js`
-  importMap.imports.vue = 'https://sfc.vuejs.org/vue.runtime.esm-browser.js'
-  // importMap.imports.vue = 'https://unpkg.com/browse/vue@3.0.11/dist/vue.runtime.esm-browser.js'
+  importMap.imports.vue = 'https://unpkg.com/vue@next/dist/vue.runtime.esm-browser.js'
 
-  if (injectImportsMap) {
-    Object.keys(injectImportsMap).forEach(key => {
-      importMap.imports[key] = injectImportsMap[key]
+  if (importsMap) {
+    Object.keys(importsMap).forEach(key => {
+      importMap.imports[key] = importsMap[key]
     })
   }
 
@@ -113,7 +113,8 @@ function createSandbox () {
 
   const importMap = loadImportMap()
 
-  const sandboxSrc = srcdoc.replace(/<!--IMPORT_MAP-->/, JSON.stringify(importMap))
+  const sandboxSrc = srcdoc
+    .replace(/<!--IMPORT_MAP-->/, JSON.stringify(importMap))
   sandbox.srcdoc = sandboxSrc
   container.value.appendChild(sandbox)
   // sandbox.removeAttribute('srcdoc')
@@ -181,7 +182,10 @@ async function updatePreview () {
   try {
     const modules = await compileModules()
 
-    await proxy.eval(modules)
+    if (cdnList && cdnList?.length > 0) {
+      proxy.evalCDN(cdnList)
+    }
+    await proxy.evalESM(modules)
   } catch (e) {
     runtimeError.value = e.message
   }

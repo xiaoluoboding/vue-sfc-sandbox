@@ -39,7 +39,7 @@ onMounted(() => {
     mode: props.mode,
     readOnly: props.readonly,
     tabSize: 2,
-    lineWrapping: true,
+    lineWrapping: false,
     lineNumbers: true,
     ...addonOptions
   })

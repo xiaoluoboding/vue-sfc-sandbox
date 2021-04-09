@@ -1,7 +1,7 @@
 <template>
   <SplitPane class="sandbox" :style="sandboxStyles">
     <template #left>
-      <sandbox-editor />
+      <sandbox-editor :sfc-code="sfcCode" />
     </template>
     <template #right>
       <sandbox-preview />
@@ -10,21 +10,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, provide, InjectionKey } from 'vue'
+import { computed, defineProps, provide } from 'vue'
 import SplitPane from '../splte-pane/index.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
 
-import { IMPORTS_MAP_KEY } from './types'
-import { DEMO_1, OPTIONS_1 } from './examples'
+import { IMPORTS_MAP_KEY, CDN_LIST_KEY } from './types'
 
 const props = defineProps({
   // sandbox height unit (px)
   height: { type: Number, default: 400 },
-  importsMap: { type: Object, default: () => ({}) }
+  importsMap: { type: Object, default: () => ({}) },
+  cdnList: { type: Array, default: () => ([]) },
+  sfcCode: { type: String, default: '' }
 })
 
 provide(IMPORTS_MAP_KEY, props.importsMap)
+provide(CDN_LIST_KEY, props.cdnList)
 
 const sandboxStyles = computed(() => {
   return {
@@ -39,7 +41,7 @@ const sandboxStyles = computed(() => {
   border: 1px solid #ebebeb;
   border-radius: 2px;
   margin: 20px;
-  font-size: 14px;
+  font-size: 13px;
   &--editor,
   &--preview {
     width: 50%;
