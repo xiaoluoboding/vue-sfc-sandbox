@@ -7,7 +7,7 @@
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Message from './Message.vue'
-import { ref, onMounted, onUnmounted, watchEffect, watch, inject } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, inject } from 'vue'
 import type { WatchStopHandle } from 'vue'
 
 import srcdoc from './srcdoc.html'

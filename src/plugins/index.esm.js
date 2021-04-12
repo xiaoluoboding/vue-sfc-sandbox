@@ -7,8 +7,7 @@ import * as defaultCompiler from '@vue/compiler-sfc/dist/compiler-sfc.esm-browse
 import { MagicString, babelParse, walkIdentifiers, walk } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser';
 import { babelParserDefaultPlugins } from '@vue/shared';
 import { reactive, watchEffect } from 'vue';
-import base64 from 'crypto-js/enc-base64';
-import sha256 from 'crypto-js/sha256';
+import * as Crypto from 'crypto';
 
 const MAIN_FILE = 'App.vue';
 const COMP_IDENTIFIER = `__sfc__`;
@@ -41,7 +40,7 @@ async function compileFile({ filename, code, compiled }) {
         descriptor.styles.some((s) => s.lang) ||
         (descriptor.template && descriptor.template.lang)) {
         store.errors = [
-            'lang="x" pre-processors are not supported in the in-browser sandbox.'
+            'lang="x" pre-processors are not supported in the in-browser playground.'
         ];
         return;
     }
@@ -98,7 +97,7 @@ async function compileFile({ filename, code, compiled }) {
     let css = '';
     for (const style of descriptor.styles) {
         if (style.module) {
-            store.errors = [`<style module> is not supported in the sandbox.`];
+            store.errors = [`<style module> is not supported in the playground.`];
             return;
         }
         const styleResult = await SFCCompiler.compileStyleAsync({
@@ -181,7 +180,7 @@ function doCompileTemplate(descriptor, id, bindingMetadata, ssr) {
     return (`\n${templateResult.code.replace(/\nexport (function|const) (render|ssrRender)/, `$1 ${fnName}`)}` + `\n${COMP_IDENTIFIER}.${fnName} = ${fnName}`);
 }
 async function hashId(filename) {
-    const hashDigest = base64.stringify(sha256(filename)); // hash the message
+    const hashDigest = Crypto.createHash('sha256').update(filename).digest('base64'); // hash the message
     return hashDigest.slice(0, 16);
 }
 
@@ -329,7 +328,7 @@ app.config.errorHandler = e => console.error(e)
 app.mount('#app')`.trim();
     }
     // 0. instantiate module
-    s.prepend(`window.__modules__ = {};\nwindow.__css__ = ''\n\nconst ${moduleKey} = __modules__[${JSON.stringify(file.filename)}] = { [Symbol.toStringTag]: "Module" }\n\n`);
+    s.prepend(`window.__modules__ = {}\nwindow.__css__ = ''\n\nconst ${moduleKey} = __modules__[${JSON.stringify(file.filename)}] = { [Symbol.toStringTag]: "Module" }\n\n`);
     // 1. check all import statements and record id -> importName map
     for (const node of ast) {
         // import foo from 'foo' --> foo -> __import_foo__.default

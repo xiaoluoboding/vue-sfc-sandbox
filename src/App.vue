@@ -1,57 +1,51 @@
 <template>
-  <!-- old version -->
-  <!-- <script src="//unpkg.com/echarts@4.9.0/dist/echarts.min.js"></script> -->
-  <!-- <script src="//unpkg.com/ve-charts@latest/lib/ve-charts.umd.min.js"></script> -->
-
-  <!-- new version -->
-  <!-- <script src="//cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js"></script> -->
-  <!-- <script src="//unpkg.com/ve-charts@1.0.0-alpha.2/packages/lib/index.umd.js"></script> -->
-
-  <!-- esm version -->
-  <!-- <script type="module" src="https://cdn.jsdelivr.net/npm/echarts/+esm"></script> -->
-  <!-- <script async src="//unpkg.com/browse/ve-charts@1.0.0-alpha.2/packages/lib/index.umd.js"></script> -->
   <div class="wrapper">
     <!-- <sandbox :height="400" :key="Math.random * 100" /> -->
-    <sandbox
-      :height="400"
-      :imports-map="importsMap"
-      :cdn-list="cdnList"
-      :sfc-code="echartsCode"
-    />
+    <!-- <sandbox v-bind="veChartsAttrs" /> -->
+    <sandbox v-bind="digitAnimationAttrs" />
   </div>
 </template>
 
 <script setup lang="ts">
 import Sandbox from './components/sandbox/index.vue'
-import { SFC_CODE_CDN as echartsCode } from './constants/echarts-demo.js'
+import { SFC_CODE_ESM as echartsCode } from './constants/echarts-demo.js'
+import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation-demo.js'
 
-const importsMap = {
-  // echarts: 'https://cdn.jsdelivr.net/npm/echarts/+esm',
-  // 'echarts/': 'https://cdn.jsdelivr.net/npm/echarts/+esm/'
+const veChartsAttrs = {
+  importsMap: {
+    echarts: 'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.esm.js',
+    'echarts/': 'https://cdn.jsdelivr.net/npm/echarts@5.0.2/lib/export/'
+  },
+  cdnList: [
+    'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
+  ],
+  sfcCode: echartsCode
 }
 
-const cdnList = [
-  'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
-]
+const digitAnimationAttrs = {
+  height: 400,
+  importsMap: {
+    'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.2.1/lib/vue-digit-animation.esm-browser.js'
+  },
+  sfcCode: digitAnimationCode
+}
 </script>
 
 <style scoped>
 body {
-  font-size: 12px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: var(--base);
   margin: 0;
   background-color: #f8f8f8;
   --base: #444;
-  --nav-height: 50px;
   --font-code: 'Source Code Pro', monospace;
   --color-branding: #3ca877;
   --color-branding-dark: #416f9c;
 }
 
 .wrapper {
-  height: calc(100vh - var(--nav-height));
+  height: 100vh;
 }
 
 button {
