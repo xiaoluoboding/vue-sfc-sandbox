@@ -2,23 +2,24 @@
   <div
     ref="container"
     class="split-pane"
-    :class="{ dragging }"
+    :class="{ dragging, 'is-vertical': !isHorizontal }"
+    :style="splitPaneStyle"
     @mousemove="dragMove"
     @mouseup="dragEnd"
     @mouseleave="dragEnd"
   >
-    <div class="left" :style="{ width: boundSplit() + '%' }">
+    <div class="split-pane__left" :style="leftStyle">
       <slot name="left" />
-      <div class="dragger" @mousedown.prevent="dragStart" />
+      <div class="dragger" :style="draggerStyle" @mousedown.prevent="dragStart" />
     </div>
-    <div class="right" :style="{ width: (100 - boundSplit()) + '%' }">
+    <div class="split-pane__right" :style="rightStyle">
       <slot name="right" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, reactive, defineComponent, toRefs } from 'vue'
+import { ref, reactive, defineComponent, toRefs, computed, onMounted, onUnmounted } from 'vue'
 
 export default defineComponent({
   name: 'SplitPane',
@@ -27,7 +28,8 @@ export default defineComponent({
 
     const state = reactive({
       dragging: false,
-      split: 50
+      split: 50,
+      isHorizontal: true
     })
 
     function boundSplit () {
@@ -39,20 +41,22 @@ export default defineComponent({
           : split
     }
 
-    let startPosition = 0
+    let startPositionX = 0
+    let startPositionY = 0
     let startSplit = 0
 
     function dragStart (e: MouseEvent) {
       state.dragging = true
-      startPosition = e.pageX
+      startPositionX = e.pageX
+      startPositionY = e.pageY
       startSplit = boundSplit()
     }
 
     function dragMove (e: MouseEvent) {
       if (state.dragging) {
-        const position = e.pageX
         const totalSize = container.value.offsetWidth
-        const dp = position - startPosition
+        const position = state.isHorizontal ? e.pageX : e.pageY
+        const dp = position - (state.isHorizontal ? startPositionX : startPositionY)
         state.split = startSplit + ~~(dp / totalSize * 100)
       }
     }
@@ -61,12 +65,54 @@ export default defineComponent({
       state.dragging = false
     }
 
+    const onResize = () => {
+      const containerSize = container.value.offsetWidth
+      state.isHorizontal = containerSize > 720
+    }
+
+    const splitPaneStyle = computed(() => {
+      return {
+        'flex-direction': state.isHorizontal ? 'row' : 'column'
+      }
+    })
+
+    const leftStyle = computed(() => {
+      return state.isHorizontal
+        ? { width: boundSplit() + '%', borderRight: '1px solid #ebebeb' }
+        : { height: boundSplit() + '%', borderBottom: '1px solid #ebebeb' }
+    })
+
+    const rightStyle = computed(() => {
+      return state.isHorizontal
+        ? { width: (100 - boundSplit()) + '%' }
+        : { height: (100 - boundSplit()) + '%' }
+    })
+
+    const draggerStyle = computed(() => {
+      return state.isHorizontal
+        ? { top: 0, bottom: 0, right: '-5px', width: '10px', cursor: 'ew-resize' }
+        : { left: 0, right: 0, bottom: '-5px', height: '10px', cursor: 'ns-resize' }
+    })
+
+    onMounted(() => {
+      window.addEventListener('resize', onResize, false)
+      onResize()
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', onResize, false)
+    })
+
     return {
       container,
       dragStart,
       dragMove,
       dragEnd,
       boundSplit,
+      splitPaneStyle,
+      leftStyle,
+      rightStyle,
+      draggerStyle,
       ...toRefs(state)
     }
   }
@@ -81,25 +127,20 @@ export default defineComponent({
 .split-pane.dragging {
   cursor: ew-resize;
 }
-.dragging .left,
-.dragging .right {
+.split-pane.dragging.is-vertical {
+  cursor: ns-resize;
+}
+.dragging .split-pane__left,
+.dragging .split-pane__right {
   pointer-events: none;
 }
-.left,
-.right {
+.split-pane__left,
+.split-pane__right {
   position: relative;
   height: 100%;
-}
-.left {
-  border-right: 1px solid #ebebeb;
 }
 .dragger {
   position: absolute;
   z-index: 99;
-  top: 0;
-  bottom: 0;
-  right: -5px;
-  width: 10px;
-  cursor: ew-resize;
 }
 </style>
