@@ -12,12 +12,14 @@ import type { WatchStopHandle } from 'vue'
 
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
-import { compileModules, store } from '../../plugins/index.esm'
+import { compileModules, store } from '../../plugins/sfc2esm.esm'
 import { IMPORTS_MAP_KEY, CDN_LIST_KEY, ImportsMap } from './types'
+import { generateUUID } from './utils'
 
 const container = ref()
 const runtimeError = ref()
 const runtimeWarning = ref()
+const uuid = ref(generateUUID())
 
 let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
@@ -103,6 +105,7 @@ function createSandbox () {
   }
 
   sandbox = document.createElement('iframe')
+  sandbox.setAttribute('id', uuid.value)
   sandbox.setAttribute('sandbox', [
     'allow-forms',
     'allow-modals',
@@ -185,9 +188,9 @@ async function updatePreview () {
     const modules = await compileModules()
 
     if (cdnList && cdnList?.length > 0) {
-      await proxy.evalCDN(cdnList)
+      await proxy.evalCDN(cdnList, uuid.value)
     }
-    await proxy.evalESM(modules)
+    await proxy.evalESM(modules, uuid.value)
   } catch (e) {
     runtimeError.value = e.message
   }

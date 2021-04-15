@@ -30,6 +30,7 @@
 				}
 
 				async function handle_message(ev) {
+					if (ev.srcElement.frameElement.id !== ev.data.args.uuid) return
 					let { action, cmd_id } = ev.data;
 					const send_message = (payload) => parent.postMessage( { ...payload }, ev.origin);
 					const send_reply = (payload) => send_message({ ...payload, cmd_id });

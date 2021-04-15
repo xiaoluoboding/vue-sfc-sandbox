@@ -12,7 +12,7 @@ import { ref, computed, defineProps, onMounted } from 'vue'
 // import FileSelector from './FileSelector.vue'
 import CodeMirror from './codemirror/index.vue'
 import Message from './Message.vue'
-import { store } from '../../plugins/index.esm'
+import { store } from '../../plugins/sfc2esm.esm'
 import { debounce } from './utils'
 
 const props = defineProps({

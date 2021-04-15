@@ -86,12 +86,12 @@ export class ReplProxy {
     }
   }
 
-  evalESM(script: string | string[]) {
-    return this.iframe_command('evalESM', { script })
+  evalESM(script: string | string[], uuid: string) {
+    return this.iframe_command('evalESM', { script, uuid })
   }
 
-  evalCDN (srcs: string[]) {
-    return this.iframe_command('evalCDN', { srcs })
+  evalCDN (srcs: string[], uuid: string) {
+    return this.iframe_command('evalCDN', { srcs, uuid })
   }
 
   handle_links() {
