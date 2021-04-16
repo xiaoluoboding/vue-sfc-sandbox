@@ -1,35 +1,50 @@
 <template>
   <div class="wrapper">
-    <!-- Passed -->
+    <!-- [ESM] default case -->
     <sandbox v-bind="defaultAttrs" />
+
+    <!-- [CDN] echarts case -->
+    <sandbox v-bind="echartsAttrs" />
+
+    <!-- [ESM] ve-charts case -->
     <!-- <sandbox v-bind="veChartsAttrs" /> -->
-    <!-- Passed -->
-    <sandbox v-bind="digitAnimationAttrs" />
+
+    <!-- [ESM] Vue3 component case -->
+    <!-- <sandbox v-bind="digitAnimationAttrs" /> -->
+
+    <!-- [ESM] React component case -->
     <!-- <sandbox v-bind="revueAttrs" /> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import Sandbox from './components/sandbox/index.vue'
-import { SFC_CODE_ESM as defaultCode } from './constants/default-demo.js'
-import { SFC_CODE_ESM as echartsCode } from './constants/echarts-demo.js'
-import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation-demo.js'
+import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
+import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
+import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
+import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
+import { SFC_CODE_ESM as revueCode } from './constants/revue.demo.js'
 
 const defaultAttrs = {
   height: 400,
   sfcCode: defaultCode
 }
 
-const veChartsAttrs = {
-  height: 400,
-  importsMap: {
-    echarts: 'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.esm.js',
-    'echarts/': 'https://cdn.jsdelivr.net/npm/echarts@5.0.2/lib/export/'
-  },
+const echartsAttrs = {
   cdnList: [
     'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
   ],
   sfcCode: echartsCode
+}
+
+const veChartsAttrs = {
+  height: 400,
+  importsMap: {
+    echarts: 'https://cdn.skypack.dev/echarts',
+    'echarts/': 'https://cdn.skypack.dev/echarts',
+    've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.3'
+  },
+  sfcCode: veChartsCode
 }
 
 const digitAnimationAttrs = {
@@ -43,11 +58,11 @@ const digitAnimationAttrs = {
 const revueAttrs = {
   height: 400,
   importsMap: {
-    upperCase: '/foo.esm.js'
-    // react: 'https://cdn.jsdelivr.net/npm/react/+esm',
-    // antd: 'https://unpkg.com/browse/antd@4.15.1/es/index.js',
-    // revue: './plugins/revue.esm.js'
-  }
+    // antd: 'https://unpkg.com/antd@4.15.1/es/index.js',
+    vuera: 'https://cdn.skypack.dev/vuera',
+    'react-select': 'https://cdn.skypack.dev/react-select'
+  },
+  sfcCode: revueCode
 }
 </script>
 
@@ -66,13 +81,5 @@ body {
 
 .wrapper {
   height: 100vh;
-}
-
-button {
-  border: none;
-  outline: none;
-  cursor: pointer;
-  margin: 0;
-  background-color: transparent;
 }
 </style>
