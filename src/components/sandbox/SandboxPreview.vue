@@ -7,13 +7,13 @@
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Message from './Message.vue'
-import { ref, onMounted, onUnmounted, watchEffect, inject } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, inject, defineProps, Ref, toRaw } from 'vue'
 import type { WatchStopHandle } from 'vue'
 
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
-import { compileModules, store } from '../../plugins/sfc2esm.esm'
-import { IMPORTS_MAP_KEY, CDN_LIST_KEY, ImportsMap } from './types'
+import { store } from '../../plugins/sfc2esm.esm'
+import { IMPORTS_MAP_KEY, CDN_LIST_KEY, IS_LOADING_PREVIEW, ImportsMap, ES_MODULES } from './types'
 import { generateUUID } from './utils'
 
 const container = ref()
@@ -27,6 +27,12 @@ let stopUpdateWatcher: WatchStopHandle
 
 const importsMap = inject(IMPORTS_MAP_KEY)
 const cdnList = inject(CDN_LIST_KEY)
+const isLoading = inject(IS_LOADING_PREVIEW) as Ref<boolean>
+const esModules = inject(ES_MODULES) as Ref<Array<string>>
+
+const props = defineProps({
+  sfcFilename: { type: String, default: 'App.vue' }
+})
 
 // reset sandbox when import map changes
 // watch(() => store.importMap, (importMap, prev) => {
@@ -181,17 +187,25 @@ function createSandbox () {
 }
 
 async function updatePreview () {
-  console.clear()
+  // console.clear()
   runtimeError.value = null
   runtimeWarning.value = null
   try {
-    const modules = await compileModules()
+    isLoading.value = true
+    // const modules = await compileModules(props.sfcFilename)
+    const modules = toRaw(esModules.value)
 
-    if (cdnList && cdnList?.length > 0) {
+    if (cdnList && cdnList.length > 0) {
       await proxy.evalCDN(cdnList, uuid.value)
     }
-    await proxy.evalESM(modules, uuid.value)
+    console.log(modules)
+    if (modules && modules.length > 0) {
+      // console.log(modules)
+      await proxy.evalESM(modules, uuid.value)
+    }
+    isLoading.value = false
   } catch (e) {
+    console.log(e)
     runtimeError.value = e.message
   }
 }

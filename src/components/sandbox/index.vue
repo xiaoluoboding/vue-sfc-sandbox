@@ -1,32 +1,54 @@
 <template>
   <SplitPane class="sandbox" :style="sandboxStyles">
     <template #left>
-      <sandbox-editor :sfc-code="sfcCode" />
+      <sandbox-editor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
     </template>
     <template #right>
-      <sandbox-preview />
+      <Suspense>
+        <template #default v-if="esModules">
+          <sandbox-preview :sfc-filename="sfcFilename" />
+        </template>
+        <template #fallback>
+          <div>Loading ...</div>
+        </template>
+      </Suspense>
     </template>
   </SplitPane>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, provide } from 'vue'
+import { computed, defineProps, nextTick, provide, ref, watch } from 'vue'
 import SplitPane from '../splte-pane/index.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
 
-import { IMPORTS_MAP_KEY, CDN_LIST_KEY } from './types'
+import { IMPORTS_MAP_KEY, CDN_LIST_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
 
 const props = defineProps({
   // sandbox height unit (px)
   height: { type: Number, default: 400 },
   importsMap: { type: Object, default: () => ({}) },
   cdnList: { type: Array, default: () => ([]) },
+  sfcFilename: { type: String, default: '' },
   sfcCode: { type: String, default: '' }
 })
 
+const isLoadingPreview = ref(false)
+const esModules = ref([])
+
 provide(IMPORTS_MAP_KEY, props.importsMap)
 provide(CDN_LIST_KEY, props.cdnList)
+provide(IS_LOADING_PREVIEW, isLoadingPreview)
+provide(ES_MODULES, esModules)
+
+watch(
+  isLoadingPreview,
+  (newVal, oldVal) => {
+    if (oldVal) {
+      console.log('is rendered')
+    }
+  }
+)
 
 const sandboxStyles = computed(() => {
   return {

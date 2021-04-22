@@ -10,7 +10,7 @@
     <!-- <sandbox v-bind="veChartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
-    <!-- <sandbox v-bind="digitAnimationAttrs" /> -->
+    <sandbox v-bind="digitAnimationAttrs" />
 
     <!-- [ESM] React component case -->
     <!-- <sandbox v-bind="revueAttrs" /> -->
@@ -26,7 +26,8 @@ import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.
 import { SFC_CODE_ESM as revueCode } from './constants/revue.demo.js'
 
 const defaultAttrs = {
-  height: 400,
+  height: 200,
+  sfcFilename: 'DefaultDemo.vue',
   sfcCode: defaultCode
 }
 
@@ -34,6 +35,7 @@ const echartsAttrs = {
   cdnList: [
     'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
   ],
+  sfcFilename: 'EchartsDemo.vue',
   sfcCode: echartsCode
 }
 
@@ -52,6 +54,7 @@ const digitAnimationAttrs = {
   importsMap: {
     'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.2.1/lib/vue-digit-animation.esm-browser.js'
   },
+  sfcFilename: 'digitAnimationDemo.vue',
   sfcCode: digitAnimationCode
 }
 

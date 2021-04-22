@@ -1,5 +1,4 @@
-export const SFC_CODE_ESM = `
-<template>
+export const SFC_CODE_ESM = `<template>
   <h1>{{ msg }}</h1>
 </template>
 

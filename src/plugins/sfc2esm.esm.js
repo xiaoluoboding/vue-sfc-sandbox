@@ -3,13 +3,17 @@
  * (c) 2021 xiaoluoboding
  * @license MIT
  */
-import * as defaultCompiler from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser';
-import { MagicString, babelParse, walkIdentifiers, walk } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser';
+import { MagicString, babelParse, walkIdentifiers, walk } from '@vue/compiler-sfc';
 import { babelParserDefaultPlugins } from '@vue/shared';
-import { reactive, watchEffect } from 'vue';
+import { reactive, watchEffect, computed } from 'vue';
+import * as defaultCompiler from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser';
 import * as Crypto from 'crypto';
 
-const MAIN_FILE = 'App.vue';
+const hashId = (filename) => {
+    const hashDigest = Crypto.createHash('sha256').update(filename).digest('base64'); // hash the message
+    return hashDigest.slice(0, 16);
+};
+
 const COMP_IDENTIFIER = `__sfc__`;
 /**
  * The default SFC compiler we are using is built from each commit
@@ -179,13 +183,24 @@ function doCompileTemplate(descriptor, id, bindingMetadata, ssr) {
     const fnName = ssr ? `ssrRender` : `render`;
     return (`\n${templateResult.code.replace(/\nexport (function|const) (render|ssrRender)/, `$1 ${fnName}`)}` + `\n${COMP_IDENTIFIER}.${fnName} = ${fnName}`);
 }
-async function hashId(filename) {
-    const hashDigest = Crypto.createHash('sha256').update(filename).digest('base64'); // hash the message
-    return hashDigest.slice(0, 16);
+
+const APP_FILE = `App.vue`;
+const MAIN_FILE = `main.js`;
+const getMainCode = appFile => {
+    return `import { createApp as _createApp } from "vue"
+
+if (window.__app__) {
+  window.__app__.unmount()
+  document.getElementById('app').innerHTML = ''
 }
 
-const welcomeCode = `
-<template>
+document.getElementById('__sfc-styles').innerHTML = window.__css__
+const app = window.__app__ = _createApp(__modules__["${appFile}"].default)
+app.config.errorHandler = e => console.error(e)
+app.mount('#app')
+`.trim();
+};
+const WELCOME_CODE = `<template>
   <h1>{{ msg }}</h1>
 </template>
 
@@ -193,6 +208,12 @@ const welcomeCode = `
 const msg = 'Hello World!'
 </script>
 `.trim();
+const MAIN_CODE = getMainCode(APP_FILE);
+const IMPORT_MAP_CODE = `
+{
+  "imports": {
+  }
+}`.trim();
 class File {
     constructor(filename, code = '') {
         this.compiled = {
@@ -207,12 +228,13 @@ class File {
 let files = {};
 {
     files = {
-        'App.vue': new File(MAIN_FILE, welcomeCode)
+        [APP_FILE]: new File(APP_FILE, WELCOME_CODE),
+        [MAIN_FILE]: new File(MAIN_FILE, MAIN_CODE)
     };
 }
 const store = reactive({
     files,
-    activeFilename: MAIN_FILE,
+    activeFilename: APP_FILE,
     get activeFile() {
         return store.files[store.activeFilename];
     },
@@ -222,16 +244,16 @@ const store = reactive({
     },
     errors: []
 });
-console.log(store.files[MAIN_FILE]);
+console.log(store.files);
 watchEffect(() => compileFile(store.activeFile));
+const activeFilename = computed(() => store.activeFilename);
+const mainCode = computed(() => getMainCode(store.activeFilename));
 for (const file in store.files) {
-    if (file !== MAIN_FILE) {
+    if (file !== APP_FILE) {
         compileFile(store.files[file]);
     }
 }
-// watchEffect(() => {
-//   history.replaceState({}, '', '#' + btoa(JSON.stringify(exportFiles())))
-// })
+const encodeFiles = () => btoa(JSON.stringify(exportFiles()));
 function exportFiles() {
     const exported = {};
     for (const filename in store.files) {
@@ -239,31 +261,51 @@ function exportFiles() {
     }
     return exported;
 }
-function setActive(filename) {
+function setActive(filename, code) {
     store.activeFilename = filename;
+    store.activeFile.code = code;
 }
-function addFile(filename) {
+function addFile(filename, code) {
+    if (!filename.endsWith('.vue') &&
+        !filename.endsWith('.js') &&
+        filename !== 'import-map.json') {
+        store.errors = [`Sandbox only supports *.vue, *.js files or import-map.json.`];
+        return;
+    }
+    if (filename in store.files) {
+        store.errors = [`File "${filename}" already exists.`];
+        return;
+    }
     const file = (store.files[filename] = new File(filename));
     if (filename === 'import-map.json') {
-        file.code = `
-{
-  "imports": {
-  }
-}`.trim();
+        file.code = IMPORT_MAP_CODE;
     }
-    setActive(filename);
+    else {
+        file.code = code;
+    }
+    setActive(filename, file.code);
+}
+function changeFile(filename, code) {
+    if (!(filename in store.files)) {
+        store.errors = [`File "${filename}" is not exists.`];
+        return;
+    }
+    const file = store.files[filename];
+    setActive(file.filename, code);
 }
 function deleteFile(filename) {
     if (confirm(`Are you sure you want to delete ${filename}?`)) {
         if (store.activeFilename === filename) {
-            store.activeFilename = MAIN_FILE;
+            store.activeFilename = APP_FILE;
         }
         delete store.files[filename];
     }
 }
 
-async function compileModules() {
-    const modules = await processFile(store.files[MAIN_FILE]);
+async function compileModules(filename) {
+    if (filename !== activeFilename.value)
+        return [];
+    const modules = await processFile(store.files[filename]);
     const styles = [
         'color: white',
         'background: #42b983',
@@ -312,20 +354,6 @@ async function processFile(file, seen = new Set()) {
     }
     function defineExport(name, local = name) {
         s.append(`\n${exportKey}(${moduleKey}, "${name}", () => ${local})`);
-    }
-    function defineAmount() {
-        return `
-import { createApp as _createApp } from "vue"
-
-if (window.__app__) {
-  window.__app__.unmount()
-  document.getElementById('app').innerHTML = ''
-}
-
-document.getElementById('__sfc-styles').innerHTML = window.__css__
-const app = window.__app__ = _createApp(__modules__["${MAIN_FILE}"].default)
-app.config.errorHandler = e => console.error(e)
-app.mount('#app')`.trim();
     }
     // 0. instantiate module
     s.prepend(`window.__modules__ = {}\nwindow.__css__ = ''\n\nconst ${moduleKey} = __modules__[${JSON.stringify(file.filename)}] = { [Symbol.toStringTag]: "Module" }\n\n`);
@@ -455,7 +483,7 @@ app.mount('#app')`.trim();
     if (css) {
         s.append(`\nwindow.__css__ += ${JSON.stringify(css)}`);
     }
-    const processed = [defineAmount(), s.toString()];
+    const processed = [mainCode.value, s.toString()];
     if (importedFiles.size) {
         for (const imported of importedFiles) {
             const fileList = await processFile(store.files[imported], seen);
@@ -523,4 +551,4 @@ function isInDestructureAssignment(parent, parentStack) {
     return false;
 }
 
-export { COMP_IDENTIFIER, File, MAIN_FILE, addFile, compileFile, compileModules, deleteFile, exportFiles, setActive, store };
+export { APP_FILE, COMP_IDENTIFIER, File, MAIN_CODE, MAIN_FILE, WELCOME_CODE, activeFilename, addFile, changeFile, compileFile, compileModules, deleteFile, encodeFiles, exportFiles, mainCode, setActive, store };
