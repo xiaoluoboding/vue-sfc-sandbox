@@ -3,7 +3,9 @@
     <pre v-if="!dismissed && (err || warn)"
       class="msg"
       :class="err ? 'err' : 'warn'"
-      @click="dismissed = true">{{ formatMessage(err || warn) }}</pre>
+      @click="dismissed = true">
+      {{ formatMessage(err || warn) }}
+    </pre>
   </Transition>
 </template>
 

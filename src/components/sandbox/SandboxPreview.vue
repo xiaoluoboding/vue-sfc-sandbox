@@ -7,19 +7,18 @@
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Message from './Message.vue'
-import { ref, onMounted, onUnmounted, watchEffect, inject, defineProps, Ref, toRaw } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, inject, Ref, toRaw } from 'vue'
 import type { WatchStopHandle } from 'vue'
 
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
-import { store } from '../../plugins/sfc2esm.esm'
+import { store, generateHashId } from '../../plugins/sfc2esm.esm'
 import { IMPORTS_MAP_KEY, CDN_LIST_KEY, IS_LOADING_PREVIEW, ImportsMap, ES_MODULES } from './types'
-import { generateUUID } from './utils'
 
 const container = ref()
 const runtimeError = ref()
 const runtimeWarning = ref()
-const uuid = ref(generateUUID())
+const uuid = ref(generateHashId(new Date().toString()))
 
 let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
@@ -27,44 +26,8 @@ let stopUpdateWatcher: WatchStopHandle
 
 const importsMap = inject(IMPORTS_MAP_KEY)
 const cdnList = inject(CDN_LIST_KEY)
-const isLoading = inject(IS_LOADING_PREVIEW) as Ref<boolean>
+const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
-
-const props = defineProps({
-  sfcFilename: { type: String, default: 'App.vue' }
-})
-
-// reset sandbox when import map changes
-// watch(() => store.importMap, (importMap, prev) => {
-//   if (!importMap) {
-//     if (prev) {
-//       // import-map.json deleted
-//       createSandbox()
-//     }
-//     return
-//   }
-//   try {
-//     const map = JSON.parse(importMap)
-//     if (!map.imports) {
-//       store.errors = [
-//         'import-map.json is missing "imports" field.'
-//       ]
-//       return
-//     }
-//     if (map.imports.vue) {
-//       store.errors = [
-//         'Select Vue versions using the top-right dropdown.\n' +
-//         'Specifying it in the import map has no effect.'
-//       ]
-//     }
-//     createSandbox()
-//   } catch (e) {
-//     store.errors = [e]
-//   }
-// })
-
-// reset sandbox when version changes
-// watch(vueRuntimeUrl, createSandbox)
 
 // create sandbox on mount
 onMounted(createSandbox)
@@ -190,22 +153,23 @@ async function updatePreview () {
   // console.clear()
   runtimeError.value = null
   runtimeWarning.value = null
+
   try {
-    isLoading.value = true
+    isLoadingPreview.value = true
     // const modules = await compileModules(props.sfcFilename)
     const modules = toRaw(esModules.value)
 
     if (cdnList && cdnList.length > 0) {
       await proxy.evalCDN(cdnList, uuid.value)
     }
-    console.log(modules)
+
     if (modules && modules.length > 0) {
-      // console.log(modules)
       await proxy.evalESM(modules, uuid.value)
     }
-    isLoading.value = false
+    isLoadingPreview.value = false
   } catch (e) {
     console.log(e)
+    isLoadingPreview.value = false
     runtimeError.value = e.message
   }
 }

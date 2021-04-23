@@ -1,26 +1,27 @@
 <template>
-  <SplitPane class="sandbox" :style="sandboxStyles">
+  <SplitPane class="sfc-sandbox" :style="sandboxStyles">
     <template #left>
       <sandbox-editor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
     </template>
     <template #right>
       <Suspense>
         <template #default v-if="esModules">
-          <sandbox-preview :sfc-filename="sfcFilename" />
+          <sandbox-preview />
         </template>
         <template #fallback>
-          <div>Loading ...</div>
+          <loading-mask v-if="isLoadingPreview" />
         </template>
       </Suspense>
     </template>
   </SplitPane>
 </template>
 
-<script setup lang="ts">
-import { computed, defineProps, nextTick, provide, ref, watch } from 'vue'
+<script setup lang="ts" name="SfcSandbox">
+import { computed, defineProps, provide, ref, watch } from 'vue'
 import SplitPane from '../splte-pane/index.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
+import LoadingMask from './LoadingMask.vue'
 
 import { IMPORTS_MAP_KEY, CDN_LIST_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
 
@@ -33,7 +34,7 @@ const props = defineProps({
   sfcCode: { type: String, default: '' }
 })
 
-const isLoadingPreview = ref(false)
+const isLoadingPreview = ref(true)
 const esModules = ref([])
 
 provide(IMPORTS_MAP_KEY, props.importsMap)
@@ -58,7 +59,7 @@ const sandboxStyles = computed(() => {
 </script>
 
 <style lang="scss">
-.sandbox {
+.sfc-sandbox {
   box-sizing: content-box;
   border: 1px solid #ebebeb;
   border-radius: 2px;

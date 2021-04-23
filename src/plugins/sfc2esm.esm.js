@@ -9,10 +9,7 @@ import { reactive, watchEffect, computed } from 'vue';
 import * as defaultCompiler from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser';
 import * as Crypto from 'crypto';
 
-const hashId = (filename) => {
-    const hashDigest = Crypto.createHash('sha256').update(filename).digest('base64'); // hash the message
-    return hashDigest.slice(0, 16);
-};
+const generateHashId = (seed) => Crypto.createHash('sha256').update(seed).digest('base64').slice(0, 16);
 
 const COMP_IDENTIFIER = `__sfc__`;
 /**
@@ -30,7 +27,7 @@ async function compileFile({ filename, code, compiled }) {
         store.errors = [];
         return;
     }
-    const id = await hashId(filename);
+    const id = generateHashId(filename);
     const { errors, descriptor } = SFCCompiler.parse(code, {
         filename,
         sourceMap: true
@@ -214,6 +211,7 @@ const IMPORT_MAP_CODE = `
   "imports": {
   }
 }`.trim();
+// Virtual Simple File System
 class File {
     constructor(filename, code = '') {
         this.compiled = {
@@ -244,7 +242,7 @@ const store = reactive({
     },
     errors: []
 });
-console.log(store.files);
+// console.log(store.files)
 watchEffect(() => compileFile(store.activeFile));
 const activeFilename = computed(() => store.activeFilename);
 const mainCode = computed(() => getMainCode(store.activeFilename));
@@ -253,7 +251,6 @@ for (const file in store.files) {
         compileFile(store.files[file]);
     }
 }
-const encodeFiles = () => btoa(JSON.stringify(exportFiles()));
 function exportFiles() {
     const exported = {};
     for (const filename in store.files) {
@@ -313,7 +310,7 @@ async function compileModules(filename) {
         'padding: 2px 4px',
         'border-radius: 2px'
     ].join(';');
-    console.log(`Successfully compiled:%c${modules.length} modules.`, styles);
+    console.log(`Successfully compiled: %c${filename} to ES Modules.`, styles);
     return modules.reverse();
 }
 const modulesKey = `__modules__`;
@@ -551,4 +548,4 @@ function isInDestructureAssignment(parent, parentStack) {
     return false;
 }
 
-export { APP_FILE, COMP_IDENTIFIER, File, MAIN_CODE, MAIN_FILE, WELCOME_CODE, activeFilename, addFile, changeFile, compileFile, compileModules, deleteFile, encodeFiles, exportFiles, mainCode, setActive, store };
+export { addFile, changeFile, compileFile, compileModules, deleteFile, exportFiles, generateHashId, store };
