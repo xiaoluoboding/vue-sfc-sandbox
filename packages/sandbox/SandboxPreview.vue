@@ -12,7 +12,7 @@ import type { WatchStopHandle } from 'vue'
 
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
-import { store, generateHashId } from '../../plugins/sfc2esm.esm'
+import { store, generateHashId } from '../plugins/sfc2esm.esm'
 import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ImportMaps, ES_MODULES } from './types'
 
 const container = ref()

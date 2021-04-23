@@ -1,16 +1,16 @@
 <template>
   <div class="wrapper">
     <!-- [ESM] default case -->
-    <sandbox v-bind="defaultAttrs" />
+    <sfc-sandbox v-bind="defaultAttrs" />
 
     <!-- [CDN] echarts case -->
-    <sandbox v-bind="echartsAttrs" />
+    <sfc-sandbox v-bind="echartsAttrs" />
 
     <!-- [ESM] ve-charts case -->
     <!-- <sandbox v-bind="veChartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
-    <sandbox v-bind="digitAnimationAttrs" />
+    <sfc-sandbox v-bind="digitAnimationAttrs" />
 
     <!-- [ESM] React component case -->
     <!-- <sandbox v-bind="revueAttrs" /> -->
@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import Sandbox from './components/sandbox/index.vue'
+import SfcSandbox from '../packages/sandbox/index.vue'
 import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
 import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
 import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'

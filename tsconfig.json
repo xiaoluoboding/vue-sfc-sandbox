@@ -33,11 +33,12 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "scripts/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "src/components/sandbox/*.ts",
-    "src/components/sfc2esm/*.ts"
+    "packages/sandbox/*.ts",
+    "packages/plugins/*.ts"
   ]
 }

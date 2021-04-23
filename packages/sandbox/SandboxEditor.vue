@@ -12,7 +12,7 @@ import { ref, computed, defineProps, onMounted, inject, Ref } from 'vue'
 // import FileSelector from './FileSelector.vue'
 import CodeMirror from './codemirror/index.vue'
 import Message from './Message.vue'
-import { compileModules, store, addFile, changeFile } from '../../plugins/sfc2esm.esm'
+import { compileModules, store, addFile, changeFile } from '../plugins/sfc2esm.esm'
 import { debounce } from './utils'
 import { ES_MODULES, IS_LOADING_PREVIEW } from './types'
 

@@ -19,10 +19,10 @@
 
 <script setup lang="ts">
 import { computed, defineProps, provide, ref, watch } from 'vue'
-import SplitPane from '../splte-pane/index.vue'
+import SplitPane from '../components/SplitPane.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
-import LoadingMask from './LoadingMask.vue'
+import LoadingMask from '../components/LoadingMask.vue'
 
 import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
 
