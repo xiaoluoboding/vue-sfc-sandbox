@@ -5,14 +5,18 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build:lib": "vue-cli-service build --lib",
+    "lint": "vue-cli-service lint",
+    "bundle": "rollup -c rollup.config.js"
   },
   "dependencies": {
     "codemirror": "^5.60.0",
-    "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@rollup/plugin-replace": "^2.4.2",
     "@types/codemirror": "^0.0.108",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
@@ -23,13 +27,26 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^7.0.0",
+    "autoprefixer": "9.0.0",
+    "core-js": "^3.6.5",
+    "esbuild": "^0.11.13",
+    "esbuild-register": "^2.5.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0",
+    "esm": "^3.2.25",
     "raw-loader": "^4.0.2",
+    "rollup": "^2.45.2",
+    "rollup-plugin-dts": "^3.0.1",
+    "rollup-plugin-filesize": "^9.1.1",
+    "rollup-plugin-html": "^0.2.1",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-vue": "^6.0.0",
     "sass": "^1.32.8",
     "sass-loader": "10.1.1",
     "typescript": "~4.1.5"
