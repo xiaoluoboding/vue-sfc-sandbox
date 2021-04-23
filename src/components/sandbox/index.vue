@@ -46,7 +46,18 @@ watch(
   isLoadingPreview,
   (newVal, oldVal) => {
     if (oldVal) {
-      console.log('is rendered')
+      const styles = [
+        'color: white',
+        'background: #42b983',
+        'margin-left: 4px',
+        'padding: 2px 4px',
+        'border-radius: 2px'
+      ].join(';')
+      console.log(
+        `SFC File %c${props.sfcFilename}%c is Rendered`,
+        styles,
+        ''
+      )
     }
   }
 )

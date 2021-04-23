@@ -150,7 +150,7 @@ function createSandbox () {
 }
 
 async function updatePreview () {
-  // console.clear()
+  console.clear()
   runtimeError.value = null
   runtimeWarning.value = null
 

@@ -310,7 +310,7 @@ async function compileModules(filename) {
         'padding: 2px 4px',
         'border-radius: 2px'
     ].join(';');
-    console.log(`Successfully compiled: %c${filename} to ES Modules.`, styles);
+    console.log(`Successfully compiled: %c${filename}%c to ES Modules.`, styles, '');
     return modules.reverse();
 }
 const modulesKey = `__modules__`;
