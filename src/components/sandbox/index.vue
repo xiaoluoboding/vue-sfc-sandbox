@@ -4,32 +4,33 @@
       <sandbox-editor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
     </template>
     <template #right>
-      <Suspense>
+      <!-- <Suspense>
         <template #default v-if="esModules">
           <sandbox-preview />
         </template>
         <template #fallback>
           <loading-mask v-if="isLoadingPreview" />
         </template>
-      </Suspense>
+      </Suspense> -->
+      <sandbox-preview v-if="esModules" />
     </template>
   </SplitPane>
 </template>
 
-<script setup lang="ts" name="SfcSandbox">
+<script setup lang="ts">
 import { computed, defineProps, provide, ref, watch } from 'vue'
 import SplitPane from '../splte-pane/index.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
 import LoadingMask from './LoadingMask.vue'
 
-import { IMPORTS_MAP_KEY, CDN_LIST_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
+import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
 
 const props = defineProps({
   // sandbox height unit (px)
   height: { type: Number, default: 400 },
-  importsMap: { type: Object, default: () => ({}) },
-  cdnList: { type: Array, default: () => ([]) },
+  importMaps: { type: Object, default: () => ({}) },
+  externals: { type: Array, default: () => ([]) },
   sfcFilename: { type: String, default: '' },
   sfcCode: { type: String, default: '' }
 })
@@ -37,8 +38,8 @@ const props = defineProps({
 const isLoadingPreview = ref(true)
 const esModules = ref([])
 
-provide(IMPORTS_MAP_KEY, props.importsMap)
-provide(CDN_LIST_KEY, props.cdnList)
+provide(IMPORT_MAPS_KEY, props.importMaps)
+provide(EXTERNALS_KEY, props.externals)
 provide(IS_LOADING_PREVIEW, isLoadingPreview)
 provide(ES_MODULES, esModules)
 

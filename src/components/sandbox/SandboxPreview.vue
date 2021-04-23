@@ -13,7 +13,7 @@ import type { WatchStopHandle } from 'vue'
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
 import { store, generateHashId } from '../../plugins/sfc2esm.esm'
-import { IMPORTS_MAP_KEY, CDN_LIST_KEY, IS_LOADING_PREVIEW, ImportsMap, ES_MODULES } from './types'
+import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ImportMaps, ES_MODULES } from './types'
 
 const container = ref()
 const runtimeError = ref()
@@ -24,8 +24,8 @@ let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
 let stopUpdateWatcher: WatchStopHandle
 
-const importsMap = inject(IMPORTS_MAP_KEY)
-const cdnList = inject(CDN_LIST_KEY)
+const importMaps = inject(IMPORT_MAPS_KEY)
+const externals = inject(EXTERNALS_KEY)
 const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
 
@@ -38,26 +38,18 @@ onUnmounted(() => {
 })
 
 const loadImportMap = () => {
-  let importMap: ImportsMap
-  try {
-    importMap = JSON.parse(store.importMap || '{}')
-  } catch (e) {
-    store.errors = [`Syntax error in import-map.json: ${e.message}`]
-    return
-  }
+  const importMap = JSON.parse(store.importMap || '{}') as ImportMaps
 
   if (!importMap.imports) {
     importMap.imports = {}
   }
-  // const defaultVueUrl = process.env.NODE_ENV === 'production'
-  //   ? 'https://cdn.jsdelivr.net/npm/vue@next/dist/vue.runtime.esm-browser.js' // to be copied on build
-  //   : `${location.origin}/src/components/sandbox/vue-dev-proxy.js`
+
   importMap.imports.vue = 'https://cdn.jsdelivr.net/npm/vue@next/dist/vue.runtime.esm-browser.js'
 
-  if (importsMap) {
-    Object.keys(importsMap).forEach(key => {
+  if (importMaps) {
+    Object.keys(importMaps).forEach(key => {
       if (!importMap.imports[key]) {
-        importMap.imports[key] = importsMap[key]
+        importMap.imports[key] = importMaps[key]
       }
     })
   }
@@ -159,8 +151,8 @@ async function updatePreview () {
     // const modules = await compileModules(props.sfcFilename)
     const modules = toRaw(esModules.value)
 
-    if (cdnList && cdnList.length > 0) {
-      await proxy.evalCDN(cdnList, uuid.value)
+    if (externals && externals.length > 0) {
+      await proxy.evalCDN(externals, uuid.value)
     }
 
     if (modules && modules.length > 0) {

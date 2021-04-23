@@ -32,7 +32,7 @@ const defaultAttrs = {
 }
 
 const echartsAttrs = {
-  cdnList: [
+  externals: [
     'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
   ],
   sfcFilename: 'EchartsDemo.vue',
@@ -41,7 +41,7 @@ const echartsAttrs = {
 
 const veChartsAttrs = {
   height: 400,
-  importsMap: {
+  importMaps: {
     echarts: 'https://cdn.skypack.dev/echarts',
     'echarts/': 'https://cdn.skypack.dev/echarts',
     've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.3'
@@ -51,7 +51,7 @@ const veChartsAttrs = {
 
 const digitAnimationAttrs = {
   height: 400,
-  importsMap: {
+  importMaps: {
     'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.2.1/lib/vue-digit-animation.esm-browser.js'
   },
   sfcFilename: 'digitAnimationDemo.vue',
@@ -60,7 +60,7 @@ const digitAnimationAttrs = {
 
 const revueAttrs = {
   height: 400,
-  importsMap: {
+  importMaps: {
     // antd: 'https://unpkg.com/antd@4.15.1/es/index.js',
     vuera: 'https://cdn.skypack.dev/vuera',
     'react-select': 'https://cdn.skypack.dev/react-select'
