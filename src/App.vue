@@ -10,7 +10,7 @@
     <!-- <sandbox v-bind="veChartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
-    <sfc-sandbox v-bind="digitAnimationAttrs" />
+    <!-- <sfc-sandbox v-bind="digitAnimationAttrs" /> -->
 
     <!-- [ESM] React component case -->
     <!-- <sandbox v-bind="revueAttrs" /> -->

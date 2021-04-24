@@ -66,6 +66,7 @@ export default defineComponent({
     }
 
     const onResize = () => {
+      // TODO dynamic compute pane width
       const containerSize = container.value.offsetWidth
       state.isHorizontal = containerSize > 720
     }

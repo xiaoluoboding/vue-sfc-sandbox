@@ -11,7 +11,8 @@ const install = (app: App): void => {
 }
 
 export {
-  install,
   SfcSandbox,
   SplitPane
 }
+
+export default install
