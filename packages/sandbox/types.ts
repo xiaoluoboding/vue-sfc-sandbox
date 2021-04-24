@@ -1,4 +1,5 @@
-import { InjectionKey, Ref } from 'vue'
+import { InjectionKey } from 'vue'
+import type { Ref } from 'vue'
 
 export type ImportMaps = Record<string, any>
 export const IMPORT_MAPS_KEY: InjectionKey<ImportMaps> = Symbol()

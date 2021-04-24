@@ -1,3 +1,1 @@
-src/plugins
-src/components/sandbox/*.ts
-src/components/sfc2esm/*.ts
+packages/sandbox/*.ts

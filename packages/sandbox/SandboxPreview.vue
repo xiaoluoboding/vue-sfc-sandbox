@@ -1,5 +1,5 @@
 <template>
-  <div class="sandbox--viewer" ref="container"></div>
+  <div class="sfc-sandbox__preview" ref="container"></div>
   <Message :err="runtimeError" />
   <Message v-if="!runtimeError" :warn="runtimeWarning" />
 </template>
@@ -7,13 +7,14 @@
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Message from './Message.vue'
-import { ref, onMounted, onUnmounted, watchEffect, inject, Ref, toRaw } from 'vue'
-import type { WatchStopHandle } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, inject, toRaw } from 'vue'
+import type { WatchStopHandle, Ref } from 'vue'
 
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
-import { store, generateHashId } from '../plugins/sfc2esm.esm'
-import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ImportMaps, ES_MODULES } from './types'
+import { store, generateHashId } from 'vue-sfc2esm'
+import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
+import type { ImportMaps } from './types'
 
 const container = ref()
 const runtimeError = ref()
@@ -168,7 +169,7 @@ async function updatePreview () {
 </script>
 
 <style>
-.sandbox--viewer,
+.sfc-sandbox__preview,
 iframe {
   width: 100%;
   height: 100%;

@@ -169,6 +169,9 @@
 }
 
 /* DEFAULT THEME */
+.cm-editor {
+  height: inherit;
+}
 .cm-s-default.CodeMirror {
   background-color: transparent;
 }

@@ -10,7 +10,9 @@ import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
 import filesize from 'rollup-plugin-filesize'
+// import analyzer from 'rollup-plugin-analyzer'
 import vue from 'rollup-plugin-vue'
+import builtins from 'rollup-plugin-node-builtins'
 
 import autoprefixer from 'autoprefixer'
 
@@ -57,8 +59,12 @@ const appPlugins = [
   })
 ]
 const nodePlugins = [
-  resolve(),
-  commonjs()
+  resolve({
+    preferBuiltins: false,
+    browser: true
+  }),
+  commonjs(),
+  builtins()
 ]
 
 const minifyPlugins = [
@@ -134,6 +140,7 @@ function createEntry (config: any, external: any) {
           : config.isMinify ? 'false' : 'true'
       }),
       filesize(),
+      // analyzer(),
       ...appPlugins,
       ...nodePlugins
     ],
@@ -163,7 +170,10 @@ for (const { name, display, external = [], globals = {} } of activePackages) {
       format: 'es'
     },
     plugins: [
-      dts()
+      dts(),
+      typescript(),
+      ...appPlugins,
+      ...nodePlugins
     ]
   })
 }

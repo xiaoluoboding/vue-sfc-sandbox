@@ -1,7 +1,7 @@
 <template>
   <SplitPane class="sfc-sandbox" :style="sandboxStyles">
     <template #left>
-      <sandbox-editor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
+      <SandboxEditor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
     </template>
     <template #right>
       <!-- <Suspense>
@@ -12,7 +12,8 @@
           <loading-mask v-if="isLoadingPreview" />
         </template>
       </Suspense> -->
-      <sandbox-preview v-if="esModules" />
+      <SandboxPreview v-if="esModules" />
+      <LoadingMask v-else />
     </template>
   </SplitPane>
 </template>
@@ -24,7 +25,12 @@ import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
 import LoadingMask from '../components/LoadingMask.vue'
 
-import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
+import {
+  IMPORT_MAPS_KEY,
+  EXTERNALS_KEY,
+  IS_LOADING_PREVIEW,
+  ES_MODULES
+} from './types'
 
 const props = defineProps({
   // sandbox height unit (px)

@@ -17,11 +17,21 @@ export const packages: PackageManifest[] = [
     description: 'Compile Vue SFC File to ES Modules.',
     external: [
       'vue',
-      'codemirror',
+      '@codemirror/basic-setup',
+      '@codemirror/lang-html',
+      '@codemirror/lang-javascript',
+      '@vue/compiler-sfc',
+      '@vue/compiler-sfc/dist/compiler-sfc.esm-browser',
       'consolidate'
     ],
     globals: {
-      codemirror: 'CodeMirror'
+      'vue': 'Vue',
+      '@codemirror/basic-setup': 'CodeMirror',
+      '@codemirror/lang-html': 'CodeMirrorLangHtml',
+      '@codemirror/lang-javascript': 'CodeMirrorLangJavaScript',
+      '@vue/compiler-sfc': 'CompilerSfc',
+      '@vue/compiler-sfc/dist/compiler-sfc.esm-browser': 'CompilerSfcEsm',
+      'consolidate': 'Consolidate'
     }
   }
 ]

@@ -1,18 +1,18 @@
 <template>
   <!-- <FileSelector/> -->
-  <div class="editor-container">
-    <CodeMirror @change="onChange" :value="activeCode" :mode="activeMode" />
+  <div class="sfc-sandbox__editor">
+    <Codemirror v-model="activeCode" :mode="activeMode" />
     <Message :err="store.errors[0]" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps, onMounted, inject, Ref } from 'vue'
+import { ref, computed, defineProps, onMounted, inject, Ref, watch } from 'vue'
 
 // import FileSelector from './FileSelector.vue'
-import CodeMirror from './codemirror/index.vue'
+import Codemirror from '../components/codemirror/index.vue'
 import Message from './Message.vue'
-import { compileModules, store, addFile, changeFile } from '../plugins/sfc2esm.esm'
+import { compileModules, store, addFile, changeFile } from 'vue-sfc2esm'
 import { debounce } from './utils'
 import { ES_MODULES, IS_LOADING_PREVIEW } from './types'
 
@@ -33,8 +33,16 @@ const onChange = debounce(async (code: string) => {
   isLoading.value = false
 }, 250)
 
-const activeCode = ref(store.activeFile.code)
-const activeMode = computed(() => (store.activeFilename.endsWith('.vue') ? 'htmlmixed' : 'javascript'))
+const activeCode = ref(props.sfcCode)
+const activeMode = computed(() => (props.sfcFilename.endsWith('.vue') ? 'htmlmixed' : 'javascript'))
+
+watch(
+  () => activeCode.value,
+  (newVal) => onChange(newVal),
+  {
+    immediate: true
+  }
+)
 
 onMounted(() => {
   if (props.sfcCode !== '') {
@@ -45,7 +53,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.editor-container {
+.sfc-sandbox__editor {
   height: 100%;
   overflow: hidden;
   position: relative;
