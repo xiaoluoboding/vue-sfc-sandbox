@@ -7,6 +7,7 @@ import { defineComponent, onMounted, reactive, toRefs } from 'vue'
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
 // import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
+import { debounce } from '../../sandbox/utils'
 
 // interface EditorStore {
 //   el: Element,
@@ -30,10 +31,10 @@ export default defineComponent({
 
     onMounted(() => {
       const onUpdate = () =>
-        EditorView.updateListener.of(({ state }) => {
+        EditorView.updateListener.of(debounce(({ state }) => {
           store.doc = state.doc.toString()
           emit('update:modelValue', store.doc)
-        })
+        }))
 
       const editorState = EditorState.create({
         doc: store.doc,
