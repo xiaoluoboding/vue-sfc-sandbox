@@ -1,5 +1,9 @@
 <template>
-  <SplitPane class="sfc-sandbox" :style="sandboxStyles">
+  <SplitPane
+    class="sfc-sandbox"
+    :style="sandboxStyles"
+    @resized="handleResized"
+  >
     <template #left>
       <SandboxEditor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
     </template>
@@ -29,7 +33,8 @@ import {
   IMPORT_MAPS_KEY,
   EXTERNALS_KEY,
   IS_LOADING_PREVIEW,
-  ES_MODULES
+  ES_MODULES,
+  PanesInfo
 } from './types'
 
 const props = defineProps({
@@ -74,6 +79,13 @@ const sandboxStyles = computed(() => {
     height: `${props.height}px`
   }
 })
+
+const handleResize = (panes: PanesInfo) => {
+  console.log(panes)
+}
+const handleResized = (panes: PanesInfo) => {
+  console.log(panes)
+}
 </script>
 
 <style lang="scss">

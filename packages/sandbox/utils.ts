@@ -1,4 +1,4 @@
-export const debounce = (fn: Function, n = 100) => {
+export const debounce = (fn: Function, n = 166) => {
   let handle: any
   return (...args: any[]) => {
     if (handle) clearTimeout(handle)

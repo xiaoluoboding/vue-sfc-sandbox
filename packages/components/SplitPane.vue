@@ -6,7 +6,7 @@
     :style="splitPaneStyle"
     @mousemove="dragMove"
     @mouseup="dragEnd"
-    @mouseleave="dragEnd"
+    @mouseleave="dragging = false"
   >
     <div class="split-pane__left" :style="leftStyle">
       <slot name="left" />
@@ -20,10 +20,12 @@
 
 <script lang="ts">
 import { ref, reactive, defineComponent, toRefs, computed, onMounted, onUnmounted } from 'vue'
+import { debounce } from '../sandbox/utils'
+import { PanesInfo } from '../sandbox/types'
 
 export default defineComponent({
   name: 'SplitPane',
-  setup () {
+  setup (props, { emit }) {
     const container = ref()
 
     const state = reactive({
@@ -58,15 +60,25 @@ export default defineComponent({
         const position = state.isHorizontal ? e.pageX : e.pageY
         const dp = position - (state.isHorizontal ? startPositionX : startPositionY)
         state.split = startSplit + ~~(dp / totalSize * 100)
+
+        emit('resize', [
+          { size: boundSplit() },
+          { size: (100 - boundSplit()) }
+        ] as PanesInfo)
       }
     }
 
     function dragEnd () {
+      if (!state.dragging) return
       state.dragging = false
+
+      emit('resized', [
+        { size: boundSplit() },
+        { size: (100 - boundSplit()) }
+      ] as PanesInfo)
     }
 
     const onResize = () => {
-      // TODO dynamic compute pane width
       const containerSize = container.value.offsetWidth
       state.isHorizontal = containerSize > 720
     }
