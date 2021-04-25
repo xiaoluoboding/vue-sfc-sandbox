@@ -47,6 +47,7 @@ export default {
 <style>
 #demo {
   height: 400px;
+  width: auto;
 }
 </style>
 `

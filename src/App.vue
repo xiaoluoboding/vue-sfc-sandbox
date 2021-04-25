@@ -7,13 +7,13 @@
     <sfc-sandbox v-bind="echartsAttrs" />
 
     <!-- [ESM] ve-charts case -->
-    <!-- <sandbox v-bind="veChartsAttrs" /> -->
+    <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
     <!-- <sfc-sandbox v-bind="digitAnimationAttrs" /> -->
 
     <!-- [ESM] React component case -->
-    <!-- <sandbox v-bind="revueAttrs" /> -->
+    <!-- <sfc-sandbox v-bind="revueAttrs" /> -->
   </div>
 </template>
 
@@ -32,6 +32,7 @@ const defaultAttrs = {
 }
 
 const echartsAttrs = {
+  height: 440,
   externals: [
     'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
   ],
@@ -44,8 +45,9 @@ const veChartsAttrs = {
   importMaps: {
     echarts: 'https://cdn.skypack.dev/echarts',
     'echarts/': 'https://cdn.skypack.dev/echarts',
-    've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.3'
+    've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.4'
   },
+  sfcFilename: 'VeChartsDemo.vue',
   sfcCode: veChartsCode
 }
 
@@ -54,19 +56,19 @@ const digitAnimationAttrs = {
   importMaps: {
     'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.2.1/lib/vue-digit-animation.esm-browser.js'
   },
-  sfcFilename: 'digitAnimationDemo.vue',
+  sfcFilename: 'DigitAnimationDemo.vue',
   sfcCode: digitAnimationCode
 }
 
-const revueAttrs = {
-  height: 400,
-  importMaps: {
-    // antd: 'https://unpkg.com/antd@4.15.1/es/index.js',
-    vuera: 'https://cdn.skypack.dev/vuera',
-    'react-select': 'https://cdn.skypack.dev/react-select'
-  },
-  sfcCode: revueCode
-}
+// const revueAttrs = {
+//   height: 400,
+//   importMaps: {
+//     // antd: 'https://unpkg.com/antd@4.15.1/es/index.js',
+//     vuera: 'https://cdn.skypack.dev/vuera',
+//     'react-select': 'https://cdn.skypack.dev/react-select'
+//   },
+//   sfcCode: revueCode
+// }
 </script>
 
 <style scoped>

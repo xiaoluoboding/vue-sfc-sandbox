@@ -1,7 +1,14 @@
 <template>
-  <div class="sfc-sandbox__preview" ref="container"></div>
-  <Message :err="runtimeError" />
-  <Message v-if="!runtimeError" :warn="runtimeWarning" />
+  <div class="sfc-sandbox__preview">
+    <header class="preview-header">
+      <div class="preview-header__left">
+        Preview
+      </div>
+    </header>
+    <main class="preview-container" ref="container"></main>
+    <Message :err="runtimeError" />
+    <Message v-if="!runtimeError" :warn="runtimeWarning" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -168,12 +175,32 @@ async function updatePreview () {
 }
 </script>
 
-<style>
+<style lang="scss">
 .sfc-sandbox__preview,
 iframe {
   width: 100%;
   height: 100%;
   border: none;
   background-color: #fff;
+}
+
+.sfc-sandbox__preview {
+  .preview-header {
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f8fe;
+    &__left {
+      padding: 10px 12px;
+      font-weight: 500;
+    }
+  }
+  .preview-container {
+    width: 100%;
+    height: calc(100% - 40px);
+    border: none;
+    background-color: #fff;
+  }
 }
 </style>

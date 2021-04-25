@@ -1,8 +1,13 @@
 <template>
   <!-- <FileSelector/> -->
   <div class="sfc-sandbox__editor">
-    <Codemirror v-model="activeCode" :mode="activeMode" />
-    <Message :err="store.errors[0]" />
+    <header class="editor-header">
+      <div class="editor-header__left">{{ sfcFilename }}</div>
+    </header>
+    <main class="editor-container">
+      <Codemirror v-model="activeCode" :mode="activeMode" />
+      <Message :err="store.errors[0]" />
+    </main>
   </div>
 </template>
 
@@ -52,10 +57,24 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .sfc-sandbox__editor {
   height: 100%;
-  overflow: hidden;
-  position: relative;
+  .editor-header {
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f4fc;
+    &__left {
+      padding: 10px 12px;
+      font-weight: 500;
+    }
+  }
+  .editor-container {
+    height: calc(100% - 40px);
+    overflow: hidden;
+    position: relative;
+  }
 }
 </style>
