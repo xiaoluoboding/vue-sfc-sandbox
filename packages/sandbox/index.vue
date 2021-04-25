@@ -16,8 +16,8 @@
           <loading-mask v-if="isLoadingPreview" />
         </template>
       </Suspense> -->
-      <SandboxPreview v-if="esModules" />
-      <LoadingMask v-else />
+      <SandboxPreview v-show="esModules" />
+      <LoadingMask v-if="isLoadingPreview" />
     </template>
   </SplitPane>
 </template>
@@ -46,7 +46,7 @@ const props = defineProps({
   sfcCode: { type: String, default: '' }
 })
 
-const isLoadingPreview = ref(true)
+const isLoadingPreview = ref(false)
 const esModules = ref([])
 
 provide(IMPORT_MAPS_KEY, props.importMaps)
