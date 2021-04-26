@@ -1,6 +1,7 @@
 <template>
   <SplitPane
     class="sfc-sandbox"
+    :class="{ 'is-fullpage': isFullpage }"
     :style="sandboxStyles"
     @resized="handleResized"
   >
@@ -33,6 +34,7 @@ import {
   IMPORT_MAPS_KEY,
   EXTERNALS_KEY,
   IS_LOADING_PREVIEW,
+  IS_FULLPAGE,
   ES_MODULES,
   PanesInfo
 } from './types'
@@ -47,11 +49,13 @@ const props = defineProps({
 })
 
 const isLoadingPreview = ref(false)
+const isFullpage = ref(false)
 const esModules = ref([])
 
 provide(IMPORT_MAPS_KEY, props.importMaps)
 provide(EXTERNALS_KEY, props.externals)
 provide(IS_LOADING_PREVIEW, isLoadingPreview)
+provide(IS_FULLPAGE, isFullpage)
 provide(ES_MODULES, esModules)
 
 watch(
@@ -90,10 +94,10 @@ const handleResized = (panes: PanesInfo) => {
 
 <style lang="scss">
 .sfc-sandbox {
+  background-color: #fff;
   box-sizing: content-box;
   border: 1px solid #ebebeb;
   border-radius: 2px;
-  margin: 20px;
   font-size: 13px;
   &--editor,
   &--preview {
@@ -104,6 +108,16 @@ const handleResized = (panes: PanesInfo) => {
   }
   &:hover {
     box-shadow: 0 0 10px 0 rgb(232 237 250 / 60%), 0 2px 4px 0 rgb(232 237 250 / 60%);
+  }
+  &.is-fullpage {
+    position: fixed;
+    height: 100% !important;
+    width: 100% !important;
+    top: 0;
+    left: 0;
+    z-index: 6666;
+    border-radius: 0;
+    border: none;
   }
 }
 </style>
