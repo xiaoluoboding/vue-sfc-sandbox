@@ -1,1 +1,2 @@
 packages/sandbox/*.ts
+packages/plugins/*.js

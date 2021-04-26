@@ -6,7 +6,7 @@
     </header>
     <main class="editor-container">
       <Codemirror v-model="activeCode" :mode="activeMode" />
-      <Message :err="store.errors[0]" />
+      <!-- <Message :err="fileErrors" /> -->
     </main>
   </div>
 </template>
@@ -16,8 +16,9 @@ import { ref, computed, defineProps, onMounted, inject, Ref, watch } from 'vue'
 
 // import FileSelector from './FileSelector.vue'
 import Codemirror from '../components/codemirror/index.vue'
-import Message from './Message.vue'
-import { compileModules, store, addFile, changeFile } from 'vue-sfc2esm'
+// import Message from './Message.vue'
+import { compileModules, addFile, changeFile } from 'vue-sfc2esm'
+// import { compileModules, store, addFile, changeFile } from '../plugins/vue-sfc2esm.esm' // for local test
 import { debounce } from './utils'
 import { ES_MODULES, IS_LOADING_PREVIEW } from './types'
 

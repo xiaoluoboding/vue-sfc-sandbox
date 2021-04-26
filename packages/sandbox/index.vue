@@ -16,7 +16,7 @@
           <loading-mask v-if="isLoadingPreview" />
         </template>
       </Suspense> -->
-      <SandboxPreview v-show="esModules" />
+      <SandboxPreview :sfc-filename="sfcFilename" v-show="esModules" />
       <LoadingMask v-if="isLoadingPreview" />
     </template>
   </SplitPane>

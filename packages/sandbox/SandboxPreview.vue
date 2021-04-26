@@ -6,7 +6,7 @@
       </div>
     </header>
     <main class="preview-container" ref="container"></main>
-    <Message :err="runtimeError" />
+    <Message :err="runtimeError || fileErrors" />
     <Message v-if="!runtimeError" :warn="runtimeWarning" />
   </div>
 </template>
@@ -14,19 +14,20 @@
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Message from './Message.vue'
-import { ref, onMounted, onUnmounted, watchEffect, inject, toRaw } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, inject, toRaw, defineProps, computed } from 'vue'
 import type { WatchStopHandle, Ref } from 'vue'
 
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
-import { store, generateHashId } from 'vue-sfc2esm'
+import { store } from 'vue-sfc2esm'
+// import { store } from '../plugins/vue-sfc2esm.esm'
 import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
 import type { ImportMaps } from './types'
 
 const container = ref()
 const runtimeError = ref()
 const runtimeWarning = ref()
-const uuid = ref(generateHashId(new Date().toString()))
+const uuid = ref(btoa(Date.now().toString()))
 
 let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
@@ -36,6 +37,12 @@ const importMaps = inject(IMPORT_MAPS_KEY)
 const externals = inject(EXTERNALS_KEY)
 const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
+
+const props = defineProps({
+  sfcFilename: { type: String, default: 'App.vue' }
+})
+
+const fileErrors = computed(() => store.files[props.sfcFilename]?.compiled?.errors[0])
 
 // create sandbox on mount
 onMounted(createSandbox)

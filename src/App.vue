@@ -10,7 +10,7 @@
     <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
-    <!-- <sfc-sandbox v-bind="digitAnimationAttrs" /> -->
+    <sfc-sandbox v-bind="digitAnimationAttrs" />
 
     <!-- [ESM] React component case -->
     <!-- <sfc-sandbox v-bind="revueAttrs" /> -->
@@ -23,7 +23,7 @@ import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
 import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
 import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
 import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
-import { SFC_CODE_ESM as revueCode } from './constants/revue.demo.js'
+// import { SFC_CODE_ESM as revueCode } from './constants/revue.demo.js'
 
 const defaultAttrs = {
   height: 200,
@@ -71,7 +71,7 @@ const digitAnimationAttrs = {
 // }
 </script>
 
-<style scoped>
+<style>
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -84,7 +84,7 @@ body {
   --color-branding-dark: #416f9c;
 }
 
-.wrapper {
-  height: 100vh;
+#app {
+  height: 100%;
 }
 </style>
