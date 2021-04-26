@@ -198,7 +198,7 @@ iframe {
     justify-content: space-between;
     align-items: center;
     background-color: #f4f8fe;
-    &__left {
+    .preview-header__left {
       padding: 10px 12px;
       font-weight: 500;
     }

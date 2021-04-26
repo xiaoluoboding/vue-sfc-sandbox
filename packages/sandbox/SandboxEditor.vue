@@ -67,7 +67,7 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
     background-color: #f0f4fc;
-    &__left {
+    .editor-header__left {
       padding: 10px 12px;
       font-weight: 500;
     }

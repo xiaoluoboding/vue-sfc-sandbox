@@ -8,7 +8,7 @@ import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
 // import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 // import { oneDark } from '@codemirror/theme-one-dark'
-import { debounce } from '../../sandbox/utils'
+import { debounce } from '../../sandbox/utils.ts'
 
 // interface EditorStore {
 //   el: Element,
