@@ -17,22 +17,21 @@
         </template>
       </Suspense> -->
       <SandboxPreview :sfc-filename="sfcFilename" v-show="esModules" />
-      <LoadingMask v-if="isLoadingPreview" />
     </template>
   </SplitPane>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, provide, ref, watch } from 'vue'
+import { computed, defineProps, nextTick, provide, ref, watch } from 'vue'
 import SplitPane from '../components/SplitPane.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
-import LoadingMask from '../components/LoadingMask.vue'
 
 import {
   IMPORT_MAPS_KEY,
   EXTERNALS_KEY,
   IS_LOADING_PREVIEW,
+  IS_RESIZED,
   ES_MODULES,
   PanesInfo
 } from './types'
@@ -47,11 +46,13 @@ const props = defineProps({
 })
 
 const isLoadingPreview = ref(false)
+const isResized = ref(false)
 const esModules = ref([])
 
 provide(IMPORT_MAPS_KEY, props.importMaps)
 provide(EXTERNALS_KEY, props.externals)
 provide(IS_LOADING_PREVIEW, isLoadingPreview)
+provide(IS_RESIZED, isResized)
 provide(ES_MODULES, esModules)
 
 watch(
@@ -84,24 +85,21 @@ const handleResize = (panes: PanesInfo) => {
   console.log(panes)
 }
 const handleResized = (panes: PanesInfo) => {
-  console.log(panes)
+  isResized.value = true
+  nextTick(() => (isResized.value = false))
 }
 </script>
 
 <style lang="scss">
 .sfc-sandbox {
+  --sfc-sandbox-bg-color: #f4f8fe;
+  --sfc-sandbox-border-color: rgb(232 237 250 / 100%);
+  --sfc-sandbox-border-color-60: rgb(232 237 250 / 60%);
   box-sizing: content-box;
-  border: 1px solid #ebebeb;
+  background-color: #fff;
+  border: 1px solid var(--sfc-sandbox-border-color);
   border-radius: 2px;
-  margin: 20px;
   font-size: 13px;
-  &--editor,
-  &--preview {
-    width: 50%;
-  }
-  &--editor {
-    border-right: 1px dashed #ebebeb;
-  }
   &:hover {
     box-shadow: 0 0 10px 0 rgb(232 237 250 / 60%), 0 2px 4px 0 rgb(232 237 250 / 60%);
   }

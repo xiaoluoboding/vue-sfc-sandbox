@@ -87,4 +87,10 @@ body {
 #app {
   height: 100%;
 }
+
+.wrapper {
+  display: grid;
+  margin: 64px;
+  gap: 32px;
+}
 </style>

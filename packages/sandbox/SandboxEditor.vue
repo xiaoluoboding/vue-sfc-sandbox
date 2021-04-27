@@ -62,11 +62,13 @@ onMounted(() => {
 .sfc-sandbox__editor {
   height: 100%;
   .editor-header {
+    box-sizing: border-box;
     display: flex;
     height: 40px;
     justify-content: space-between;
     align-items: center;
-    background-color: #f0f4fc;
+    background-color: var(--sfc-sandbox-bg-color);
+    border-bottom: 1px solid var(--sfc-sandbox-border-color);
     .editor-header__left {
       padding: 10px 12px;
       font-weight: 500;

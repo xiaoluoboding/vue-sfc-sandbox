@@ -5,7 +5,9 @@
         Preview
       </div>
     </header>
-    <main class="preview-container" ref="container"></main>
+    <main class="preview-container" ref="container">
+      <LoadingMask v-if="isLoadingPreview" />
+    </main>
     <Message :err="runtimeError || fileErrors" />
     <Message v-if="!runtimeError" :warn="runtimeWarning" />
   </div>
@@ -13,16 +15,18 @@
 
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Message from './Message.vue'
-import { ref, onMounted, onUnmounted, watchEffect, inject, toRaw, defineProps, computed } from 'vue'
+import { ref, onMounted, onUnmounted, watchEffect, inject, toRaw, defineProps, computed, watch } from 'vue'
 import type { WatchStopHandle, Ref } from 'vue'
 
+import Message from './Message.vue'
+import LoadingMask from '../components/LoadingMask.vue'
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
 import { store } from 'vue-sfc2esm'
 // import { store } from '../plugins/vue-sfc2esm.esm'
-import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, ES_MODULES } from './types'
+import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, IS_RESIZED, ES_MODULES } from './types'
 import type { ImportMaps } from './types'
+import { debounce } from './utils'
 
 const container = ref()
 const runtimeError = ref()
@@ -36,6 +40,7 @@ let stopUpdateWatcher: WatchStopHandle
 const importMaps = inject(IMPORT_MAPS_KEY)
 const externals = inject(EXTERNALS_KEY)
 const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
+const isResized = inject(IS_RESIZED) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
 
 const props = defineProps({
@@ -44,13 +49,38 @@ const props = defineProps({
 
 const fileErrors = computed(() => store.files[props.sfcFilename]?.compiled?.errors[0])
 
-// create sandbox on mount
-onMounted(createSandbox)
+watch(
+  () => isResized.value,
+  (newVal) => {
+    if (newVal) {
+      recreateSandbox()
+    }
+  }
+)
 
+const onResize = debounce(recreateSandbox, 333)
+
+// create sandbox on mounted
+onMounted(() => {
+  createSandbox()
+  window.addEventListener('resize', onResize, false)
+})
+
+// destroy sandbox on unmounted
 onUnmounted(() => {
+  destroySandbox()
+  window.removeEventListener('resize', onResize, false)
+})
+
+function destroySandbox () {
   proxy.destroy()
   stopUpdateWatcher && stopUpdateWatcher()
-})
+}
+
+function recreateSandbox () {
+  destroySandbox()
+  createSandbox()
+}
 
 const loadImportMap = () => {
   const importMap = JSON.parse(store.importMap || '{}') as ImportMaps
@@ -75,8 +105,7 @@ const loadImportMap = () => {
 function createSandbox () {
   if (sandbox) {
     // clear prev sandbox
-    proxy.destroy()
-    stopUpdateWatcher()
+    destroySandbox()
     container.value.removeChild(sandbox)
   }
 
@@ -193,17 +222,20 @@ iframe {
 
 .sfc-sandbox__preview {
   .preview-header {
+    box-sizing: border-box;
     display: flex;
     height: 40px;
     justify-content: space-between;
     align-items: center;
-    background-color: #f4f8fe;
+    background-color: var(--sfc-sandbox-bg-color);
+    border-bottom: 1px solid var(--sfc-sandbox-border-color);
     .preview-header__left {
       padding: 10px 12px;
       font-weight: 500;
     }
   }
   .preview-container {
+    position: relative;
     width: 100%;
     height: calc(100% - 40px);
     border: none;
