@@ -4,6 +4,21 @@
       <div class="preview-header__left">
         Preview
       </div>
+      <div class="preview-header__right">
+        <!-- fullpage icon -->
+        <a href="javascript:;" @click="toggleFullpage">
+          <template v-if="isFullpage">
+            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 10.704V13.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.79l-3.144 3.147a.5.5 0 1 0 .708.706L6 10.703zm4-5.411V2.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1h-2.793l3.147-3.146a.5.5 0 0 0-.708-.708L10 5.293zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
+            </svg>
+          </template>
+          <template v-else>
+            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12.293V9.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1H3.707l3.147-3.146a.5.5 0 1 0-.708-.708L3 12.293zm10-8.586V6.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.793L9.147 6.146a.5.5 0 1 0 .707.708L13 3.707zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
+            </svg>
+          </template>
+        </a>
+      </div>
     </header>
     <main class="preview-container" ref="container">
       <LoadingMask v-if="isLoadingPreview" />
@@ -15,7 +30,18 @@
 
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ref, onMounted, onUnmounted, watchEffect, inject, toRaw, defineProps, computed, watch } from 'vue'
+import Message from './Message.vue'
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  watchEffect,
+  inject,
+  toRaw,
+  defineProps,
+  computed,
+  watch
+} from 'vue'
 import type { WatchStopHandle, Ref } from 'vue'
 
 import Message from './Message.vue'
@@ -24,14 +50,16 @@ import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
 import { store } from 'vue-sfc2esm'
 // import { store } from '../plugins/vue-sfc2esm.esm'
-import { IMPORT_MAPS_KEY, EXTERNALS_KEY, IS_LOADING_PREVIEW, IS_RESIZED, ES_MODULES } from './types'
+import {
+  IMPORT_MAPS_KEY,
+  EXTERNALS_KEY,
+  IS_LOADING_PREVIEW,
+  IS_RESIZED,
+  IS_FULLPAGE,
+  ES_MODULES
+} from './types'
 import type { ImportMaps } from './types'
 import { debounce } from './utils'
-
-const container = ref()
-const runtimeError = ref()
-const runtimeWarning = ref()
-const uuid = ref(btoa(Date.now().toString()))
 
 let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
@@ -42,10 +70,16 @@ const externals = inject(EXTERNALS_KEY)
 const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
 const isResized = inject(IS_RESIZED) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
+const isFullpage = inject(IS_FULLPAGE) as Ref<boolean>
 
 const props = defineProps({
   sfcFilename: { type: String, default: 'App.vue' }
 })
+
+const container = ref()
+const runtimeError = ref()
+const runtimeWarning = ref()
+const uuid = ref(btoa(Date.now().toString()))
 
 const fileErrors = computed(() => store.files[props.sfcFilename]?.compiled?.errors[0])
 
@@ -209,6 +243,10 @@ async function updatePreview () {
     runtimeError.value = e.message
   }
 }
+
+const toggleFullpage = () => {
+  isFullpage.value = !isFullpage.value
+}
 </script>
 
 <style lang="scss">
@@ -225,6 +263,7 @@ iframe {
     box-sizing: border-box;
     display: flex;
     height: 40px;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
     background-color: var(--sfc-sandbox-bg-color);
@@ -232,6 +271,9 @@ iframe {
     .preview-header__left {
       padding: 10px 12px;
       font-weight: 500;
+    }
+    .preview-header__right {
+      padding: 8px 12px;
     }
   }
   .preview-container {
