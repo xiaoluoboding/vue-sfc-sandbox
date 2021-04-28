@@ -10561,10 +10561,10 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-sfc2esm@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/vue-sfc2esm/-/vue-sfc2esm-0.1.1.tgz#897ddf1bc77fb25d2ee764115745352d1f18fecc"
-  integrity sha512-ZxbJSjXYewDZXiodoR/0NP2RLeOyJLhGC8dJiK1MQNyMzbR1KNUbhdLXw1TUz8k9pBLY5/hmqTb+/YQ9RKejKA==
+vue-sfc2esm@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/vue-sfc2esm/-/vue-sfc2esm-0.1.2.tgz#b3529203f525a9a932c0fe891c1a09b4a2f3cd65"
+  integrity sha512-bNLToZu/n2kcJAKJ+dWIgwmWATy4ewy8BoZgqfXXi0zxqHNi24fbj7bGS9AlAHrdq8cFkX+qIullJUX6SIzFyA==
   dependencies:
     "@vue/compiler-sfc" "^3.0.0"
     vue "^3.0.0"

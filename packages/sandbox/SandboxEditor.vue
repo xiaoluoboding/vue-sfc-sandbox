@@ -20,7 +20,7 @@ import Codemirror from '../components/codemirror/index.vue'
 import { compileModules, addFile, changeFile } from 'vue-sfc2esm'
 // import { compileModules, store, addFile, changeFile } from '../plugins/vue-sfc2esm.esm' // for local test
 import { debounce } from './utils'
-import { ES_MODULES, IS_LOADING_PREVIEW } from './types'
+import { ES_MODULES, IS_LOADING_PREVIEW, SHARED_CODE } from './types'
 
 const props = defineProps({
   sfcFilename: { type: String, default: 'App.vue' },
@@ -29,8 +29,10 @@ const props = defineProps({
 
 const isLoading = inject(IS_LOADING_PREVIEW) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
+const sharedCode = inject(SHARED_CODE) as Ref<string>
 
 const onChange = debounce(async (code: string) => {
+  sharedCode.value = code
   isLoading.value = true
   esModules.value = []
   changeFile(props.sfcFilename, code)
@@ -41,6 +43,11 @@ const onChange = debounce(async (code: string) => {
 
 const activeCode = ref(props.sfcCode)
 const activeMode = computed(() => (props.sfcFilename.endsWith('.vue') ? 'htmlmixed' : 'javascript'))
+
+watch(
+  () => props.sfcCode,
+  (newVal) => (activeCode.value = newVal)
+)
 
 watch(
   () => activeCode.value,

@@ -23,14 +23,15 @@
     <main class="preview-container" ref="container">
       <LoadingMask v-if="isLoadingPreview" />
     </main>
-    <Message :err="runtimeError || fileErrors" />
-    <Message v-if="!runtimeError" :warn="runtimeWarning" />
+    <footer>
+      <Message :err="runtimeError || fileErrors" />
+      <Message v-if="!runtimeError" :warn="runtimeWarning" />
+    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Message from './Message.vue'
 import {
   ref,
   onMounted,
@@ -65,21 +66,22 @@ let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
 let stopUpdateWatcher: WatchStopHandle
 
+const UUID = btoa(Date.now().toString())
 const importMaps = inject(IMPORT_MAPS_KEY)
 const externals = inject(EXTERNALS_KEY)
 const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
 const isResized = inject(IS_RESIZED) as Ref<boolean>
-const esModules = inject(ES_MODULES) as Ref<Array<string>>
 const isFullpage = inject(IS_FULLPAGE) as Ref<boolean>
+const esModules = inject(ES_MODULES) as Ref<Array<string>>
 
 const props = defineProps({
-  sfcFilename: { type: String, default: 'App.vue' }
+  sfcFilename: { type: String, default: 'App.vue' },
+  sfcCode: { type: String, default: '' }
 })
 
 const container = ref()
 const runtimeError = ref()
 const runtimeWarning = ref()
-const uuid = ref(btoa(Date.now().toString()))
 
 const fileErrors = computed(() => store.files[props.sfcFilename]?.compiled?.errors[0])
 
@@ -93,6 +95,13 @@ watch(
 )
 
 const onResize = debounce(recreateSandbox, 333)
+
+const toggleFullpage = () => {
+  // deleteFile(props.sfcFilename)
+  isFullpage.value = !isFullpage.value
+  // addFile(props.sfcFilename, props.sfcCode)
+  // recreateSandbox()
+}
 
 // create sandbox on mounted
 onMounted(() => {
@@ -144,7 +153,7 @@ function createSandbox () {
   }
 
   sandbox = document.createElement('iframe')
-  sandbox.setAttribute('id', uuid.value)
+  sandbox.setAttribute('id', UUID)
   sandbox.setAttribute('sandbox', [
     'allow-forms',
     'allow-modals',
@@ -230,11 +239,11 @@ async function updatePreview () {
     const modules = toRaw(esModules.value)
 
     if (externals && externals.length > 0) {
-      await proxy.evalCDN(externals, uuid.value)
+      await proxy.evalCDN(externals, UUID)
     }
 
     if (modules && modules.length > 0) {
-      await proxy.evalESM(modules, uuid.value)
+      await proxy.evalESM(modules, UUID)
     }
     isLoadingPreview.value = false
   } catch (e) {
@@ -242,10 +251,6 @@ async function updatePreview () {
     isLoadingPreview.value = false
     runtimeError.value = e.message
   }
-}
-
-const toggleFullpage = () => {
-  isFullpage.value = !isFullpage.value
 }
 </script>
 
