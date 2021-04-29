@@ -4,7 +4,9 @@
 
 <script>
 import { defineComponent, onMounted, reactive, toRefs } from 'vue'
-import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup'
+import { EditorState, basicSetup } from '@codemirror/basic-setup'
+import { EditorView, keymap } from '@codemirror/view'
+import { defaultKeymap, defaultTabBinding } from '@codemirror/commands'
 // import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 // import { oneDark } from '@codemirror/theme-one-dark'
@@ -31,11 +33,19 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      const onUpdate = () =>
-        EditorView.updateListener.of(debounce(({ state }) => {
+      const onUpdate = () => {
+        return EditorView.updateListener.of(debounce(({ state }) => {
           store.doc = state.doc.toString()
           emit('update:modelValue', store.doc)
         }))
+      }
+
+      const tabBinding = () => {
+        return [
+          keymap.of([...defaultKeymap, defaultTabBinding]),
+          EditorState.tabSize.of(2)
+        ]
+      }
 
       const editorState = EditorState.create({
         doc: store.doc,
@@ -44,7 +54,8 @@ export default defineComponent({
           // oneDark,
           // javascript(),
           html(),
-          onUpdate()
+          onUpdate(),
+          tabBinding()
         ]
       })
 
