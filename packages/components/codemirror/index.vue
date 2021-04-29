@@ -9,7 +9,7 @@ import { EditorView, keymap } from '@codemirror/view'
 import { defaultKeymap, defaultTabBinding } from '@codemirror/commands'
 // import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
-// import { oneDark } from '@codemirror/theme-one-dark'
+import { oneDark } from '@codemirror/theme-one-dark'
 import { debounce } from '../../sandbox/utils.ts'
 
 // interface EditorStore {
@@ -51,7 +51,7 @@ export default defineComponent({
         doc: store.doc,
         extensions: [
           basicSetup,
-          // oneDark,
+          oneDark,
           // javascript(),
           html(),
           onUpdate(),

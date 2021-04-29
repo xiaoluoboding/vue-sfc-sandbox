@@ -6,7 +6,7 @@ export const SFC_CODE_ESM = `<template>
 
 <script>
 import Select from 'react-select'
-import { ReactInVue } from 'vuera'
+import { useReactComponent } from 'vurea'
 
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -14,7 +14,7 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' },
 ]
 
-const VSelect = ReactInVue(Select)
+const VSelect = useReactComponent(Select)
 
 export default {
   name: 'HelloReact',

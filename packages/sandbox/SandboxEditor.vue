@@ -18,7 +18,7 @@ import { ref, computed, defineProps, onMounted, inject, Ref, watch } from 'vue'
 import Codemirror from '../components/codemirror/index.vue'
 // import Message from './Message.vue'
 import { compileModules, addFile, changeFile } from 'vue-sfc2esm'
-// import { compileModules, store, addFile, changeFile } from '../plugins/vue-sfc2esm.esm' // for local test
+// import { compileModules, addFile, changeFile } from '../plugins/vue-sfc2esm.esm' // for local test
 import { debounce } from './utils'
 import { ES_MODULES, IS_LOADING_PREVIEW, SHARED_CODE } from './types'
 

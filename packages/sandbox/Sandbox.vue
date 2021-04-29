@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmit, nextTick, provide, ref, watch, inject, Ref } from 'vue'
+import { computed, defineProps, nextTick, provide, ref, watch, inject, Ref } from 'vue'
 import SplitPane from '../components/SplitPane.vue'
 import SandboxEditor from './SandboxEditor.vue'
 import SandboxPreview from './SandboxPreview.vue'
@@ -127,11 +127,11 @@ const handleResized = (panes: PanesInfo) => {
 
 @keyframes fullpage {
   0% {
-    opacity: .8;
+    opacity: 1;
     transform: scale(0.8);
   }
   80% {
-    opacity: .9;
+    opacity: .66;
     transform: scale(1);
   }
   80%, 100% {

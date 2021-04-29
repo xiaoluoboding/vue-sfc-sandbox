@@ -94,6 +94,15 @@ watch(
   }
 )
 
+watch(
+  () => runtimeError.value,
+  (newVal) => {
+    if (newVal) {
+      isLoadingPreview.value = false
+    }
+  }
+)
+
 const onResize = debounce(recreateSandbox, 333)
 
 const toggleFullpage = () => {
