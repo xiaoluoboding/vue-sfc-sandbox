@@ -12,17 +12,18 @@ export interface PackageManifest {
 
 export const packages: PackageManifest[] = [
   {
-    name: 'sfc-sandbox',
-    display: 'SfcSandbox',
+    name: 'vue-sfc-sandbox',
+    display: 'VueSfcSandbox',
     description: 'Compile Vue SFC File to ES Modules.',
     external: [
       'vue',
       '@codemirror/basic-setup',
-      '@codemirror/view',
+      '@codemirror/commands',
+      '@codemirror/highlight',
       '@codemirror/lang-html',
       '@codemirror/lang-javascript',
-      '@codemirror/commands',
       '@codemirror/theme-one-dark',
+      '@codemirror/view',
       '@vue/compiler-sfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser',
       'consolidate'
@@ -30,11 +31,12 @@ export const packages: PackageManifest[] = [
     globals: {
       vue: 'Vue',
       '@codemirror/basic-setup': 'CodeMirror',
-      '@codemirror/view': 'CodeMirrorViews',
+      '@codemirror/commands': 'CodeMirrorCommands',
+      '@codemirror/highlight': 'CodeMirrorHighlight',
       '@codemirror/lang-html': 'CodeMirrorLangHtml',
       '@codemirror/lang-javascript': 'CodeMirrorLangJavaScript',
-      '@codemirror/commands': 'CodeMirrorCommands',
       '@codemirror/theme-one-dark': 'CodeMirrorThemeOneDark',
+      '@codemirror/view': 'CodeMirrorViews',
       '@vue/compiler-sfc': 'CompilerSfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser': 'CompilerSfcEsm',
       consolidate: 'Consolidate'

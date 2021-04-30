@@ -12,7 +12,7 @@ import { defaultHighlightStyle } from '@codemirror/highlight'
 import { html } from '@codemirror/lang-html'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { debounce } from '../../sandbox/utils.ts'
-import { IS_DARKMODE } from '../../sandbox/types'
+import { IS_DARKMODE } from '../../sandbox/types.ts'
 
 // interface EditorStore {
 //   el: Element,

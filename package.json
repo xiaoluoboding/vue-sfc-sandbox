@@ -1,5 +1,5 @@
 {
-  "name": "sfc-sandbox",
+  "name": "vue-sfc-sandbox",
   "version": "0.1.0",
   "private": true,
   "scripts": {
