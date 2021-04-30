@@ -9,6 +9,35 @@
     "lint": "vue-cli-service lint",
     "bundle": "rollup -c rollup.config.js"
   },
+  "main": "lib/vue-sfc-sandbox.cjs.js",
+  "module": "lib/vue-sfc-sandbox.esm.js",
+  "unpkg": "lib/vue-sfc-sandbox.umd.min.js",
+  "jsdelivr": "lib/vue-sfc-sandbox.umd.min.js",
+  "exports": {
+    "require": "./lib/vue-sfc-sandbox.cjs.js",
+    "import": "./lib/vue-sfc-sandbox.esm.js",
+    "default": "./lib/vue-sfc-sandbox.esm.js"
+  },
+  "files": [
+    "lib",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoluoboding/vue-sfc-sandbox.git"
+  },
+  "homepage": "https://github.com/xiaoluoboding/vue-sfc-sandbox",
+  "license": "MIT",
+  "sideEffects": false,
+  "keywords": [
+    "vue3",
+    "sfc",
+    "esm",
+    "compile",
+    "compile-sfc",
+    "sandbox",
+    "playground"
+  ],
   "dependencies": {
     "@codemirror/basic-setup": "^0.18.0",
     "@codemirror/commands": "^0.18.1",
