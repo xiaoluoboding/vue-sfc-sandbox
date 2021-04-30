@@ -98,6 +98,7 @@ const handleResized = (panes: PanesInfo) => {
 <style lang="scss">
 .sandbox {
   --sfc-sandbox-bg-color: #f4f8fe;
+  --sfc-sandbox-bg-color-66: rgba(200, 207, 216, 0.66);
   --sfc-sandbox-border-color: rgb(232 237 250 / 100%);
   --sfc-sandbox-border-color-60: rgb(232 237 250 / 60%);
   box-sizing: content-box;

@@ -3,14 +3,16 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, reactive, toRefs } from 'vue'
+import { computed, defineComponent, inject, onMounted, onUnmounted, reactive, toRefs, watch } from 'vue'
 import { EditorState, basicSetup } from '@codemirror/basic-setup'
 import { EditorView, keymap } from '@codemirror/view'
 import { defaultKeymap, defaultTabBinding } from '@codemirror/commands'
+import { defaultHighlightStyle } from '@codemirror/highlight'
 // import { javascript } from '@codemirror/lang-javascript'
 import { html } from '@codemirror/lang-html'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { debounce } from '../../sandbox/utils.ts'
+import { IS_DARKMODE } from '../../sandbox/types'
 
 // interface EditorStore {
 //   el: Element,
@@ -26,13 +28,16 @@ export default defineComponent({
   setup (props, { emit }) {
     const { modelValue } = toRefs(props)
 
+    const isDarkmode = inject(IS_DARKMODE)
+
     const store = reactive({
       el: null,
       doc: modelValue.value,
-      view: null
+      view: null,
+      theme: computed(() => isDarkmode.value ? oneDark : defaultHighlightStyle.fallback)
     })
 
-    onMounted(() => {
+    const initEditor = () => {
       const onUpdate = () => {
         return EditorView.updateListener.of(debounce(({ state }) => {
           store.doc = state.doc.toString()
@@ -51,8 +56,8 @@ export default defineComponent({
         doc: store.doc,
         extensions: [
           basicSetup,
-          oneDark,
           // javascript(),
+          store.theme,
           html(),
           onUpdate(),
           tabBinding()
@@ -63,7 +68,25 @@ export default defineComponent({
         state: editorState,
         parent: store.el
       })
-    })
+    }
+
+    const disposeEditor = () => {
+      store.view.destroy()
+    }
+
+    const recreateEditor = () => {
+      disposeEditor()
+      initEditor()
+    }
+
+    watch(
+      () => isDarkmode.value,
+      () => (recreateEditor())
+    )
+
+    onMounted(initEditor)
+
+    onUnmounted(disposeEditor)
 
     return {
       ...toRefs(store)

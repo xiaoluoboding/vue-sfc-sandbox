@@ -6,14 +6,14 @@
       </div>
       <div class="preview-header__right">
         <!-- fullpage icon -->
-        <a href="javascript:;" @click="toggleFullpage">
+        <a class="actions" href="javascript:;" @click="toggleFullpage">
           <template v-if="isFullpage">
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <svg width="16" height="16" viewBox="0 0 16 16">
               <path d="M6 10.704V13.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.79l-3.144 3.147a.5.5 0 1 0 .708.706L6 10.703zm4-5.411V2.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1h-2.793l3.147-3.146a.5.5 0 0 0-.708-.708L10 5.293zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
             </svg>
           </template>
           <template v-else>
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <svg width="16" height="16" viewBox="0 0 16 16">
               <path d="M3 12.293V9.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1H3.707l3.147-3.146a.5.5 0 1 0-.708-.708L3 12.293zm10-8.586V6.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.793L9.147 6.146a.5.5 0 1 0 .707.708L13 3.707zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
             </svg>
           </template>
@@ -287,7 +287,17 @@ iframe {
       font-weight: 500;
     }
     .preview-header__right {
-      padding: 8px 12px;
+      .actions {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 40px;
+        &:hover {
+          background-color: var(--sfc-sandbox-bg-color-66);
+        }
+      }
     }
   }
   .preview-container {

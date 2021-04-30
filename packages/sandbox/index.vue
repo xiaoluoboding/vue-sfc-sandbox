@@ -26,7 +26,7 @@
 import { defineComponent, provide, reactive, ref, toRefs } from 'vue'
 import Sandbox from './Sandbox.vue'
 
-import { IS_FULLPAGE, SHARED_CODE } from './types'
+import { IS_FULLPAGE, SHARED_CODE, IS_DARKMODE } from './types'
 
 export default defineComponent({
   name: 'SfcSandbox',
@@ -46,9 +46,11 @@ export default defineComponent({
     const isFullpage = ref(false)
     const localProps = reactive(toRefs(props))
     const sharedCode = ref(props.sfcCode)
+    const isDarkmode = ref(false)
 
     provide(IS_FULLPAGE, isFullpage)
     provide(SHARED_CODE, sharedCode)
+    provide(IS_DARKMODE, isDarkmode)
 
     return {
       isFullpage,
@@ -58,6 +60,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss">
-</style>
