@@ -108,6 +108,11 @@ const onResize = debounce(recreateSandbox, 333)
 const toggleFullpage = () => {
   // deleteFile(props.sfcFilename)
   isFullpage.value = !isFullpage.value
+  if (isFullpage.value) {
+    document.body.classList.add('overflow-hidden')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+  }
   // addFile(props.sfcFilename, props.sfcCode)
   // recreateSandbox()
 }
