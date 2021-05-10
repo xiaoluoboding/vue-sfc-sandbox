@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, inject, onMounted, onUnmounted, reactive, toRefs, watch } from 'vue'
+import { computed, defineComponent, inject, nextTick, onMounted, onUnmounted, reactive, toRefs, watch } from 'vue'
 import { EditorState, basicSetup } from '@codemirror/basic-setup'
 import { EditorView, keymap } from '@codemirror/view'
 import { defaultKeymap, defaultTabBinding } from '@codemirror/commands'
@@ -68,6 +68,8 @@ export default defineComponent({
         state: editorState,
         parent: store.el
       })
+
+      nextTick(() => store.view.focus())
     }
 
     const disposeEditor = () => {

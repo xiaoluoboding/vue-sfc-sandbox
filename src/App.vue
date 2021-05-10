@@ -13,7 +13,7 @@
     <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
 
     <!-- [ESM] React component case -->
-    <!-- <sfc-sandbox v-bind="revueAttrs" /> -->
+    <!-- <sfc-sandbox v-bind="vureaAttrs" /> -->
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
 import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
 // import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
 import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
-// import { SFC_CODE_ESM as revueCode } from './constants/revue.demo.js'
+import { SFC_CODE_ESM as vureaCode } from './constants/vurea.demo.js'
 
 const defaultAttrs = {
   height: 200,
@@ -60,16 +60,15 @@ const digitAnimationAttrs = {
 //   sfcCode: veChartsCode
 // }
 
-// const revueAttrs = {
-//   height: 400,
-//   importMaps: {
-//     // antd: 'https://unpkg.com/antd@4.15.1/es/index.js',
-//     vurea: 'https://cdn.skypack.dev/vurea',
-//     'react-select': 'https://cdn.skypack.dev/react-select'
-//   },
-//   sfcFilename: 'ReactInVue.vue',
-//   sfcCode: revueCode
-// }
+const vureaAttrs = {
+  height: 400,
+  importMaps: {
+    'react-colorful': 'https://cdn.skypack.dev/react-colorful',
+    vurea: 'https://cdn.skypack.dev/vurea@v1.0.0-alpha.2'
+  },
+  sfcFilename: 'ReactInVue.vue',
+  sfcCode: vureaCode
+}
 </script>
 
 <style lang="scss">

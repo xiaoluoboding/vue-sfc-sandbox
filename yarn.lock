@@ -10574,8 +10574,8 @@ vue-loader@^15.9.2:
 
 vue-sfc2esm@^0.1.2:
   version "0.1.2"
-  resolved "https://registry.yarnpkg.com/vue-sfc2esm/-/vue-sfc2esm-0.1.2.tgz#b3529203f525a9a932c0fe891c1a09b4a2f3cd65"
-  integrity sha512-bNLToZu/n2kcJAKJ+dWIgwmWATy4ewy8BoZgqfXXi0zxqHNi24fbj7bGS9AlAHrdq8cFkX+qIullJUX6SIzFyA==
+  resolved "https://registry.nlark.com/vue-sfc2esm/download/vue-sfc2esm-0.1.2.tgz#b3529203f525a9a932c0fe891c1a09b4a2f3cd65"
+  integrity sha1-s1KSA/UlqakywP6JHBoJtKLzzWU=
   dependencies:
     "@vue/compiler-sfc" "^3.0.0"
     vue "^3.0.0"
