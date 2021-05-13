@@ -83,7 +83,9 @@ const container = ref()
 const runtimeError = ref()
 const runtimeWarning = ref()
 
-const fileErrors = computed(() => store.files[props.sfcFilename].compiled.errors[0])
+const fileErrors = computed(() => {
+  return store.files && store.files[props.sfcFilename] && store.files[props.sfcFilename].compiled.errors[0]
+})
 
 watch(
   () => isResized.value,
