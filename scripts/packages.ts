@@ -14,7 +14,7 @@ export const packages: PackageManifest[] = [
   {
     name: 'vue-sfc-sandbox',
     display: 'VueSfcSandbox',
-    description: 'Compile Vue SFC File to ES Modules.',
+    description: 'Vue SFC Sandbox built on top of `@vue/compiler-sfc`, Sandbox as a Vue 3 component.',
     external: [
       'vue',
       '@codemirror/basic-setup',

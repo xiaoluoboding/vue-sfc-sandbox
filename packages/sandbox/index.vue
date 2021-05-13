@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, reactive, ref, toRefs } from 'vue'
+import { defineComponent, provide, ref } from 'vue'
 import Sandbox from './Sandbox.vue'
 
 import { IS_FULLPAGE, SHARED_CODE, IS_DARKMODE } from './types'
@@ -36,15 +36,18 @@ export default defineComponent({
   props: {
     // sandbox height unit (px)
     height: { type: Number, default: 400 },
+    // specify a import maps in the <script> element include `type="importmap"`
     importMaps: { type: Object, default: () => ({}) },
+    // specify some cdn like jsdelivr、unpkg
     externals: { type: Array, default: () => ([]) },
-    sfcFilename: { type: String, default: '' },
-    sfcCode: { type: String, default: '' }
+    // virtual sfc filename like `HelloWorld.vue`
+    sfcFilename: { type: String, default: '', required: true },
+    // transpile sfc code to es modules by `vue-sfc2esm`
+    sfcCode: { type: String, default: '', required: true }
   },
 
-  setup (props, { emit }) {
+  setup (props) {
     const isFullpage = ref(false)
-    const localProps = reactive(toRefs(props))
     const sharedCode = ref(props.sfcCode)
     const isDarkmode = ref(false)
 
@@ -54,8 +57,7 @@ export default defineComponent({
 
     return {
       isFullpage,
-      sharedCode,
-      ...toRefs(localProps)
+      sharedCode
     }
   }
 })
