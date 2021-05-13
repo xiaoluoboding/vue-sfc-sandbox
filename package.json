@@ -24,6 +24,10 @@
     "lib",
     "README.md"
   ],
+  "vetur": {
+    "tags": "vetur/tags.json",
+    "attributes": "vetur/attributes.json"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xiaoluoboding/vue-sfc-sandbox.git"
