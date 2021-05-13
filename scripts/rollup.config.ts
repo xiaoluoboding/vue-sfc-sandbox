@@ -172,6 +172,7 @@ for (const { name, display, external = [], globals = {} } of activePackages) {
     plugins: [
       dts(),
       typescript(),
+      vue(),
       ...appPlugins,
       ...nodePlugins
     ]
