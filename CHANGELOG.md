@@ -1,9 +1,10 @@
-# 0.1.0 (2021-05-13)
+## 0.1.1 (2021-05-13)
 
 
 ### Bug Fixes
 
 * fix build error ([72db8ab](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/72db8abd38e9e9b08173e36af3536e44a83ebc8e))
+* type error ([324df50](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/324df50ded465956dfdd62136e5a2f4ce0a97c01))
 
 
 ### Features
