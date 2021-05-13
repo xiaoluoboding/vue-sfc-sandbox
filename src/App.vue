@@ -21,7 +21,7 @@
 import SfcSandbox from '../packages/sandbox/index.vue'
 import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
 import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
-// import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
+import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
 import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
 import { SFC_CODE_ESM as vureaCode } from './constants/vurea.demo.js'
 
@@ -49,16 +49,16 @@ const digitAnimationAttrs = {
   sfcCode: digitAnimationCode
 }
 
-// const veChartsAttrs = {
-//   height: 400,
-//   importMaps: {
-//     echarts: 'https://cdn.skypack.dev/echarts',
-//     'echarts/': 'https://cdn.skypack.dev/echarts',
-//     've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.5'
-//   },
-//   sfcFilename: 'VeChartsDemo.vue',
-//   sfcCode: veChartsCode
-// }
+const veChartsAttrs = {
+  height: 400,
+  importMaps: {
+    echarts: 'https://cdn.skypack.dev/echarts',
+    'echarts/': 'https://cdn.skypack.dev/echarts',
+    've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.6'
+  },
+  sfcFilename: 'VeChartsDemo.vue',
+  sfcCode: veChartsCode
+}
 
 const vureaAttrs = {
   height: 400,

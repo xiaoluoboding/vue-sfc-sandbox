@@ -1,14 +1,14 @@
 export const SFC_CODE_ESM = `<template>
-  <bar-chart v-bind="option"/>
+  <VeChart :option="option" @click="testEvent" :chartType="chartType" />
 </template>
 
 <script>
 import { ref } from 'vue'
-import { BarChart } from 've-charts'
+import { VeChart } from 've-charts'
 
 export default {
   components: {
-    BarChart
+    VeChart
   },
   setup () {
     const option = ref({
@@ -31,9 +31,12 @@ export default {
     })
 
     return {
-      option
+      option,
+      chartType: 've-chart',
+      testEvent: val => console.log(val)
     }
   }
 }
 </script>
+
 `
