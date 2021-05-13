@@ -1,7 +1,7 @@
 {
   "name": "vue-sfc-sandbox",
   "description": "Vue SFC Sandbox built on top of `@vue/compiler-sfc`, Sandbox as a Vue 3 component.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -22,6 +22,7 @@
   },
   "files": [
     "lib",
+    "vetur",
     "README.md"
   ],
   "vetur": {
