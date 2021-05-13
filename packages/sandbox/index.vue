@@ -1,123 +1,70 @@
 <template>
-  <SplitPane
-    class="sfc-sandbox"
-    :class="{ 'is-fullpage': isFullpage }"
-    :style="sandboxStyles"
-    @resized="handleResized"
-  >
-    <template #left>
-      <SandboxEditor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
-    </template>
-    <template #right>
-      <!-- <Suspense>
-        <template #default v-if="esModules">
-          <sandbox-preview />
-        </template>
-        <template #fallback>
-          <loading-mask v-if="isLoadingPreview" />
-        </template>
-      </Suspense> -->
-      <SandboxPreview :sfc-filename="sfcFilename" v-show="esModules" />
-      <LoadingMask v-if="isLoadingPreview" />
-    </template>
-  </SplitPane>
+  <div class="sfc-sandbox">
+    <Sandbox
+      v-if="!isFullpage"
+      :height="height"
+      :importMaps="importMaps"
+      :externals="externals"
+      :sfcFilename="sfcFilename"
+      :sfcCode="sharedCode"
+    />
+    <teleport to="body">
+      <Sandbox
+        is-teleport
+        v-if="isFullpage"
+        :height="height"
+        :importMaps="importMaps"
+        :externals="externals"
+        :sfcFilename="sfcFilename"
+        :sfcCode="sharedCode"
+      />
+    </teleport>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { computed, defineProps, provide, ref, watch } from 'vue'
-import SplitPane from '../components/SplitPane.vue'
-import SandboxEditor from './SandboxEditor.vue'
-import SandboxPreview from './SandboxPreview.vue'
-import LoadingMask from '../components/LoadingMask.vue'
+<script lang="ts">
+import { defineComponent, provide, ref } from 'vue'
+import Sandbox from './Sandbox.vue'
 
-import {
-  IMPORT_MAPS_KEY,
-  EXTERNALS_KEY,
-  IS_LOADING_PREVIEW,
-  IS_FULLPAGE,
-  ES_MODULES,
-  PanesInfo
-} from './types'
+import { IS_FULLPAGE, SHARED_CODE, IS_DARKMODE } from './types'
 
-const props = defineProps({
-  // sandbox height unit (px)
-  height: { type: Number, default: 400 },
-  importMaps: { type: Object, default: () => ({}) },
-  externals: { type: Array, default: () => ([]) },
-  sfcFilename: { type: String, default: '' },
-  sfcCode: { type: String, default: '' }
-})
+export default defineComponent({
+  name: 'SfcSandbox',
 
-const isLoadingPreview = ref(false)
-const isFullpage = ref(false)
-const esModules = ref([])
+  components: { Sandbox },
 
-provide(IMPORT_MAPS_KEY, props.importMaps)
-provide(EXTERNALS_KEY, props.externals)
-provide(IS_LOADING_PREVIEW, isLoadingPreview)
-provide(IS_FULLPAGE, isFullpage)
-provide(ES_MODULES, esModules)
+  props: {
+    // sandbox height unit (px)
+    height: { type: Number, default: 400 },
+    // specify a import maps in the <script> element include `type="importmap"`
+    importMaps: { type: Object, default: () => ({}) },
+    // specify some cdn like jsdelivr、unpkg
+    externals: { type: Array, default: () => ([]) },
+    // virtual sfc filename like `HelloWorld.vue`
+    sfcFilename: { type: String, default: '', required: true },
+    // transpile sfc code to es modules by `vue-sfc2esm`
+    sfcCode: { type: String, default: '', required: true }
+  },
 
-watch(
-  isLoadingPreview,
-  (newVal, oldVal) => {
-    if (oldVal) {
-      const styles = [
-        'color: white',
-        'background: #42b983',
-        'margin-left: 4px',
-        'padding: 2px 4px',
-        'border-radius: 2px'
-      ].join(';')
-      console.log(
-        `SFC File %c${props.sfcFilename}%c is Rendered`,
-        styles,
-        ''
-      )
+  setup (props) {
+    const isFullpage = ref(false)
+    const sharedCode = ref(props.sfcCode)
+    const isDarkmode = ref(false)
+
+    provide(IS_FULLPAGE, isFullpage)
+    provide(SHARED_CODE, sharedCode)
+    provide(IS_DARKMODE, isDarkmode)
+
+    return {
+      isFullpage,
+      sharedCode
     }
   }
-)
-
-const sandboxStyles = computed(() => {
-  return {
-    height: `${props.height}px`
-  }
 })
-
-const handleResize = (panes: PanesInfo) => {
-  console.log(panes)
-}
-const handleResized = (panes: PanesInfo) => {
-  console.log(panes)
-}
 </script>
 
-<style lang="scss">
-.sfc-sandbox {
-  background-color: #fff;
-  box-sizing: content-box;
-  border: 1px solid #ebebeb;
-  border-radius: 2px;
-  font-size: 13px;
-  &--editor,
-  &--preview {
-    width: 50%;
-  }
-  &--editor {
-    border-right: 1px dashed #ebebeb;
-  }
-  &:hover {
-    box-shadow: 0 0 10px 0 rgb(232 237 250 / 60%), 0 2px 4px 0 rgb(232 237 250 / 60%);
-  }
-  &.is-fullpage {
-    position: fixed;
-    height: 100% !important;
-    width: 100% !important;
-    top: 0;
-    left: 0;
-    z-index: 6666;
-    border-radius: 0;
-    border: none;
-  }
+<style>
+body.overflow-hidden {
+  overflow: hidden;
 }
 </style>

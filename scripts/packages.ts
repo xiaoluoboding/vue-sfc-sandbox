@@ -12,26 +12,34 @@ export interface PackageManifest {
 
 export const packages: PackageManifest[] = [
   {
-    name: 'sfc-sandbox',
-    display: 'SfcSandbox',
-    description: 'Compile Vue SFC File to ES Modules.',
+    name: 'vue-sfc-sandbox',
+    display: 'VueSfcSandbox',
+    description: 'Vue SFC Sandbox built on top of `@vue/compiler-sfc`, Sandbox as a Vue 3 component.',
     external: [
       'vue',
       '@codemirror/basic-setup',
+      '@codemirror/commands',
+      '@codemirror/highlight',
       '@codemirror/lang-html',
       '@codemirror/lang-javascript',
+      '@codemirror/theme-one-dark',
+      '@codemirror/view',
       '@vue/compiler-sfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser',
       'consolidate'
     ],
     globals: {
-      'vue': 'Vue',
+      vue: 'Vue',
       '@codemirror/basic-setup': 'CodeMirror',
+      '@codemirror/commands': 'CodeMirrorCommands',
+      '@codemirror/highlight': 'CodeMirrorHighlight',
       '@codemirror/lang-html': 'CodeMirrorLangHtml',
       '@codemirror/lang-javascript': 'CodeMirrorLangJavaScript',
+      '@codemirror/theme-one-dark': 'CodeMirrorThemeOneDark',
+      '@codemirror/view': 'CodeMirrorViews',
       '@vue/compiler-sfc': 'CompilerSfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser': 'CompilerSfcEsm',
-      'consolidate': 'Consolidate'
+      consolidate: 'Consolidate'
     }
   }
 ]

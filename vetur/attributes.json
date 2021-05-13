@@ -1,0 +1,22 @@
+{
+  "sfc-sandbox/height": {
+    "type": "number",
+    "description": "the sandbox height unit (px)"
+  },
+  "sfc-sandbox/import-maps": {
+    "type": "object",
+    "description": "specify a import maps in the <script> element include `type=\"importmap\"`"
+  },
+  "sfc-sandbox/externals": {
+    "type": "array",
+    "description": "specify some cdn like jsdelivr、unpkg"
+  },
+  "sfc-sandbox/sfc-filename": {
+    "type": "string",
+    "description": "virtual sfc filename like `HelloWorld.vue`"
+  },
+  "sfc-sandbox/sfc-code": {
+    "type": "string",
+    "description": "transpile sfc code to es modules by `vue-sfc2esm`"
+  }
+}

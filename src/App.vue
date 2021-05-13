@@ -6,14 +6,14 @@
     <!-- [CDN] echarts case -->
     <sfc-sandbox v-bind="echartsAttrs" />
 
-    <!-- [ESM] ve-charts case -->
-    <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
-
     <!-- [ESM] Vue3 component case -->
     <sfc-sandbox v-bind="digitAnimationAttrs" />
 
+    <!-- [ESM] ve-charts case -->
+    <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
+
     <!-- [ESM] React component case -->
-    <!-- <sfc-sandbox v-bind="revueAttrs" /> -->
+    <!-- <sfc-sandbox v-bind="vureaAttrs" /> -->
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
 import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
 import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
 import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
-// import { SFC_CODE_ESM as revueCode } from './constants/revue.demo.js'
+import { SFC_CODE_ESM as vureaCode } from './constants/vurea.demo.js'
 
 const defaultAttrs = {
   height: 200,
@@ -40,17 +40,6 @@ const echartsAttrs = {
   sfcCode: echartsCode
 }
 
-const veChartsAttrs = {
-  height: 400,
-  importMaps: {
-    echarts: 'https://cdn.skypack.dev/echarts',
-    'echarts/': 'https://cdn.skypack.dev/echarts',
-    've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.4'
-  },
-  sfcFilename: 'VeChartsDemo.vue',
-  sfcCode: veChartsCode
-}
-
 const digitAnimationAttrs = {
   height: 400,
   importMaps: {
@@ -60,15 +49,26 @@ const digitAnimationAttrs = {
   sfcCode: digitAnimationCode
 }
 
-// const revueAttrs = {
-//   height: 400,
-//   importMaps: {
-//     // antd: 'https://unpkg.com/antd@4.15.1/es/index.js',
-//     vuera: 'https://cdn.skypack.dev/vuera',
-//     'react-select': 'https://cdn.skypack.dev/react-select'
-//   },
-//   sfcCode: revueCode
-// }
+const veChartsAttrs = {
+  height: 400,
+  importMaps: {
+    echarts: 'https://cdn.skypack.dev/echarts',
+    'echarts/': 'https://cdn.skypack.dev/echarts',
+    've-charts': 'https://cdn.skypack.dev/ve-charts@v1.0.0-alpha.6'
+  },
+  sfcFilename: 'VeChartsDemo.vue',
+  sfcCode: veChartsCode
+}
+
+const vureaAttrs = {
+  height: 400,
+  importMaps: {
+    'react-colorful': 'https://cdn.skypack.dev/react-colorful',
+    vurea: 'https://cdn.skypack.dev/vurea@v1.0.0-alpha.2'
+  },
+  sfcFilename: 'ReactInVue.vue',
+  sfcCode: vureaCode
+}
 </script>
 
 <style lang="scss">
@@ -89,8 +89,8 @@ body {
 }
 
 .wrapper {
-  margin: 64px;
   display: grid;
+  margin: 64px;
   gap: 32px;
 }
 </style>

@@ -1,0 +1,13 @@
+{
+  "sfc-sandbox": {
+    "description": "Vue SFC Sandbox built on top of `@vue/compiler-sfc`, Sandbox as a Vue 3 component.",
+    "attributes": [
+      "height",
+      "import-maps",
+      "externals",
+      "sfc-filename",
+      "sfc-code"
+    ],
+    "defaults": ["sfc-filename", "sfc-code"]
+  }
+}

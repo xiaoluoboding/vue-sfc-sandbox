@@ -1,19 +1,25 @@
 /*!
- * vue-sfc2esm v0.1.1
+ * vue-sfc2esm v0.1.2
  * (c) 2021 xiaoluoboding
  * @license MIT
  */
-import { MagicString, babelParse, walkIdentifiers, walk } from '@vue/compiler-sfc';
-import { babelParserDefaultPlugins } from '@vue/shared';
-import { reactive, watchEffect, computed } from 'vue';
 import * as defaultCompiler from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser';
+import { MagicString, babelParse, walkIdentifiers, walk } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser';
+import { babelParserDefaultPlugins } from '@vue/shared';
+import { reactive, watchEffect, computed } from '@vue/runtime-core';
 
+// import * as defaultCompiler from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser' // production use
 const COMP_IDENTIFIER = `__sfc__`;
 /**
  * The default SFC compiler we are using is built from each commit
  * but we may swap it out with a version fetched from CDNs
  */
 let SFCCompiler = defaultCompiler;
+/**
+ * Compile the `activeFile` in the store. It will change the File.compiled info.
+ *
+ * @param File
+ */
 async function compileFile({ filename, code, compiled }) {
     if (!code.trim()) {
         compiled.errors = [];
@@ -166,7 +172,7 @@ function doCompileTemplate(descriptor, id, bindingMetadata, ssr) {
         slotted: descriptor.slotted,
         ssr,
         ssrCssVars: descriptor.cssVars,
-        isProd: false,
+        isProd: true,
         compilerOptions: {
             bindingMetadata
         }
@@ -209,7 +215,9 @@ const IMPORT_MAP_CODE = `
   "imports": {
   }
 }`.trim();
-// Virtual Simple File System
+/**
+ * Simple Virtual File System
+ */
 class File {
     constructor(filename, code = '') {
         this.compiled = {
@@ -250,6 +258,11 @@ for (const file in store.files) {
         compileFile(store.files[file]);
     }
 }
+/**
+ * Export the files code.
+ *
+ * @returns exported
+ */
 function exportFiles() {
     const exported = {};
     for (const filename in store.files) {
@@ -261,9 +274,31 @@ function setActive(filename, code) {
     store.activeFilename = filename;
     store.activeFile.code = code;
 }
+/**
+ * Record File errors when compiling file.
+ *
+ * @param errors
+ */
 function recordFileErrors(errors) {
     store.activeFile.compiled.errors = errors;
 }
+/**
+ * Check whether has a filename in store.
+ *
+ * @param filename
+ */
+function hasFile(filename) {
+    if (!(filename in store.files)) {
+        recordFileErrors([`File "${filename}" is not exists.`]);
+        return;
+    }
+}
+/**
+ * Add a file into the store, ready for compilation.
+ *
+ * @param filename
+ * @param code
+ */
 function addFile(filename, code) {
     if (!filename.endsWith('.vue') &&
         !filename.endsWith('.js') &&
@@ -271,10 +306,7 @@ function addFile(filename, code) {
         recordFileErrors(['Sandbox only supports *.vue, *.js files or import-map.json.']);
         return;
     }
-    if (filename in store.files) {
-        recordFileErrors([`File "${filename}" already exists.`]);
-        return;
-    }
+    hasFile(filename);
     const file = (store.files[filename] = new File(filename));
     if (filename === 'import-map.json') {
         file.code = IMPORT_MAP_CODE;
@@ -284,23 +316,43 @@ function addFile(filename, code) {
     }
     setActive(filename, file.code);
 }
+/**
+ * Change the file code, It will trigger `compileFile` action.
+ *
+ * @param filename
+ * @param code
+ */
 function changeFile(filename, code) {
-    if (!(filename in store.files)) {
-        recordFileErrors([`File "${filename}" is not exists.`]);
-        return;
-    }
+    hasFile(filename);
     const file = store.files[filename];
     setActive(file.filename, code);
 }
-function deleteFile(filename) {
-    if (confirm(`Are you sure you want to delete ${filename}?`)) {
+/**
+ * Delete the file in the store. with or without confirmation.
+ *
+ * @param filename
+ * @param withConfirm
+ */
+function deleteFile(filename, withConfirm) {
+    hasFile(filename);
+    const doDelete = () => {
         if (store.activeFilename === filename) {
             store.activeFilename = APP_FILE;
         }
         delete store.files[filename];
+    };
+    if (withConfirm && confirm(`Are you sure you want to delete ${filename}?`)) {
+        doDelete();
+        return;
     }
+    doDelete();
 }
 
+/**
+ * Transpiled Vue SFC File to ES modules with `@vue/compiler-sfc`.
+ *
+ * @param filename
+ */
 async function compileModules(filename) {
     if (filename !== activeFilename.value)
         return [];

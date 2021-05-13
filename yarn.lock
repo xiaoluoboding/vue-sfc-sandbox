@@ -917,7 +917,7 @@
     "@codemirror/text" "^0.18.0"
     "@codemirror/view" "^0.18.0"
 
-"@codemirror/commands@^0.18.0":
+"@codemirror/commands@^0.18.0", "@codemirror/commands@^0.18.1":
   version "0.18.1"
   resolved "https://registry.nlark.com/@codemirror/commands/download/@codemirror/commands-0.18.1.tgz#2866a15936b7ab3ff30112eb1887a0e01fef6205"
   integrity sha1-KGahWTa3qz/zARLrGIeg4B/vYgU=
@@ -1117,6 +1117,17 @@
   version "0.18.9"
   resolved "https://registry.nlark.com/@codemirror/view/download/@codemirror/view-0.18.9.tgz#bc2e4a30556888a07490df293171880275e0cdc3"
   integrity sha1-vC5KMFVoiKB0kN8pMXGIAnXgzcM=
+  dependencies:
+    "@codemirror/rangeset" "^0.18.0"
+    "@codemirror/state" "^0.18.0"
+    "@codemirror/text" "^0.18.0"
+    style-mod "^4.0.0"
+    w3c-keyname "^2.2.4"
+
+"@codemirror/view@^0.18.10":
+  version "0.18.10"
+  resolved "https://registry.nlark.com/@codemirror/view/download/@codemirror/view-0.18.10.tgz#2b4e59fe09ef5e62402cbe2d8f4f37448e1d4f78"
+  integrity sha1-K05Z/gnvXmJALL4tj083RI4dT3g=
   dependencies:
     "@codemirror/rangeset" "^0.18.0"
     "@codemirror/state" "^0.18.0"
@@ -10561,10 +10572,10 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-sfc2esm@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/vue-sfc2esm/-/vue-sfc2esm-0.1.1.tgz#897ddf1bc77fb25d2ee764115745352d1f18fecc"
-  integrity sha512-ZxbJSjXYewDZXiodoR/0NP2RLeOyJLhGC8dJiK1MQNyMzbR1KNUbhdLXw1TUz8k9pBLY5/hmqTb+/YQ9RKejKA==
+vue-sfc2esm@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/vue-sfc2esm/-/vue-sfc2esm-0.1.4.tgz#69ace7ca24e7571571e9227d99472338e4a93b7f"
+  integrity sha512-4EGVilA/So9vC2aWuKhWzGzWODGeH3tMURUd9v//84JxxKRwvSN1ldGx6orNt+ntr6hbNSQKivYDAMHa+/7SWg==
   dependencies:
     "@vue/compiler-sfc" "^3.0.0"
     vue "^3.0.0"

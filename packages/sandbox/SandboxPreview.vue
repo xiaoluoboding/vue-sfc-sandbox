@@ -6,29 +6,32 @@
       </div>
       <div class="preview-header__right">
         <!-- fullpage icon -->
-        <a href="javascript:;" @click="toggleFullpage">
+        <a class="actions" href="javascript:;" @click="toggleFullpage">
           <template v-if="isFullpage">
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <svg width="16" height="16" viewBox="0 0 16 16">
               <path d="M6 10.704V13.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.79l-3.144 3.147a.5.5 0 1 0 .708.706L6 10.703zm4-5.411V2.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1h-2.793l3.147-3.146a.5.5 0 0 0-.708-.708L10 5.293zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
             </svg>
           </template>
           <template v-else>
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <svg width="16" height="16" viewBox="0 0 16 16">
               <path d="M3 12.293V9.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1H3.707l3.147-3.146a.5.5 0 1 0-.708-.708L3 12.293zm10-8.586V6.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.793L9.147 6.146a.5.5 0 1 0 .707.708L13 3.707zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
             </svg>
           </template>
         </a>
       </div>
     </header>
-    <main class="preview-container" ref="container"></main>
-    <Message :err="runtimeError || fileErrors" />
-    <Message v-if="!runtimeError" :warn="runtimeWarning" />
+    <main class="preview-container" ref="container">
+      <LoadingMask v-if="isLoadingPreview" />
+    </main>
+    <footer>
+      <Message :err="runtimeError || fileErrors" />
+      <Message v-if="!runtimeError" :warn="runtimeWarning" />
+    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Message from './Message.vue'
 import {
   ref,
   onMounted,
@@ -37,10 +40,13 @@ import {
   inject,
   toRaw,
   defineProps,
-  computed
+  computed,
+  watch
 } from 'vue'
 import type { WatchStopHandle, Ref } from 'vue'
 
+import Message from './Message.vue'
+import LoadingMask from '../components/LoadingMask.vue'
 import srcdoc from './srcdoc.html'
 import { ReplProxy } from './ReplProxy'
 import { store } from 'vue-sfc2esm'
@@ -49,39 +55,91 @@ import {
   IMPORT_MAPS_KEY,
   EXTERNALS_KEY,
   IS_LOADING_PREVIEW,
+  IS_RESIZED,
   IS_FULLPAGE,
   ES_MODULES
 } from './types'
 import type { ImportMaps } from './types'
+import { debounce } from './utils'
 
 let sandbox: HTMLIFrameElement
 let proxy: ReplProxy
 let stopUpdateWatcher: WatchStopHandle
 
+const UUID = btoa(Date.now().toString())
 const importMaps = inject(IMPORT_MAPS_KEY)
 const externals = inject(EXTERNALS_KEY)
 const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
-const esModules = inject(ES_MODULES) as Ref<Array<string>>
+const isResized = inject(IS_RESIZED) as Ref<boolean>
 const isFullpage = inject(IS_FULLPAGE) as Ref<boolean>
+const esModules = inject(ES_MODULES) as Ref<Array<string>>
 
 const props = defineProps({
-  sfcFilename: { type: String, default: 'App.vue' }
+  sfcFilename: { type: String, default: 'App.vue' },
+  sfcCode: { type: String, default: '' }
 })
 
 const container = ref()
 const runtimeError = ref()
 const runtimeWarning = ref()
-const uuid = ref(btoa(Date.now().toString()))
 
-const fileErrors = computed(() => store.files[props.sfcFilename]?.compiled?.errors[0])
+const fileErrors = computed(() => {
+  return store.files && store.files[props.sfcFilename] && store.files[props.sfcFilename].compiled.errors[0]
+})
 
-// create sandbox on mount
-onMounted(createSandbox)
+watch(
+  () => isResized.value,
+  (newVal) => {
+    if (newVal) {
+      recreateSandbox()
+    }
+  }
+)
 
+watch(
+  () => runtimeError.value,
+  (newVal) => {
+    if (newVal) {
+      isLoadingPreview.value = false
+    }
+  }
+)
+
+const onResize = debounce(recreateSandbox, 333)
+
+const toggleFullpage = () => {
+  // deleteFile(props.sfcFilename)
+  isFullpage.value = !isFullpage.value
+  if (isFullpage.value) {
+    document.body.classList.add('overflow-hidden')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+  }
+  // addFile(props.sfcFilename, props.sfcCode)
+  // recreateSandbox()
+}
+
+// create sandbox on mounted
+onMounted(() => {
+  createSandbox()
+  window.addEventListener('resize', onResize, false)
+})
+
+// destroy sandbox on unmounted
 onUnmounted(() => {
+  destroySandbox()
+  window.removeEventListener('resize', onResize, false)
+})
+
+function destroySandbox () {
   proxy.destroy()
   stopUpdateWatcher && stopUpdateWatcher()
-})
+}
+
+function recreateSandbox () {
+  destroySandbox()
+  createSandbox()
+}
 
 const loadImportMap = () => {
   const importMap = JSON.parse(store.importMap || '{}') as ImportMaps
@@ -90,7 +148,8 @@ const loadImportMap = () => {
     importMap.imports = {}
   }
 
-  importMap.imports.vue = 'https://cdn.jsdelivr.net/npm/vue@next/dist/vue.runtime.esm-browser.js'
+  importMap.imports.vue = 'https://cdn.jsdelivr.net/npm/vue@next/dist/vue.esm-browser.js'
+  // importMap.imports.vue = 'https://cdn.jsdelivr.net/npm/vue@3.1.0-beta.1/dist/vue.esm-browser.js'
 
   if (importMaps) {
     Object.keys(importMaps).forEach(key => {
@@ -106,13 +165,12 @@ const loadImportMap = () => {
 function createSandbox () {
   if (sandbox) {
     // clear prev sandbox
-    proxy.destroy()
-    stopUpdateWatcher()
+    destroySandbox()
     container.value.removeChild(sandbox)
   }
 
   sandbox = document.createElement('iframe')
-  sandbox.setAttribute('id', uuid.value)
+  sandbox.setAttribute('id', UUID)
   sandbox.setAttribute('sandbox', [
     'allow-forms',
     'allow-modals',
@@ -198,11 +256,11 @@ async function updatePreview () {
     const modules = toRaw(esModules.value)
 
     if (externals && externals.length > 0) {
-      await proxy.evalCDN(externals, uuid.value)
+      await proxy.evalCDN(externals, UUID)
     }
 
     if (modules && modules.length > 0) {
-      await proxy.evalESM(modules, uuid.value)
+      await proxy.evalESM(modules, UUID)
     }
     isLoadingPreview.value = false
   } catch (e) {
@@ -210,10 +268,6 @@ async function updatePreview () {
     isLoadingPreview.value = false
     runtimeError.value = e.message
   }
-}
-
-const toggleFullpage = () => {
-  isFullpage.value = !isFullpage.value
 }
 </script>
 
@@ -228,21 +282,34 @@ iframe {
 
 .sfc-sandbox__preview {
   .preview-header {
+    box-sizing: border-box;
     display: flex;
     height: 40px;
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    background-color: #f4f8fe;
+    background-color: var(--sfc-sandbox-bg-color);
+    border-bottom: 1px solid var(--sfc-sandbox-border-color);
     .preview-header__left {
       padding: 10px 12px;
       font-weight: 500;
     }
     .preview-header__right {
-      padding: 8px 12px;
+      .actions {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 40px;
+        &:hover {
+          background-color: var(--sfc-sandbox-bg-color-66);
+        }
+      }
     }
   }
   .preview-container {
+    position: relative;
     width: 100%;
     height: calc(100% - 40px);
     border: none;

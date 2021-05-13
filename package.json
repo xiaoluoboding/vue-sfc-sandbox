@@ -1,21 +1,59 @@
 {
-  "name": "sfc-sandbox",
-  "version": "0.1.0",
-  "private": true,
+  "name": "vue-sfc-sandbox",
+  "description": "Vue SFC Sandbox built on top of `@vue/compiler-sfc`, Sandbox as a Vue 3 component.",
+  "version": "0.1.3",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:lib": "vue-cli-service build --lib",
     "lint": "vue-cli-service lint",
-    "bundle": "rollup -c rollup.config.js"
+    "bundle": "rollup -c rollup.config.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
+  "main": "lib/vue-sfc-sandbox.cjs.js",
+  "module": "lib/vue-sfc-sandbox.esm.js",
+  "unpkg": "lib/vue-sfc-sandbox.umd.min.js",
+  "jsdelivr": "lib/vue-sfc-sandbox.umd.min.js",
+  "types": "lib/vue-sfc-sandbox.d.ts",
+  "exports": {
+    "require": "./lib/vue-sfc-sandbox.cjs.js",
+    "import": "./lib/vue-sfc-sandbox.esm.js",
+    "default": "./lib/vue-sfc-sandbox.esm.js"
+  },
+  "files": [
+    "lib",
+    "vetur",
+    "README.md"
+  ],
+  "vetur": {
+    "tags": "vetur/tags.json",
+    "attributes": "vetur/attributes.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoluoboding/vue-sfc-sandbox.git"
+  },
+  "homepage": "https://github.com/xiaoluoboding/vue-sfc-sandbox",
+  "license": "MIT",
+  "sideEffects": false,
+  "keywords": [
+    "vue3",
+    "sfc",
+    "esm",
+    "compile",
+    "compile-sfc",
+    "sandbox",
+    "playground"
+  ],
   "dependencies": {
     "@codemirror/basic-setup": "^0.18.0",
+    "@codemirror/commands": "^0.18.1",
     "@codemirror/lang-html": "^0.18.0",
     "@codemirror/lang-javascript": "^0.18.0",
     "@codemirror/theme-one-dark": "^0.18.0",
+    "@codemirror/view": "^0.18.10",
     "vue": "^3.0.0",
-    "vue-sfc2esm": "^0.1.1"
+    "vue-sfc2esm": "^0.1.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^18.0.0",
