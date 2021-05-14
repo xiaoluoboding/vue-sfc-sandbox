@@ -17,12 +17,12 @@
 * 🔌 Support Externals CDN, like [unpkg](https://unpkg.com/)、[jsdelivr](https://www.jsdelivr.com/) etc.
 * 🧩 Load [Import Maps](https://github.com/WICG/import-maps) as ES Modules.
 
-### ✏️ Editor
+### ✏️ Editor Panel
 
 * 🎨 Themeable Editor based on [codemirror 6](https://codemirror.net/6/)
 * 🧑‍💻 Developer Friendly, built-in syntax highlighting, REPL Sandbox with Split Panes
 
-### 👓 Preview
+### 👓 Preview Panel
 
 * ⚡️ Runtime Compile SFC File
 * 🔍 Fullscreen View
@@ -38,6 +38,90 @@ yarn add vue-sfc-sandbox -S
 or
 npm i vue-sfc-sandbox -S
 ```
+
+## 📖 Usage
+
+> Notice that `vue-sfc-sandbox` is depending on `@vue/compiler-sfc`, and `@vue/compiler-sfc` depending on `Consolidate` packages.
+> We need configure `Consolidate` as externals in `vue.config.js` file.
+
+### Demos
+
+Vue 3 Demo: [Vue CLI 3.x](./examples/vue3-demo/README.md)
+
+### Vue 3
+
+```js
+// vue.config.js in vue 3 project
+module.exports = {
+  ...
+  configureWebpack: {
+    externals: {
+      consolidate: 'Consolidate'
+    }
+  }
+  ...
+}
+```
+
+**Use SFC Sandbox Component**
+
+```js
+// main.js
+import { createApp } from 'vue'
+import App from './App.vue'
+
+import VueSfcSandbox from 'vue-sfc-sandbox'
+
+createApp(App)
+  .use(VueSfcSandbox)
+  .mount('#app')
+```
+
+**In component**
+
+```vue
+<template>
+  <!-- [ESM] default case -->
+  <sfc-sandbox v-bind="defaultAttrs" />
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'HelloWorld',
+
+  setup () {
+    const defaultAttrs = {
+      height: 200,
+      sfcFilename: 'DefaultDemo.vue',
+      sfcCode: `<template>
+  <h1>{{ msg }}</h1>
+</template>
+
+<script setup>
+const msg = 'Hello World!'
+</script>
+`
+    }
+
+    return {
+      defaultAttrs
+    }
+  }
+})
+</script>
+```
+
+## Props
+
+| Attribute | Description | Type | Accepted values | Default |
+|:--------:|--------|--------|:--------:|:--------:|
+| height | the sandbox height unit (px) | Number | - | 400 |
+| import-maps | specify a import maps in the `<script>` element include `type=\"importmap\"` | String | - | - |
+| externals | specify some cdn like jsdelivr、unpkg | String | - | - |
+| sfc-filename | virtual sfc filename like `HelloWorld.vue` | - | - |
+| sfc-code | transpile sfc code to es modules by `vue-sfc2esm` | String | - | - |
 
 ## 💻 Development
 
