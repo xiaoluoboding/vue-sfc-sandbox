@@ -5,7 +5,7 @@
   },
   "sfc-sandbox/import-maps": {
     "type": "object",
-    "description": "specify a import maps in the <script> element include `type=\"importmap\"`"
+    "description": "specify a import maps in the `<script>` element include `type=\"importmap\"`"
   },
   "sfc-sandbox/externals": {
     "type": "array",
