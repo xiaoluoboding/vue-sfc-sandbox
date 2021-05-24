@@ -44,7 +44,8 @@ export default defineComponent({
     const digitAnimationAttrs = {
       height: 400,
       importMaps: {
-        'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.2.1/lib/vue-digit-animation.esm-browser.js'
+        'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.3.1/lib/vue-digit-animation.esm-browser.js',
+        numeral: 'https://cdn.skypack.dev/numeral'
       },
       sfcFilename: 'DigitAnimationDemo.vue',
       sfcCode: digitAnimationCode
