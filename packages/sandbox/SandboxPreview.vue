@@ -148,7 +148,7 @@ const loadImportMap = () => {
     importMap.imports = {}
   }
 
-  importMap.imports.vue = 'https://cdn.jsdelivr.net/npm/vue@next/dist/vue.esm-browser.js'
+  importMap.imports.vue = 'https://cdn.skypack.dev/vue@next/dist/vue.esm-browser.js'
   // importMap.imports.vue = 'https://cdn.jsdelivr.net/npm/vue@3.1.0-beta.1/dist/vue.esm-browser.js'
 
   if (importMaps) {
