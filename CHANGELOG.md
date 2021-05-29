@@ -1,4 +1,4 @@
-## 0.1.2 (2021-05-13)
+## [0.1.4](https://github.com/xiaoluoboding/vue-sfc-sandbox/compare/v0.1.3...v0.1.4) (2021-05-29)
 
 
 ### Bug Fixes
