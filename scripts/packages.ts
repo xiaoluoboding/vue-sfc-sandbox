@@ -24,6 +24,7 @@ export const packages: PackageManifest[] = [
       '@codemirror/lang-javascript',
       '@codemirror/theme-one-dark',
       '@codemirror/view',
+      'vue-sfc2esm',
       '@vue/compiler-sfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser',
       'consolidate'
@@ -37,6 +38,7 @@ export const packages: PackageManifest[] = [
       '@codemirror/lang-javascript': 'CodeMirrorLangJavaScript',
       '@codemirror/theme-one-dark': 'CodeMirrorThemeOneDark',
       '@codemirror/view': 'CodeMirrorViews',
+      'vue-sfc2esm': 'VueSfc2esm',
       '@vue/compiler-sfc': 'CompilerSfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser': 'CompilerSfcEsm',
       consolidate: 'Consolidate'
