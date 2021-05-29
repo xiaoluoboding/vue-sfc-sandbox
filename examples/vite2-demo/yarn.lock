@@ -877,10 +877,10 @@ vite@^2.3.0:
   optionalDependencies:
     fsevents "~2.3.1"
 
-vue-sfc-sandbox@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/vue-sfc-sandbox/-/vue-sfc-sandbox-0.1.3.tgz#936eaa3dc7d138d5a838c384fe89fc94381c2a24"
-  integrity sha512-r68AFaGUy8vZMjIdglc0hQOZl/+pKd5SSQ4+WqGl5f12mPDBB0gwtIZ0Bb+7bwGUIXDatdkh1xwpeHTWqrPP3w==
+vue-sfc-sandbox@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/vue-sfc-sandbox/-/vue-sfc-sandbox-0.1.4.tgz#c4372c6edd4c34615f875d46fc1a63f606300b19"
+  integrity sha512-sIROjPLsfLYQVV6sSpHspYhieh9HNrXgsNJBgwxVDkl04fNhLsggDWT/nnhusa37ko98K43bXr16eg4AOa35UQ==
   dependencies:
     "@codemirror/basic-setup" "^0.18.0"
     "@codemirror/commands" "^0.18.1"
@@ -889,12 +889,12 @@ vue-sfc-sandbox@^0.1.3:
     "@codemirror/theme-one-dark" "^0.18.0"
     "@codemirror/view" "^0.18.10"
     vue "^3.0.0"
-    vue-sfc2esm "^0.1.4"
+    vue-sfc2esm "^0.1.5"
 
-vue-sfc2esm@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/vue-sfc2esm/-/vue-sfc2esm-0.1.4.tgz#69ace7ca24e7571571e9227d99472338e4a93b7f"
-  integrity sha512-4EGVilA/So9vC2aWuKhWzGzWODGeH3tMURUd9v//84JxxKRwvSN1ldGx6orNt+ntr6hbNSQKivYDAMHa+/7SWg==
+vue-sfc2esm@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/vue-sfc2esm/-/vue-sfc2esm-0.1.5.tgz#1c9edfd8a8402f9cfb0864cd2adfcd9c6703bf18"
+  integrity sha512-plxSl9sffXJDHpRUIGQ3/I+yd2228ONSCk7qZIuDv3XR+76g9oDWpGHqS3GYtZDS9ujH2G4dKv4UgP9wzFrUVQ==
   dependencies:
     "@vue/compiler-sfc" "^3.0.0"
     vue "^3.0.0"
