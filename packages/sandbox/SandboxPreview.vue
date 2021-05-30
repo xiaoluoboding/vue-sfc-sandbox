@@ -57,7 +57,8 @@ import {
   IS_LOADING_PREVIEW,
   IS_RESIZED,
   IS_FULLPAGE,
-  ES_MODULES
+  ES_MODULES,
+  IS_DARKMODE
 } from './types'
 import type { ImportMaps } from './types'
 import { debounce } from './utils'
@@ -72,6 +73,7 @@ const externals = inject(EXTERNALS_KEY)
 const isLoadingPreview = inject(IS_LOADING_PREVIEW) as Ref<boolean>
 const isResized = inject(IS_RESIZED) as Ref<boolean>
 const isFullpage = inject(IS_FULLPAGE) as Ref<boolean>
+const isDarkmode = inject(IS_DARKMODE) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
 
 const props = defineProps({
@@ -246,9 +248,13 @@ function createSandbox () {
 }
 
 async function updatePreview () {
-  console.clear()
+  // console.clear()
   runtimeError.value = null
   runtimeWarning.value = null
+
+  const toggleDark = isDarkmode.value
+    ? 'document.querySelector("html").classList.add("dark")'
+    : 'document.querySelector("html").classList.remove("dark")'
 
   try {
     isLoadingPreview.value = true
@@ -260,7 +266,7 @@ async function updatePreview () {
     }
 
     if (modules && modules.length > 0) {
-      await proxy.evalESM(modules, UUID)
+      await proxy.evalESM([...modules, toggleDark], UUID)
     }
     isLoadingPreview.value = false
   } catch (e) {
@@ -288,8 +294,9 @@ iframe {
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--sfc-sandbox-bg-color);
+    background-color: var(--sfc-sandbox-header-bg-color);
     border-bottom: 1px solid var(--sfc-sandbox-border-color);
+    color: var(--sfc-sandbox-header-text-color);
     .preview-header__left {
       padding: 10px 12px;
       font-weight: 500;

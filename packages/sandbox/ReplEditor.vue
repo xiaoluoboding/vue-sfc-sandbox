@@ -31,7 +31,8 @@ import { IS_DARKMODE, ES_MODULES, IS_LOADING_PREVIEW, SHARED_CODE } from './type
 
 const props = defineProps({
   sfcFilename: { type: String, default: 'App.vue' },
-  sfcCode: { type: String, default: '' }
+  sfcCode: { type: String, default: '' },
+  language: { type: String, default: 'javascript' }
 })
 
 const isLoading = inject(IS_LOADING_PREVIEW) as Ref<boolean>
@@ -83,12 +84,11 @@ onMounted(() => {
   .editor-header {
     box-sizing: border-box;
     display: flex;
-    height: 40px;
+    height: 32px;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--sfc-sandbox-header-bg-color);
+    background-color: var(--sfc-sandbox-bg-color);
     border-bottom: 1px solid var(--sfc-sandbox-border-color);
-    color: var(--sfc-sandbox-header-text-color);
     .editor-header__left {
       padding: 10px 12px;
       font-weight: 500;
@@ -114,7 +114,7 @@ onMounted(() => {
     }
   }
   .editor-container {
-    height: calc(100% - 40px);
+    height: calc(100% - 32px);
     overflow: hidden;
     position: relative;
   }

@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
     <!-- [ESM] default case -->
-    <sfc-sandbox v-bind="defaultAttrs" />
+    <!-- <sfc-sandbox v-bind="defaultAttrs" /> -->
 
     <!-- [CDN] echarts case -->
     <sfc-sandbox v-bind="echartsAttrs" />
 
     <!-- [ESM] Vue3 component case -->
-    <sfc-sandbox v-bind="digitAnimationAttrs" />
+    <!-- <sfc-sandbox v-bind="digitAnimationAttrs" /> -->
 
     <!-- [ESM] ve-charts case -->
     <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
@@ -26,7 +26,7 @@ import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.
 import { SFC_CODE_ESM as vureaCode } from './constants/vurea.demo.js'
 
 const defaultAttrs = {
-  height: 200,
+  height: 400,
   sfcFilename: 'DefaultDemo.vue',
   sfcCode: defaultCode
 }
