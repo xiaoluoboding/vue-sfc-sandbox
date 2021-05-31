@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, toRef, inject, watch, Ref } from 'vue'
-import * as monaco from 'monaco-editor'
+import setupMonaco from './editor'
 
 import { IS_DARKMODE } from '../../sandbox/types'
 
@@ -24,7 +24,8 @@ export default defineComponent({
 
     const isDarkmode = inject(IS_DARKMODE) as Ref<boolean>
 
-    const init = () => {
+    const init = async () => {
+      const { monaco } = await setupMonaco()
       const editorInstance = monaco.editor.create(
         editorRef.value,
         {
@@ -47,7 +48,8 @@ export default defineComponent({
         () => isDarkmode.value,
         (val) => {
           monaco.editor.setTheme(val ? 'vs-dark' : 'vs-light')
-        }
+        },
+        { immediate: true }
       )
 
       editorInstance.onDidChangeModelContent(() => {

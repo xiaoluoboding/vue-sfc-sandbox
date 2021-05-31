@@ -1,79 +1,50 @@
 <template>
   <div class="sfc-sandbox__editor">
     <header class="editor-header">
-      <div class="editor-header__left">{{ sfcFilename }}</div>
-      <div class="editor-header__right">
-        <div class="actions" @click="toggleTheme">
-          <svg viewBox="0 0 1024 1024" width="16" height="16" class="darkmode" :class="{ 'light': !isDarkmode, 'dark': isDarkmode }">
-            <path d="M512 938.666667c235.648 0 426.666667-191.018667 426.666667-426.666667S747.648 85.333333 512 85.333333 85.333333 276.352 85.333333 512s191.018667 426.666667 426.666667 426.666667z m0-64v-725.333334a362.666667 362.666667 0 0 1 0 725.333334z" fill="#666"></path>
-          </svg>
-        </div>
-      </div>
+      <div class="editor-header__left">{{ activeMode }}</div>
+      <div class="editor-header__right"></div>
     </header>
     <main class="editor-container">
-      <!-- <Codemirror v-model="activeCode" :mode="activeMode" /> -->
-      <Monaco v-model="activeCode" language="html" />
-      <!-- <Message :err="fileErrors" /> -->
+      <MonacoEditor v-model="activeCode" :language="language" />
     </main>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, defineProps, onMounted, inject, Ref, watch } from 'vue'
+<script lang="ts">
+import { defineComponent, computed, watch, ref } from 'vue'
 
-// import Codemirror from '../components/codemirror/index.vue'
-import Monaco from '../components/monaco/index.vue'
-// import Message from './Message.vue'
-import { compileModules, addFile, changeFile } from 'vue-sfc2esm'
-// import { compileModules, addFile, changeFile } from '../plugins/vue-sfc2esm.esm' // for local test
-import { debounce } from './utils'
-import { IS_DARKMODE, ES_MODULES, IS_LOADING_PREVIEW, SHARED_CODE } from './types'
+import MonacoEditor from '../components/monaco/index.vue'
 
-const props = defineProps({
-  sfcFilename: { type: String, default: 'App.vue' },
-  sfcCode: { type: String, default: '' },
-  language: { type: String, default: 'javascript' }
-})
+export default defineComponent({
+  name: 'RelpEditor',
 
-const isLoading = inject(IS_LOADING_PREVIEW) as Ref<boolean>
-const esModules = inject(ES_MODULES) as Ref<Array<string>>
-const sharedCode = inject(SHARED_CODE) as Ref<string>
-const isDarkmode = inject(IS_DARKMODE) as Ref<boolean>
+  components: { MonacoEditor },
 
-const onChange = debounce(async (code: string) => {
-  sharedCode.value = code
-  isLoading.value = true
-  esModules.value = []
-  changeFile(props.sfcFilename, code)
-  const modules = await compileModules(props.sfcFilename)
-  esModules.value = modules
-  isLoading.value = false
-}, 250)
+  props: {
+    code: { type: String, default: '' },
+    language: { type: String, default: 'javascript' },
+    mode: { type: String, default: 'Javascript' }
+  },
 
-const activeCode = ref(props.sfcCode)
-const activeMode = computed(() => (props.sfcFilename.endsWith('.vue') ? 'htmlmixed' : 'javascript'))
+  setup (props, { emit }) {
+    const activeCode = ref(props.code)
 
-const toggleTheme = () => {
-  isDarkmode.value = !isDarkmode.value
-}
+    const activeMode = computed(() => {
+      return props.mode === 'template' ? 'Template' : 'Script'
+    })
 
-watch(
-  () => props.sfcCode,
-  (newVal) => (activeCode.value = newVal)
-)
+    watch(
+      () => activeCode.value,
+      (newVal) => {
+        emit('update:code', newVal)
+      },
+      { immediate: true }
+    )
 
-watch(
-  () => activeCode.value,
-  (newVal) => onChange(newVal),
-  {
-    immediate: true
-  }
-)
-
-onMounted(() => {
-  if (props.sfcCode !== '') {
-    addFile(props.sfcFilename, props.sfcCode)
-    activeCode.value = props.sfcCode
+    return {
+      activeCode,
+      activeMode
+    }
   }
 })
 </script>
@@ -87,7 +58,7 @@ onMounted(() => {
     height: 32px;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--sfc-sandbox-bg-color);
+    background-color: var(--sfc-sandbox-header-bg-color);
     border-bottom: 1px solid var(--sfc-sandbox-border-color);
     .editor-header__left {
       padding: 10px 12px;

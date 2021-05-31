@@ -5,19 +5,32 @@
         Preview
       </div>
       <div class="preview-header__right">
+        <div class="actions" @click="toggleTheme">
+          <!-- darkmode icon -->
+          <svg width="16px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32" style="vertical-align: middle; transform: translateY(-5%);" v-if="isDarkmode">
+            <path d="M13.502 5.414a15.075 15.075 0 0 0 11.594 18.194a11.113 11.113 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1.002 1.002 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.072 13.072 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3z" fill="currentColor"></path>
+          </svg>
+          <svg width="16px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32" style="vertical-align: middle; transform: translateY(-5%);" v-else>
+            <path d="M16 12.005a4 4 0 1 1-4 4a4.005 4.005 0 0 1 4-4m0-2a6 6 0 1 0 6 6a6 6 0 0 0-6-6z" fill="currentColor"></path>
+            <path d="M5.394 6.813l1.414-1.415l3.506 3.506L8.9 10.318z" fill="currentColor"></path>
+            <path d="M2 15.005h5v2H2z" fill="currentColor"></path>
+            <path d="M5.394 25.197L8.9 21.691l1.414 1.415l-3.506 3.505z" fill="currentColor"></path>
+            <path d="M15 25.005h2v5h-2z" fill="currentColor"></path>
+            <path d="M21.687 23.106l1.414-1.415l3.506 3.506l-1.414 1.414z" fill="currentColor"></path>
+            <path d="M25 15.005h5v2h-5z" fill="currentColor"></path>
+            <path d="M21.687 8.904l3.506-3.506l1.414 1.415l-3.506 3.505z" fill="currentColor"></path>
+            <path d="M15 2.005h2v5h-2z" fill="currentColor"></path>
+          </svg>
+        </div>
         <!-- fullpage icon -->
-        <a class="actions" href="javascript:;" @click="toggleFullpage">
+        <div class="actions" @click="toggleFullpage">
           <template v-if="isFullpage">
-            <svg width="16" height="16" viewBox="0 0 16 16">
-              <path d="M6 10.704V13.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.79l-3.144 3.147a.5.5 0 1 0 .708.706L6 10.703zm4-5.411V2.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1h-2.793l3.147-3.146a.5.5 0 0 0-.708-.708L10 5.293zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
-            </svg>
+            <svg class="iconify iconify--mdi" width="16px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" style="transform: rotate(360deg);"><path d="M14 14h5v2h-3v3h-2v-5m-9 0h5v5H8v-3H5v-2m3-9h2v5H5V8h3V5m11 3v2h-5V5h2v3h3z" fill="currentColor"></path></svg>
           </template>
           <template v-else>
-            <svg width="16" height="16" viewBox="0 0 16 16">
-              <path d="M3 12.293V9.5a.5.5 0 0 0-1 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 1 0 0-1H3.707l3.147-3.146a.5.5 0 1 0-.708-.708L3 12.293zm10-8.586V6.5a.5.5 0 1 0 1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 0 0 1h2.793L9.147 6.146a.5.5 0 1 0 .707.708L13 3.707zM13 9.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H13V9.5zm-10-3a.5.5 0 0 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H3v3.5z" fill="#666" fill-rule="evenodd"/>
-            </svg>
+            <svg class="iconify iconify--mdi" width="16px" height="16px" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" style="transform: rotate(360deg);"><path d="M5 5h5v2H7v3H5V5m9 0h5v5h-2V7h-3V5m3 9h2v5h-5v-2h3v-3m-7 3v2H5v-5h2v3h3z" fill="currentColor"></path></svg>
           </template>
-        </a>
+        </div>
       </div>
     </header>
     <main class="preview-container" ref="container">
@@ -58,7 +71,8 @@ import {
   IS_RESIZED,
   IS_FULLPAGE,
   ES_MODULES,
-  IS_DARKMODE
+  IS_DARKMODE,
+  WINDI_CSS
 } from './types'
 import type { ImportMaps } from './types'
 import { debounce } from './utils'
@@ -75,6 +89,7 @@ const isResized = inject(IS_RESIZED) as Ref<boolean>
 const isFullpage = inject(IS_FULLPAGE) as Ref<boolean>
 const isDarkmode = inject(IS_DARKMODE) as Ref<boolean>
 const esModules = inject(ES_MODULES) as Ref<Array<string>>
+const windicss = inject(WINDI_CSS) as Ref<string>
 
 const props = defineProps({
   sfcFilename: { type: String, default: 'App.vue' },
@@ -119,6 +134,10 @@ const toggleFullpage = () => {
   }
   // addFile(props.sfcFilename, props.sfcCode)
   // recreateSandbox()
+}
+
+const toggleTheme = () => {
+  isDarkmode.value = !isDarkmode.value
 }
 
 // create sandbox on mounted
@@ -253,8 +272,14 @@ async function updatePreview () {
   runtimeWarning.value = null
 
   const toggleDark = isDarkmode.value
-    ? 'document.querySelector("html").classList.add("dark")'
-    : 'document.querySelector("html").classList.remove("dark")'
+    ? `
+document.querySelector("html").classList.add("dark");
+document.getElementById('__windi-styles').innerHTML = ${JSON.stringify(windicss.value)}
+`
+    : `
+document.querySelector("html").classList.remove("dark");
+document.getElementById('__windi-styles').innerHTML = ${JSON.stringify(windicss.value)}
+`
 
   try {
     isLoadingPreview.value = true
@@ -290,7 +315,7 @@ iframe {
   .preview-header {
     box-sizing: border-box;
     display: flex;
-    height: 40px;
+    height: 32px;
     width: 100%;
     justify-content: space-between;
     align-items: center;
@@ -302,13 +327,12 @@ iframe {
       font-weight: 500;
     }
     .preview-header__right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .actions {
         cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        width: 40px;
+        padding: 8px;
         &:hover {
           background-color: var(--sfc-sandbox-bg-color-66);
         }
@@ -318,7 +342,7 @@ iframe {
   .preview-container {
     position: relative;
     width: 100%;
-    height: calc(100% - 40px);
+    height: calc(100% - 32px);
     border: none;
     background-color: #fff;
   }

@@ -6,3 +6,8 @@ declare module '*.vue' {
 }
 
 declare module '*.html'
+
+declare module '*.types' {
+  const content: any;
+  export default content;
+}

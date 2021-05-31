@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
     <!-- [ESM] default case -->
-    <!-- <sfc-sandbox v-bind="defaultAttrs" /> -->
+    <sfc-sandbox v-bind="defaultAttrs" />
 
     <!-- [CDN] echarts case -->
-    <sfc-sandbox v-bind="echartsAttrs" />
+    <!-- <sfc-sandbox v-bind="echartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
     <!-- <sfc-sandbox v-bind="digitAnimationAttrs" /> -->
