@@ -29,6 +29,8 @@ import {
   ES_MODULES
 } from './types'
 
+import { logger } from './utils'
+
 export default defineComponent({
   name: 'Sandbox',
 
@@ -69,18 +71,7 @@ export default defineComponent({
       isLoadingPreview,
       (newVal, oldVal) => {
         if (oldVal) {
-          const styles = [
-            'color: white',
-            'background: #42b983',
-            'margin-left: 4px',
-            'padding: 2px 4px',
-            'border-radius: 2px'
-          ].join(';')
-          console.log(
-            `SFC File %c${props.sfcFilename}%c is Rendered`,
-            styles,
-            ''
-          )
+          logger(`SFC File %c${props.sfcFilename}%c is Rendered`)
         }
       }
     )

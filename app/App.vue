@@ -33,8 +33,6 @@ const defaultAttrs = {
   sfcCode: defaultCode
 }
 
-console.log(defaultSetupCode)
-
 const defaultSetupAttrs = {
   height: 400,
   sfcFilename: 'DefaultDemo.vue',

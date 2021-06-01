@@ -29,7 +29,7 @@ export function generateStyles (html: string): string {
   const interpretedSheet = processor.interpret(`${htmlClasses}`).styleSheet
 
   // Always returns array
-  const castArray = (val: any) => (Array.isArray(val) ? val : [val])
+  const castArray = (val: string | string[]) => (Array.isArray(val) ? val : [val])
 
   const attrs: { [key: string]: string | string[] } = parser
     .parseAttrs()
@@ -50,8 +50,7 @@ export function generateStyles (html: string): string {
 
         // append current value to accumulator value
         acc[attrKey] = [...attrKeyValue, ...attrValue]
-      }
-      else {
+      } else {
         // else add atrribute value array to accumulator
         acc[attrKey] = attrValue
       }

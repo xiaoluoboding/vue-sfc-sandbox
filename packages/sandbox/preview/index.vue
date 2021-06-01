@@ -232,13 +232,13 @@ export default defineComponent({
 
       const applyStyles = isDarkmode.value
         ? `
-    document.querySelector("html").classList.add("dark");
-    document.getElementById('__windi-styles').innerHTML = ${JSON.stringify(windicss.value)}
-    `
+          document.querySelector("html").classList.add("dark");
+          document.getElementById('__windi-styles').innerHTML = ${JSON.stringify(windicss.value)}
+        `
         : `
-    document.querySelector("html").classList.remove("dark");
-    document.getElementById('__windi-styles').innerHTML = ${JSON.stringify(windicss.value)}
-    `
+          document.querySelector("html").classList.remove("dark");
+          document.getElementById('__windi-styles').innerHTML = ${JSON.stringify(windicss.value)}
+        `
 
       try {
         isLoadingPreview.value = true

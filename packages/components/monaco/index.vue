@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, toRef, inject, watch, Ref } from 'vue'
+import { defineComponent, onMounted, ref, toRef, inject, watch, Ref, computed } from 'vue'
 import setupMonaco from './editor'
 
 import { IS_DARKMODE } from '../../sandbox/types'
