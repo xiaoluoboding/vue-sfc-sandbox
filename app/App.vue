@@ -3,6 +3,8 @@
     <!-- [ESM] default case -->
     <sfc-sandbox v-bind="defaultAttrs" />
 
+    <sfc-sandbox v-bind="defaultSetupAttrs" />
+
     <!-- [CDN] echarts case -->
     <!-- <sfc-sandbox v-bind="echartsAttrs" /> -->
 
@@ -19,7 +21,7 @@
 
 <script setup lang="ts">
 import SfcSandbox from '../packages/sandbox/index.vue'
-import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
+import { SFC_CODE_ESM as defaultCode, SFC_CODE_ESM_SETUP as defaultSetupCode } from './constants/default.demo.js'
 import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
 import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
 import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
@@ -29,6 +31,17 @@ const defaultAttrs = {
   height: 400,
   sfcFilename: 'DefaultDemo.vue',
   sfcCode: defaultCode
+}
+
+console.log(defaultSetupCode)
+
+const defaultSetupAttrs = {
+  height: 400,
+  sfcFilename: 'DefaultDemo.vue',
+  sfcCode: defaultSetupCode,
+  editorOptions: {
+    isScriptSetup: true
+  }
 }
 
 const echartsAttrs = {

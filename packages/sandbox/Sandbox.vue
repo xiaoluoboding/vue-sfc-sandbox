@@ -17,8 +17,9 @@
 import { computed, nextTick, provide, ref, watch, defineComponent } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
-import SandboxEditor from './SandboxEditor.vue'
-import SandboxPreview from './SandboxPreview.vue'
+
+import SandboxEditor from './editor/index.vue'
+import SandboxPreview from './preview/index.vue'
 
 import {
   IMPORT_MAPS_KEY,
@@ -104,28 +105,30 @@ export default defineComponent({
 }
 .splitpanes.default-theme .splitpanes__splitter {
   background-color: var(--sfc-sandbox-header-bg-color);
-  border-color: transparent;
+  // border-color: transparent;
   min-width: 1rem;
   min-height: 1rem;
 }
 
 .splitpanes.default-theme .splitpanes__splitter::before,
 .splitpanes.default-theme .splitpanes__splitter::after {
-  background-color: rgba(60, 60, 60, .5);
+  background-color: var(--sfc-sandbox-border-color-splitter);
 }
 
 .splitpanes.default-theme .splitpanes__splitter:hover::before,
 .splitpanes.default-theme .splitpanes__splitter:hover::after {
-  background-color: rgba(60, 60, 60, .5);
+  background-color: transparent;
 }
 
-.sfc-sandbox.dark .splitpanes.default-theme .splitpanes__splitter::before,
-.sfc-sandbox.dark .splitpanes.default-theme .splitpanes__splitter::after {
-  background-color: #444c56;
+.default-theme.splitpanes--vertical>.splitpanes__splitter,
+.default-theme .splitpanes--vertical>.splitpanes__splitter {
+  border-left: 1px solid var(--sfc-sandbox-border-color);
+  border-right: 1px solid var(--sfc-sandbox-border-color);
 }
 
-.sfc-sandbox.dark .splitpanes.default-theme .splitpanes__splitter:hover::before,
-.sfc-sandbox.dark .splitpanes.default-theme .splitpanes__splitter:hover::after {
-  background-color: #444c56;
+.default-theme.splitpanes--horizontal>.splitpanes__splitter,
+.default-theme .splitpanes--horizontal>.splitpanes__splitter {
+  border-top: 1px solid var(--sfc-sandbox-border-color);
+  border-bottom: 1px solid var(--sfc-sandbox-border-color);
 }
 </style>

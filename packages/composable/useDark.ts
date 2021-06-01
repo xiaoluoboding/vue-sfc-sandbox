@@ -1,7 +1,7 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, Ref } from 'vue'
 
-export function useDark () {
-  let mediaQuery = null
+export function useDark (): Ref<boolean> {
+  let mediaQuery: any = null
 
   if (typeof window !== 'undefined') {
     mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -9,7 +9,7 @@ export function useDark () {
 
   const matches = ref(mediaQuery ? mediaQuery.matches : false)
 
-  function handler (event) {
+  function handler (event: any) {
     matches.value = event.matches
   }
 

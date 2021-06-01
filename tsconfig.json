@@ -32,6 +32,8 @@
     "app/**/*.ts",
     "app/**/*.tsx",
     "app/**/*.vue",
+    "packages/**/*.ts",
+    "packages/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "scripts/**/*.ts"

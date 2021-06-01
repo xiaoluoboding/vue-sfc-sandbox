@@ -3,30 +3,33 @@
     <div class="sfc-sandbox is-fullpage" :class="{ dark: isDarkmode }">
       <Sandbox
         :height="height"
-        :importMaps="importMaps"
+        :import-maps="importMaps"
         :externals="externals"
-        :sfcFilename="sfcFilename"
-        :sfcCode="sharedCode"
+        :sfc-filename="sfcFilename"
+        :sfc-code="sharedCode"
+        :editor-options="editorOptions"
       />
     </div>
   </teleport>
   <div class="sfc-sandbox" :class="{ dark: isDarkmode }" v-else>
     <Sandbox
       :height="height"
-      :importMaps="importMaps"
+      :import-maps="importMaps"
       :externals="externals"
-      :sfcFilename="sfcFilename"
-      :sfcCode="sharedCode"
+      :sfc-filename="sfcFilename"
+      :sfc-code="sharedCode"
+      :editor-options="editorOptions"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, ref } from 'vue'
+import { defineComponent, provide, ref, toRefs } from 'vue'
 import Sandbox from './Sandbox.vue'
-import { useDark } from '../components/use/useDark'
+import { useDark } from '../composable/useDark'
+import { store } from './store'
 
-import { IS_FULLPAGE, SHARED_CODE, IS_DARKMODE, WINDI_CSS } from './types'
+import { SHARED_CODE, IS_DARKMODE, WINDI_CSS, IS_SCRIPT_SETUP } from './types'
 
 export default defineComponent({
   name: 'SfcSandbox',
@@ -43,24 +46,27 @@ export default defineComponent({
     // virtual sfc filename like `HelloWorld.vue`
     sfcFilename: { type: String, default: '', required: true },
     // transpile sfc code to es modules by `vue-sfc2esm`
-    sfcCode: { type: String, default: '', required: true }
+    sfcCode: { type: String, default: '', required: true },
+    // define editor options
+    editorOptions: { type: Object, default: () => ({}) }
   },
 
   setup (props) {
-    const isFullpage = ref(false)
+    const isScriptSetup = ref(props.editorOptions.isScriptSetup)
     const sharedCode = ref(props.sfcCode)
     const windicss = ref('')
     const isDarkmode = useDark()
 
-    provide(IS_FULLPAGE, isFullpage)
+    provide(IS_SCRIPT_SETUP, isScriptSetup)
     provide(SHARED_CODE, sharedCode)
     provide(IS_DARKMODE, isDarkmode)
     provide(WINDI_CSS, windicss)
 
     return {
-      isFullpage,
+      ...toRefs(store),
       sharedCode,
       isDarkmode,
+      isScriptSetup,
       windicss
     }
   }
@@ -78,8 +84,10 @@ body.overflow-hidden {
   --sfc-sandbox-header-text-color: #24292e;
   --sfc-sandbox-bg-color-66: rgba(200, 207, 216, 0.66);
   --sfc-sandbox-border-color: rgb(232 237 250 / 100%);
-  --sfc-sandbox-border-color-60: rgb(232 237 250 / 60%);
+  --sfc-sandbox-border-color-splitter: rgba(60, 60, 60, .5);
   --sfc-sandbox-loading-bg-color: rgba(255, 255, 255, .9);
+  --sfc-sandbox-button-bg-color: #e1ebf5;
+  --sfc-sandbox-button-bg-color-hover: #dfefff;
 }
 
 .sfc-sandbox.dark {
@@ -88,8 +96,10 @@ body.overflow-hidden {
   --sfc-sandbox-header-text-color: #cdd9e5;
   --sfc-sandbox-bg-color-66: rgba(200, 207, 216, 0.66);
   --sfc-sandbox-border-color: #444c56;
-  --sfc-sandbox-border-color-60: rgb(232 237 250 / 60%);
+  --sfc-sandbox-border-color-splitter: #444c56;
   --sfc-sandbox-loading-bg-color: rgba(0, 0, 0, .9);
+  --sfc-sandbox-button-bg-color: #373e47;
+  --sfc-sandbox-button-bg-color-hover: #768390;
 }
 
 .sfc-sandbox {
