@@ -1,15 +1,15 @@
 <template>
   <div class="wrapper">
     <!-- [ESM] default case -->
-    <sfc-sandbox v-bind="defaultAttrs" />
+    <!-- <sfc-sandbox v-bind="defaultAttrs" /> -->
 
-    <sfc-sandbox v-bind="defaultSetupAttrs" />
+    <!-- <sfc-sandbox v-bind="defaultSetupAttrs" /> -->
 
     <!-- [CDN] echarts case -->
     <!-- <sfc-sandbox v-bind="echartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
-    <!-- <sfc-sandbox v-bind="digitAnimationAttrs" /> -->
+    <sfc-sandbox v-bind="digitAnimationAttrs" />
 
     <!-- [ESM] ve-charts case -->
     <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
@@ -43,7 +43,7 @@ const defaultSetupAttrs = {
 }
 
 const echartsAttrs = {
-  height: 440,
+  height: 432,
   externals: [
     'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
   ],

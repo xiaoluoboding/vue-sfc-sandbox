@@ -16,7 +16,7 @@
 * 🧪 Transpiled SFC File to ES Modules.
 * 🔌 Support Externals CDN, like [unpkg](https://unpkg.com/)、[jsdelivr](https://www.jsdelivr.com/) etc.
 * 🧩 Load [Import Maps](https://github.com/WICG/import-maps) as ES Modules.
-* 💨 Built-in compile `windicss`.
+* 💨 Built-in Compile `windicss` on the fly, also support `attributify` mode.
 
 ### ✏️ Editor Panel
 
