@@ -29,7 +29,8 @@ export default defineComponent({
     const defaultAttrs = {
       height: 200,
       sfcFilename: 'DefaultDemo.vue',
-      sfcCode: defaultCode
+      sfcCode: defaultCode,
+      scriptSetup: true
     }
 
     const echartsAttrs = {

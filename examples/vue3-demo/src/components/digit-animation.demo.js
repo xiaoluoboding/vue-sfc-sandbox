@@ -1,12 +1,12 @@
 export const SFC_CODE_ESM = `<template>
-  <div class="wrapper">
-    <digit-animation-group
-      size="6xl"
-      use-ease="Quit.easeInOut"
-      :digits="digits"
-      :duration="1000"
-    />
-  </div>
+<div class="flex justify-center items-center w-full h-full text-green-300">
+  <digit-animation-group
+    size="6xl"
+    use-ease="Quit.easeInOut"
+    :digits="digits"
+    :duration="1000"
+  />
+</div>
 </template>
 
 <script>
@@ -36,20 +36,4 @@ export default {
   }
 }
 </script>
-
-<style>
-html,
-body,
-#app {
-  height: 100%;
-  width: 100%;
-}
-.wrapper {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
 `
