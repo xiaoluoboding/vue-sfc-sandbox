@@ -27,7 +27,7 @@ export default defineComponent({
   },
   setup () {
     const defaultAttrs = {
-      height: 200,
+      height: 400,
       sfcFilename: 'DefaultDemo.vue',
       sfcCode: defaultCode,
       scriptSetup: true

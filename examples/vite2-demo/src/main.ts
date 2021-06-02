@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import VueSfcSandbox from '../plugins/vue-sfc-sandbox.esm'
+import VueSfcSandbox from 'vue-sfc-sandbox'
 
 createApp(App)
   .use(VueSfcSandbox)
