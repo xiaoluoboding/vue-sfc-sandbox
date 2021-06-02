@@ -3,11 +3,13 @@
     <!-- [ESM] default case -->
     <sfc-sandbox v-bind="defaultAttrs" />
 
+    <sfc-sandbox v-bind="defaultSetupAttrs" />
+
     <!-- [CDN] echarts case -->
-    <sfc-sandbox v-bind="echartsAttrs" />
+    <!-- <sfc-sandbox v-bind="echartsAttrs" /> -->
 
     <!-- [ESM] Vue3 component case -->
-    <sfc-sandbox v-bind="digitAnimationAttrs" />
+    <!-- <sfc-sandbox v-bind="digitAnimationAttrs" /> -->
 
     <!-- [ESM] ve-charts case -->
     <!-- <sfc-sandbox v-bind="veChartsAttrs" /> -->
@@ -19,16 +21,25 @@
 
 <script setup lang="ts">
 import SfcSandbox from '../packages/sandbox/index.vue'
-import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
+import { SFC_CODE_ESM as defaultCode, SFC_CODE_ESM_SETUP as defaultSetupCode } from './constants/default.demo.js'
 import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
 import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
 import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
 import { SFC_CODE_ESM as vureaCode } from './constants/vurea.demo.js'
 
 const defaultAttrs = {
-  height: 200,
+  height: 400,
   sfcFilename: 'DefaultDemo.vue',
   sfcCode: defaultCode
+}
+
+const defaultSetupAttrs = {
+  height: 400,
+  sfcFilename: 'DefaultDemo.vue',
+  sfcCode: defaultSetupCode,
+  editorOptions: {
+    isScriptSetup: true
+  }
 }
 
 const echartsAttrs = {

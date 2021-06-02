@@ -12,7 +12,7 @@
 .sfc-sandbox__loading-mask {
   position: absolute;
   z-index: 2000;
-  background-color: rgba(255,255,255,.9);
+  background-color: var(--sfc-sandbox-loading-bg-color);
   margin: 0;
   top: 0;
   right: 0;

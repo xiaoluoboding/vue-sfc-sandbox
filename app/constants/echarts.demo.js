@@ -1,5 +1,8 @@
 export const SFC_CODE_CDN = `<template>
-  <div id="demo" ref="container"></div>
+<div
+  ref="container"
+  style="width: auto;height: 400px;"
+/>
 </template>
 
 <script>
