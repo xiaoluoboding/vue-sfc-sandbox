@@ -20,7 +20,8 @@ export const packages: PackageManifest[] = [
       'splitpanes',
       'vue',
       'vue-sfc2esm',
-      'windicss',
+      'windicss/lib',
+      'windicss/utils/parser',
       '@vue/compiler-sfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser',
       'consolidate'
@@ -30,7 +31,8 @@ export const packages: PackageManifest[] = [
       splitpanes: 'SplitPanes',
       vue: 'Vue',
       'vue-sfc2esm': 'VueSfc2esm',
-      windicss: 'Windicss',
+      'windicss/lib': 'WindicssLib',
+      'windicss/utils/parser': 'WindicssParser',
       '@vue/compiler-sfc': 'CompilerSfc',
       '@vue/compiler-sfc/dist/compiler-sfc.esm-browser': 'CompilerSfcEsm',
       consolidate: 'Consolidate'

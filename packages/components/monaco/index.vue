@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, toRef, inject, watch, Ref, computed } from 'vue'
+import { defineComponent, onMounted, ref, toRef, inject, watch, Ref } from 'vue'
 import setupMonaco from './editor'
 
 import { IS_DARKMODE } from '../../sandbox/types'
@@ -18,7 +18,6 @@ export default defineComponent({
 
   setup (props, { emit }) {
     const editorRef = ref()
-
     const sfcCode = toRef(props, 'modelValue')
     const language = toRef(props, 'language')
 
@@ -26,11 +25,27 @@ export default defineComponent({
 
     const init = async () => {
       const { monaco } = await setupMonaco()
+
+      const extension = () => {
+        if (language.value === 'typescript') {
+          return 'ts'
+        } else if (language.value === 'javascript') {
+          return 'js'
+        } else if (language.value === 'html') {
+          return 'html'
+        }
+      }
+
+      const model = monaco.editor.createModel(
+        sfcCode.value,
+        language.value,
+        monaco.Uri.parse(`file:///root/${Date.now()}.${extension()}`)
+      )
+
       const editorInstance = monaco.editor.create(
         editorRef.value,
         {
-          value: sfcCode.value,
-          language: language.value,
+          model,
           tabSize: 2,
           insertSpaces: true,
           autoClosingQuotes: 'always',
@@ -47,6 +62,7 @@ export default defineComponent({
       watch(
         () => isDarkmode.value,
         (val) => {
+          // TODO not support have multiple editors of different themes.
           monaco.editor.setTheme(val ? 'vs-dark' : 'vs-light')
         },
         { immediate: true }

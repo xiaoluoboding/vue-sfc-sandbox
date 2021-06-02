@@ -1,16 +1,16 @@
 <template>
-  <splitpanes
+  <Splitpanes
     class="sandbox default-theme"
     :style="sandboxStyles"
     @resized="handleResized"
   >
-    <pane min-size="20">
+    <Pane min-size="20">
       <SandboxEditor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
-    </pane>
-    <pane max-size="80">
+    </Pane>
+    <Pane min-size="80">
       <SandboxPreview :sfc-filename="sfcFilename" :sfc-code="sfcCode" v-show="esModules" />
-    </pane>
-  </splitpanes>
+    </Pane>
+  </Splitpanes>
 </template>
 
 <script lang="ts">
@@ -26,7 +26,8 @@ import {
   EXTERNALS_KEY,
   IS_LOADING_PREVIEW,
   IS_RESIZED,
-  ES_MODULES
+  ES_MODULES,
+  WINDI_CSS
 } from './types'
 
 import { logger } from './utils'
@@ -54,12 +55,14 @@ export default defineComponent({
     const isLoadingPreview = ref(false)
     const isResized = ref(false)
     const esModules = ref([])
+    const windicss = ref('')
 
     provide(IMPORT_MAPS_KEY, props.importMaps)
     provide(EXTERNALS_KEY, props.externals)
     provide(IS_LOADING_PREVIEW, isLoadingPreview)
     provide(IS_RESIZED, isResized)
     provide(ES_MODULES, esModules)
+    provide(WINDI_CSS, windicss)
 
     const sandboxStyles = computed(() => {
       return {
@@ -96,7 +99,6 @@ export default defineComponent({
 }
 .splitpanes.default-theme .splitpanes__splitter {
   background-color: var(--sfc-sandbox-header-bg-color);
-  // border-color: transparent;
   min-width: 1rem;
   min-height: 1rem;
 }

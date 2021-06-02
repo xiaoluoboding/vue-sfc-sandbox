@@ -24,11 +24,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, ref, toRefs } from 'vue'
+import { defineComponent, provide, ref } from 'vue'
 import Sandbox from './Sandbox.vue'
 import { useDark } from '../composable/useDark'
 
-import { SHARED_CODE, IS_DARKMODE, WINDI_CSS, IS_SCRIPT_SETUP, IS_FULLPAGE } from './types'
+import { SHARED_CODE, IS_DARKMODE, IS_SCRIPT_SETUP, IS_FULLPAGE } from './types'
 
 export default defineComponent({
   name: 'SfcSandbox',
@@ -53,7 +53,6 @@ export default defineComponent({
   setup (props) {
     const isScriptSetup = ref(props.editorOptions.isScriptSetup)
     const sharedCode = ref(props.sfcCode)
-    const windicss = ref('')
     const isFullpage = ref(false)
     const isDarkmode = useDark()
 
@@ -61,14 +60,12 @@ export default defineComponent({
     provide(SHARED_CODE, sharedCode)
     provide(IS_FULLPAGE, isFullpage)
     provide(IS_DARKMODE, isDarkmode)
-    provide(WINDI_CSS, windicss)
 
     return {
       sharedCode,
       isFullpage,
       isDarkmode,
-      isScriptSetup,
-      windicss
+      isScriptSetup
     }
   }
 })

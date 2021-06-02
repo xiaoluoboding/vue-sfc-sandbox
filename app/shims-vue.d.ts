@@ -8,6 +8,12 @@ declare module '*.vue' {
 declare module '*.html'
 
 declare module '*.types' {
-  const content: any;
+  const content: string;
   export default content;
 }
+
+declare module '*.d.ts' {
+  const content: string;
+  export default content;
+}
+

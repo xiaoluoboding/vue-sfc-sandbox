@@ -293,8 +293,8 @@ iframe {
     background-color: var(--sfc-sandbox-header-bg-color);
     border-bottom: 1px solid var(--sfc-sandbox-border-color);
     color: var(--sfc-sandbox-header-text-color);
+    padding: 0 12px;
     .preview-header__left {
-      padding: 10px 12px;
       font-weight: 500;
     }
     .preview-header__right {

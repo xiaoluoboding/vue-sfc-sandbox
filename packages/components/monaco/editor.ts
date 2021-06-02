@@ -1,6 +1,7 @@
 import * as monaco from 'monaco-editor'
 /* __imports__ */
 import vueTypes from './vue-runtime.types'
+// import vueTypes from '@vue/runtime-core/dist/runtime-core.d.ts'
 
 const setup = () => {
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions({

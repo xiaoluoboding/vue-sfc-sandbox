@@ -59,9 +59,12 @@ export default defineComponent({
   padding: 6px;
   background-color: var(--sfc-sandbox-button-bg-color);
   border-radius: .25rem;
-  margin-right: 8px;
   &:hover {
     background-color: var(--sfc-sandbox-button-bg-color-hover);
   }
+}
+
+.action + .action {
+  margin-left: 8px;
 }
 </style>
