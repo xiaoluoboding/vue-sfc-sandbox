@@ -6,7 +6,12 @@
           {{ activeMode }}
         </template>
         <template v-else>
-          {{ isScriptSetup ? 'Script Setup' : 'Script' }}
+          <template v-if="isScriptSetup">
+            <span title="<script setup> is still an experimental proposal.">Script Setup</span>
+          </template>
+          <template v-else>
+            <span>Script</span>
+          </template>
           <!-- <div class="btn-group">
             <div
               class="btn btn-xs"

@@ -125,6 +125,7 @@ const msg = 'Hello World!'
 | externals | specify some cdn like jsdelivr、unpkg | String | - | - |
 | sfc-filename | virtual sfc filename like `HelloWorld.vue` | - | - |
 | sfc-code | transpile sfc code to es modules by `vue-sfc2esm` | String | - | - |
+| script-setup | whether script editor using `<script setup>` proposal | Boolean | - | - |
 
 ## 💻 Development
 

@@ -7,7 +7,6 @@
         :externals="externals"
         :sfc-filename="sfcFilename"
         :sfc-code="sharedCode"
-        :editor-options="editorOptions"
       />
     </div>
   </teleport>
@@ -18,7 +17,6 @@
       :externals="externals"
       :sfc-filename="sfcFilename"
       :sfc-code="sharedCode"
-      :editor-options="editorOptions"
     />
   </div>
 </template>
@@ -46,12 +44,12 @@ export default defineComponent({
     sfcFilename: { type: String, default: '', required: true },
     // transpile sfc code to es modules by `vue-sfc2esm`
     sfcCode: { type: String, default: '', required: true },
-    // define editor options
-    editorOptions: { type: Object, default: () => ({}) }
+    // whether script editor using `<script setup>` proposal
+    scriptSetup: { type: Boolean, default: false }
   },
 
   setup (props) {
-    const isScriptSetup = ref(props.editorOptions.isScriptSetup)
+    const isScriptSetup = ref(props.scriptSetup)
     const sharedCode = ref(props.sfcCode)
     const isFullpage = ref(false)
     const isDarkmode = useDark()
