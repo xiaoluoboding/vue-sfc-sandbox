@@ -2,12 +2,13 @@
   <Splitpanes
     class="sandbox default-theme"
     :style="sandboxStyles"
+    :dbl-click-splitter="false"
     @resized="handleResized"
   >
-    <Pane min-size="20">
+    <Pane min-size="20" max-size="80" >
       <SandboxEditor :sfc-filename="sfcFilename" :sfc-code="sfcCode" />
     </Pane>
-    <Pane min-size="80">
+    <Pane min-size="20" max-size="80">
       <SandboxPreview :sfc-filename="sfcFilename" :sfc-code="sfcCode" v-show="esModules" />
     </Pane>
   </Splitpanes>
