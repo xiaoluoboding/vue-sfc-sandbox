@@ -50,10 +50,14 @@ export default defineComponent({
 
     const activeCode = ref(props.sfcCode)
 
-    const templateContent = ((descriptor.template && descriptor.template.content) as string).trim()
+    const dTemplateContent = (descriptor.template && descriptor.template.content) || ''
+    const dScriptContent = (descriptor.script && descriptor.script.content) || ''
+    const dScriptSetupContent = (descriptor.scriptSetup && descriptor.scriptSetup.content) || ''
+
+    const templateContent = dTemplateContent.trim()
     const scriptContent = isScriptSetup.value
-      ? ((descriptor.scriptSetup && descriptor.scriptSetup.content) as string).trim()
-      : ((descriptor.script && descriptor.script.content) as string).trim()
+      ? dScriptSetupContent.trim()
+      : dScriptContent.trim()
 
     const templateCode = ref(templateContent)
     const scriptCode = ref(scriptContent)
