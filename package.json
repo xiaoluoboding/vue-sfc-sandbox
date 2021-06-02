@@ -1,6 +1,6 @@
 {
   "name": "vue-sfc-sandbox",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Vue SFC Sandbox built on top of `@vue/compiler-sfc`, Sandbox as a Vue 3 component.",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -49,7 +49,7 @@
     "monaco-editor": "^0.24.0",
     "splitpanes": "^3.0.4",
     "vue": "^3.0.0",
-    "vue-sfc2esm": "^0.1.5",
+    "vue-sfc2esm": "^0.1.6",
     "windicss": "^3.0.12"
   },
   "devDependencies": {

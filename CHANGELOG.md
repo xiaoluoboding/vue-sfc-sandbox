@@ -1,3 +1,17 @@
+## [0.2.1](https://github.com/xiaoluoboding/vue-sfc-sandbox/compare/v0.2.0...v0.2.1) (2021-06-02)
+
+
+### Bug Fixes
+
+* get descriptor content trim error ([b7d447c](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/b7d447c5f77a7727a005567e775c80fd94513c18))
+
+
+### Features
+
+* define script-setup props ([46cc10e](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/46cc10e8fe6053292d54fc0e59a3442a1b236d45))
+
+
+
 # [0.2.0](https://github.com/xiaoluoboding/vue-sfc-sandbox/compare/v0.1.4...v0.2.0) (2021-06-02)
 
 
