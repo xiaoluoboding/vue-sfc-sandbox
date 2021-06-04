@@ -1,10 +1,31 @@
-# Vue SFC Sandbox
+<h1 align="center">Vue SFC Sandbox</h1>
 
-> Vue SFC Sandbox built on top of `@vue/compiler-sfc`, Sandbox as a Vue 3 component.
+<div align="center">
+
+<p align="center">
+  Vue SFC Sandbox, Sandbox as a Vue 3 component.
+</p>
+
+<br>
+
+[![NPM][npmBadge]][npmUrl]
+[![NPM Download][npmDtBadge]][npmDtUrl]
+[![License][licenseBadge]][licenseUrl]
+
+[npmBadge]:https://img.shields.io/npm/v/vue-sfc-sandbox.svg?maxAge=2592000
+[npmUrl]:https://www.npmjs.com/package/vue-sfc-sandbox
+
+[npmDtBadge]:https://img.shields.io/npm/dt/vue-sfc-sandbox.svg
+[npmDtUrl]:https://www.npmjs.com/package/vue-sfc-sandbox
+
+[licenseBadge]:https://img.shields.io/badge/license-MIT-blue.svg
+[licenseUrl]:https://raw.githubusercontent.com/vueblocks/vue-sfc-sandbox/master/LICENSE
+
+</div>
 
 ## 🖼️ Preview
 
-![preview](./preview.png)
+![preview](./preview.gif)
 
 ## ✨ Features
 
@@ -21,7 +42,7 @@
 ### ✏️ Editor Panel
 
 * 🎨 Themeable Editor based on [Monaco Editor](https://github.com/microsoft/monaco-editor)
-* 🧑‍💻 Developer Friendly, built-in syntax highlighting
+* 🧑‍💻 Developer Friendly, built-in `Vue 3` intellisense support
 * ↕️ REPL Sandbox with Split Panes, Split `<template>` & `<script>` tag
 
 ### 👓 Preview Panel
@@ -45,15 +66,17 @@ npm i vue-sfc-sandbox -S
 ## 📖 Usage
 
 > Notice that `vue-sfc-sandbox` is depending on `@vue/compiler-sfc`, and `@vue/compiler-sfc` depending on `Consolidate` packages.
-> We need configure `Consolidate` as externals in `vue.config.js` file.
+> We need configure `Consolidate` as externals in `vue.config.js` or `vite.config.ts` file.
 
 ### Demos
 
-Vue 3 Demo: [Vue CLI 3.x](./examples/vue3-demo/README.md)
+Vue 3 Demo: [Vue CLI 3.x](./examples/vue3-demo/README.md) | Vite 2 Demo: [@vitejs/app](./examples/vite2-demo/README.md)
 
-### Vue 3
+### Configure Vue 3
 
-```js
+Add this config in [vue.config.js](./examples/vue3-demo/vue.config.js) file.
+
+```ts
 // vue.config.js in vue 3 project
 module.exports = {
   ...
@@ -66,10 +89,30 @@ module.exports = {
 }
 ```
 
-**Use SFC Sandbox Component**
+### Configure Vite 2
 
-```js
-// main.js
+Add this config in [vite.config.ts](./examples/vite2-demo/vite.config.ts) file.
+
+```ts
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  define: {
+    'process.env': {}
+  },
+  plugins: [vue()],
+  optimizeDeps: {
+    exclude: ['consolidate', 'velocityjs', 'dustjs-linkedin', 'atpl', 'liquor', 'twig', 'ejs', 'eco', 'jazz', 'hamljs', 'hamlet', 'jqtpl', 'whiskers', 'haml-coffee', 'hogan.js', 'templayed', 'handlebars', 'underscore', 'lodash', 'walrus', 'mustache', 'just', 'ect', 'mote', 'toffee', 'dot', 'bracket-template', 'ractive', 'htmling', 'babel-core', 'plates', 'react-dom/server', 'react', 'vash', 'slm', 'marko', 'teacup/lib/express', 'coffee-script', 'squirrelly', 'twing']
+  }
+})
+```
+
+### Setup SFC Sandbox Component
+
+```ts
+// main.ts
 import { createApp } from 'vue'
 import App from './App.vue'
 
@@ -80,11 +123,11 @@ createApp(App)
   .mount('#app')
 ```
 
-**In component**
+### Use SFC Sandbox Component
 
-```vue
+```html
 <template>
-  <!-- [ESM] default case -->
+  <!-- [ESM] default case with <script setup> -->
   <sfc-sandbox v-bind="defaultAttrs" />
 </template>
 
@@ -96,16 +139,18 @@ export default defineComponent({
 
   setup () {
     const defaultAttrs = {
+      scriptSetup: true,
       height: 200,
       sfcFilename: 'DefaultDemo.vue',
-      sfcCode: `<template>
-  <h1>{{ msg }}</h1>
-</template>
+      sfcCode: `
+        <template>
+          <h1>{{ msg }}</h1>
+        </template>
 
-<script setup>
-const msg = 'Hello World!'
-</script>
-`
+        <script setup>
+        const msg = 'Hello World!'
+        </script>
+      `
     }
 
     return {
@@ -125,7 +170,7 @@ const msg = 'Hello World!'
 | externals | specify some cdn like jsdelivr、unpkg | String | - | - |
 | sfc-filename | virtual sfc filename like `HelloWorld.vue` | - | - |
 | sfc-code | transpile sfc code to es modules by `vue-sfc2esm` | String | - | - |
-| script-setup | whether script editor using `<script setup>` proposal | Boolean | - | - |
+| script-setup | whether script editor using `<script setup>` proposal | Boolean | `true`/`false` | `false` |
 
 ## 💻 Development
 
