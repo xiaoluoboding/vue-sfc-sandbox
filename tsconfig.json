@@ -40,6 +40,6 @@
   ],
   "exclude": [
     "node_modules",
-    "packages/plugins/**/*.ts"
+    "packages/sandbox/repl/**/*.ts"
   ]
 }
