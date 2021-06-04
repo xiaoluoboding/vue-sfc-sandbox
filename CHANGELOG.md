@@ -1,4 +1,36 @@
-## 0.1.2 (2021-05-13)
+## [0.2.1](https://github.com/xiaoluoboding/vue-sfc-sandbox/compare/v0.2.0...v0.2.1) (2021-06-02)
+
+
+### Bug Fixes
+
+* get descriptor content trim error ([b7d447c](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/b7d447c5f77a7727a005567e775c80fd94513c18))
+
+
+### Features
+
+* define script-setup props ([46cc10e](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/46cc10e8fe6053292d54fc0e59a3442a1b236d45))
+
+
+
+# [0.2.0](https://github.com/xiaoluoboding/vue-sfc-sandbox/compare/v0.1.4...v0.2.0) (2021-06-02)
+
+
+### Bug Fixes
+
+* fixed splitpanes setting ([8765672](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/8765672f4e359c6f7213439ce51679d2d2f25227))
+
+
+### Features
+
+* add compile script setup feature ([1baeaac](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/1baeaac382c17124297c0d346ad95e63c8865053))
+* add monaco-editor support ([4ee6168](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/4ee6168ad3461db6ca2ced531c14a58f6346cb84))
+* change app dir ([8b858b0](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/8b858b0a127d34e3a8932b6df5ad63a942d29093))
+* make bundle works ([8a97f62](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/8a97f62cc757019127f34af3f0807f1e19992080))
+* support compile windicss as style ([1b03890](https://github.com/xiaoluoboding/vue-sfc-sandbox/commit/1b038903f28df72c2bebbbd3841b257f095510da))
+
+
+
+## [0.1.4](https://github.com/xiaoluoboding/vue-sfc-sandbox/compare/c94b75c5676adf03120ab17b9660742bf3917a7a...v0.1.4) (2021-05-29)
 
 
 ### Bug Fixes

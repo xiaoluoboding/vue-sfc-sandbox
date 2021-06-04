@@ -3,6 +3,8 @@
     <!-- [ESM] default case -->
     <sfc-sandbox v-bind="defaultAttrs" />
 
+    <sfc-sandbox v-bind="defaultSetupAttrs" />
+
     <!-- [CDN] echarts case -->
     <sfc-sandbox v-bind="echartsAttrs" />
 
@@ -18,21 +20,29 @@
 </template>
 
 <script setup lang="ts">
-import SfcSandbox from '../packages/sandbox/index.vue'
-import { SFC_CODE_ESM as defaultCode } from './constants/default.demo.js'
-import { SFC_CODE_CDN as echartsCode } from './constants/echarts.demo.js'
-import { SFC_CODE_ESM as veChartsCode } from './constants/ve-charts.demo.js'
-import { SFC_CODE_ESM as digitAnimationCode } from './constants/digit-animation.demo.js'
-import { SFC_CODE_ESM as vureaCode } from './constants/vurea.demo.js'
+import SfcSandbox from '../../packages/sandbox/index.vue'
+import { SFC_CODE_ESM as defaultCode, SFC_CODE_ESM_SETUP as defaultSetupCode } from '../constants/default.demo.js'
+import { SFC_CODE_CDN as echartsCode } from '../constants/echarts.demo.js'
+import { SFC_CODE_ESM as veChartsCode } from '../constants/ve-charts.demo.js'
+import { SFC_CODE_ESM as digitAnimationCode } from '../constants/digit-animation.demo.js'
+import { SFC_CODE_ESM as vureaCode } from '../constants/vurea.demo.js'
 
 const defaultAttrs = {
-  height: 200,
+  height: 400,
   sfcFilename: 'DefaultDemo.vue',
   sfcCode: defaultCode
 }
 
+const defaultSetupAttrs = {
+  height: 400,
+  sfcFilename: 'DefaultDemo.vue',
+  sfcCode: defaultSetupCode,
+  scriptSetup: true,
+  darkmode: true
+}
+
 const echartsAttrs = {
-  height: 440,
+  height: 432,
   externals: [
     'https://cdn.jsdelivr.net/npm/echarts@5.0.2/dist/echarts.min.js'
   ],
@@ -43,7 +53,8 @@ const echartsAttrs = {
 const digitAnimationAttrs = {
   height: 400,
   importMaps: {
-    'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.2.1/lib/vue-digit-animation.esm-browser.js'
+    'vue-digit-animation': 'https://cdn.jsdelivr.net/npm/vue-digit-animation@0.3.1/lib/vue-digit-animation.esm-browser.js',
+    numeral: 'https://cdn.skypack.dev/numeral'
   },
   sfcFilename: 'DigitAnimationDemo.vue',
   sfcCode: digitAnimationCode
@@ -72,24 +83,9 @@ const vureaAttrs = {
 </script>
 
 <style lang="scss">
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  color: var(--base);
-  margin: 0;
-  background-color: #fff;
-  --base: #444;
-  --font-code: 'Source Code Pro', monospace;
-  --color-branding: #3ca877;
-  --color-branding-dark: #416f9c;
-}
-
-#app {
-  height: 100%;
-}
-
 .wrapper {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 64px;
   gap: 32px;
 }

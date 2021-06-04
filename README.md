@@ -16,16 +16,19 @@
 * 🧪 Transpiled SFC File to ES Modules.
 * 🔌 Support Externals CDN, like [unpkg](https://unpkg.com/)、[jsdelivr](https://www.jsdelivr.com/) etc.
 * 🧩 Load [Import Maps](https://github.com/WICG/import-maps) as ES Modules.
+* 💨 Built-in Compile `windicss` on the fly, also support `attributify` mode.
 
 ### ✏️ Editor Panel
 
-* 🎨 Themeable Editor based on [codemirror 6](https://codemirror.net/6/)
-* 🧑‍💻 Developer Friendly, built-in syntax highlighting, REPL Sandbox with Split Panes
+* 🎨 Themeable Editor based on [Monaco Editor](https://github.com/microsoft/monaco-editor)
+* 🧑‍💻 Developer Friendly, built-in syntax highlighting
+* ↕️ REPL Sandbox with Split Panes, Split `<template>` & `<script>` tag
 
 ### 👓 Preview Panel
 
 * ⚡️ Runtime Compile SFC File
 * 🔍 Fullscreen View
+* 🌛 Darkmode
 
 ## 💡 Inspiration
 
@@ -122,6 +125,7 @@ const msg = 'Hello World!'
 | externals | specify some cdn like jsdelivr、unpkg | String | - | - |
 | sfc-filename | virtual sfc filename like `HelloWorld.vue` | - | - |
 | sfc-code | transpile sfc code to es modules by `vue-sfc2esm` | String | - | - |
+| script-setup | whether script editor using `<script setup>` proposal | Boolean | - | - |
 
 ## 💻 Development
 

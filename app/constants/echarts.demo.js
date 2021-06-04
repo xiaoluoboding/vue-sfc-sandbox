@@ -46,4 +46,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#demo {
+  height: 400px;
+  width: auto;
+}
+</style>
 `
