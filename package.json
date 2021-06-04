@@ -39,7 +39,6 @@
     "type": "git",
     "url": "git+https://github.com/xiaoluoboding/vue-sfc-sandbox.git"
   },
-  "sideEffects": false,
   "types": "lib/vue-sfc-sandbox.d.ts",
   "vetur": {
     "tags": "vetur/tags.json",

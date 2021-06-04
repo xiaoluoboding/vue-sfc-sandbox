@@ -1,5 +1,7 @@
 <template>
   <div class="wrapper">
+    <h1>Hello Vue SFC Sandbox</h1>
+
     <!-- [ESM] default case -->
     <sfc-sandbox v-bind="defaultAttrs" />
 
@@ -85,7 +87,7 @@ const vureaAttrs = {
 <style lang="scss">
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   margin: 64px;
   gap: 32px;
 }
